@@ -28,4 +28,13 @@ public static class GameEvents
     {
         GameGridReadyEvent?.Invoke(gameGrid);
     }
+    
+    // raised by the game tiles manager when the player interacts with an active tile
+    public delegate void ActiveTileTappedHandler(int gridY, int gridX);
+    public static event ActiveTileTappedHandler ActiveTileTappedEvent;
+    public static void RaiseActiveTileTappedEvent(int gridY, int gridX)
+    {
+        ActiveTileTappedEvent?.Invoke(gridY, gridX);
+    }
+    
 }

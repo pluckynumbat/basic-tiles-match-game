@@ -24,10 +24,14 @@ public class GameTilesManager : MonoBehaviour
     {
         GameEvents.GameGridReadyEvent -= OnGameGridReady;
         GameEvents.GameGridReadyEvent += OnGameGridReady;
+        
+        GameEvents.InputDetectedEvent -= OnInputDetected;
+        GameEvents.InputDetectedEvent += OnInputDetected;
     }
     private void OnDestroy()
     {
         GameEvents.GameGridReadyEvent -= OnGameGridReady;
+        GameEvents.InputDetectedEvent -= OnInputDetected;
     }
 
     // main grid is ready at the beginning of a level, create tiles 
@@ -129,5 +133,37 @@ public class GameTilesManager : MonoBehaviour
         }
 
         return null;
+    }
+    
+    // check if the player attempted a move on the game board
+    private void OnInputDetected(Vector3 inputWorldPosition)
+    {
+        if (!acceptingInput)
+        {
+            return;
+        }
+
+        GameTile activeTileTapped = null;
+        foreach (GameTile tile in activeTilesDictionary.Values)
+        {
+            if (tile == null || !tile.IsTileActive)
+            {
+                continue;
+            }
+            
+            if (tile.IsPositionWithinMyLimits(inputWorldPosition))
+            {
+                // player tapped an active tile!
+                activeTileTapped = tile;
+                break; // only care for one input at a time
+            }
+        }
+
+        // send the tile's grid Y & X indices for further processing
+        if (activeTileTapped != null)
+        {
+            acceptingInput = false;
+            GameEvents.RaiseActiveTileTappedEvent(activeTileTapped.GridY, activeTileTapped.GridX);
+        }
     }
 }
