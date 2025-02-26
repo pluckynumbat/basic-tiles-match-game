@@ -27,11 +27,15 @@ public class GameTilesManager : MonoBehaviour
         
         GameEvents.InputDetectedEvent -= OnInputDetected;
         GameEvents.InputDetectedEvent += OnInputDetected;
+        
+        GameEvents.InvalidMoveEvent -= OnInvalidMove;
+        GameEvents.InvalidMoveEvent += OnInvalidMove;
     }
     private void OnDestroy()
     {
         GameEvents.GameGridReadyEvent -= OnGameGridReady;
         GameEvents.InputDetectedEvent -= OnInputDetected;
+        GameEvents.InvalidMoveEvent -= OnInvalidMove;
     }
 
     // main grid is ready at the beginning of a level, create tiles 
@@ -165,5 +169,12 @@ public class GameTilesManager : MonoBehaviour
             acceptingInput = false;
             GameEvents.RaiseActiveTileTappedEvent(activeTileTapped.GridY, activeTileTapped.GridX);
         }
+    }
+    
+    // the player's attempted move was invalid
+    private void OnInvalidMove(int gridY, int gridX)
+    {
+        //TODO: check if it is safe to set this to true in all cases
+        acceptingInput = true;
     }
 }
