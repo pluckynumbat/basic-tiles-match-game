@@ -16,7 +16,13 @@ public class GameTile : MonoBehaviour
     public bool IsTileActive; // is this tile part of the active / main grid?
 
     private SpriteRenderer spriteRenderer;
-
+    
+    // limits that the tile cares about for input detection
+    private float lowerX;
+    private float upperX;
+    private float lowerY;
+    private float upperY;
+    
     public void SetSprite(Sprite inputSprite)
     {
         if (spriteRenderer == null)
@@ -24,5 +30,16 @@ public class GameTile : MonoBehaviour
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
         spriteRenderer.sprite = inputSprite;
+    }
+
+    // TODO: these will overlap at borders, fix that
+    public void SetLimits(Vector2 position)
+    {
+        float halfWidth = TILE_WIDTH * 0.5f;
+        lowerX = position.x - halfWidth;
+        upperX = position.x + halfWidth;
+        
+        lowerY = position.y - halfWidth;
+        upperY = position.y + halfWidth;
     }
 }
