@@ -59,7 +59,26 @@ public class GameTilesManager : MonoBehaviour
         }
     }
     
-    
+    // assign key properties to the game tile, based on the game grid
+    private void SetupGameTile(GameTile tile, int gridY, int gridX, GameGridCell cell, Transform container)
+    {
+        //set properties
+        tile.GridY = gridY;
+        tile.GridX = gridX;
+        tile.SetSprite(GetSpriteBasedOnColor(cell.Color));
+                
+        //set the input container as the tile's parent
+        tile.transform.SetParent(container);
+                
+        //set position based on the input container
+        tile.transform.position = GetWorldPositionFromGridPositionAndContainer(tile.GridY, tile.GridX, container);
+                
+        // set limits that the tile should care about based on the grid item it will represent
+         tile.SetLimits(tile.transform.position);
+        
+        //set the tile as active
+        tile.IsTileActive = true;
+    }
     
     // provides mapping from a tile's Y & X indices in the game grid to its position in the world, based on the container it is a part of
     private Vector2 GetWorldPositionFromGridPositionAndContainer(int gridY, int gridX, Transform container)
