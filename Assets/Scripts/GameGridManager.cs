@@ -52,6 +52,7 @@ public class GameGridManager : MonoBehaviour
                     int mapping =  ((gridLength - 1 - y) * gridLength) + x;
                     mainGrid[y][x].Color = GetGridCellColorFromString(levelData.startingGrid[mapping]);
                 }
+                mainGrid[y][x].Occupied = true;
             }
         }
     }
