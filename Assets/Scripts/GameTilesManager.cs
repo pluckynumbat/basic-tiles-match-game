@@ -59,4 +59,24 @@ public class GameTilesManager : MonoBehaviour
         }
     }
     
+    // helper function to select the sprite from the available options based on the input color
+    public Sprite GetSpriteBasedOnColor(GameGridCell.GridCellColor color)
+    {
+        switch (color)
+        {
+            case GameGridCell.GridCellColor.Red:
+                return tileSpriteOptions[0];
+            
+            case GameGridCell.GridCellColor.Green:
+                return tileSpriteOptions[1];
+            
+            case GameGridCell.GridCellColor.Blue:
+                return tileSpriteOptions[2];
+            
+            case GameGridCell.GridCellColor.Yellow:
+                return tileSpriteOptions[3];
+        }
+
+        return null;
+    }
 }
