@@ -14,9 +14,36 @@ public class GameGridManager : MonoBehaviour
 
     private void Awake()
     {
+        GameEvents.LevelDataReadyEvent -= OnLevelDataReady;
+        GameEvents.LevelDataReadyEvent += OnLevelDataReady;
     }
 
     private void OnDestroy()
     {
+        GameEvents.LevelDataReadyEvent -= OnLevelDataReady;
+    }
+
+    private void OnLevelDataReady(LevelData data)
+    {
+        SetupGameGrid(data);
+    }
+    
+    // does the initial setup of the game grid when a new level begins
+    private void SetupGameGrid(LevelData levelData)
+    {
+        gridLength = levelData.gridLength;
+
+        bool isGridRandom = levelData.isStartingGridRandom;
+        
+        mainGrid = new GameGridCell[gridLength][];
+        for (int y = 0; y < gridLength; y++)
+        {
+            mainGrid[y] = new GameGridCell[gridLength];
+            for (int x = 0; x < gridLength; x++)
+            {
+                mainGrid[y][x] = new GameGridCell(y, x);
+                // TODO: add color selection logic here
+            }
+        }
     }
 }
