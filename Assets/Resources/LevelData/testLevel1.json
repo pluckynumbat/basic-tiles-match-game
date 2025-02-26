@@ -1,0 +1,33 @@
+{
+  "name": "7x7_test_level",
+  
+  "gridLength": 7,
+  
+  "isStartingGridRandom": false,
+  
+  "startingGrid": 
+  [
+    "R","R","R","R","R","R","R",
+    "G","G","G","G","G","G","G",
+    "B","B","B","B","B","B","B",
+    "Y","Y","Y","Y","Y","Y","Y",
+    "R","G","B","Y","R","G","B",
+    "R","R","R","G","G","G","G",
+    "G","G","G","B","B","B","B"
+  ],
+  
+  "goals": 
+  [
+    {
+      "goalType": "R",
+      "goalAmount": 6
+    },
+    {
+      "goalType": "G",
+      "goalAmount": 2
+    }
+  ],
+  
+  "startingMoveCount": 20
+  
+}

@@ -11,6 +11,9 @@ public class LevelManager : MonoBehaviour
     {
         GameEvents.InputDetectedEvent -= OnInputDetected;
         GameEvents.InputDetectedEvent += OnInputDetected;
+
+        LevelData levelData = LevelJSONReader.ReadJSON("testLevel1");
+        Debug.Log(levelData.name);
     }
     
     private void OnDestroy()
