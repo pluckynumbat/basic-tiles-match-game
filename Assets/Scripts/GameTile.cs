@@ -42,4 +42,11 @@ public class GameTile : MonoBehaviour
         lowerY = position.y - halfWidth;
         upperY = position.y + halfWidth;
     }
+    
+    //used to check if player interacted with this tile
+    public bool IsPositionWithinMyLimits(Vector2 inputPosition)
+    {
+        return lowerX < inputPosition.x && inputPosition.x < upperX && 
+               lowerY < inputPosition.y && inputPosition.y < upperY;
+    }
 }
