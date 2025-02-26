@@ -18,6 +18,8 @@ public class GameTilesManager : MonoBehaviour
     
     private int gridLength; // cache the grid length in this
     
+    private bool acceptingInput = false; // can the player interact with the tiles on the game board?
+    
     private void Awake()
     {
         GameEvents.GameGridReadyEvent -= OnGameGridReady;
@@ -32,6 +34,7 @@ public class GameTilesManager : MonoBehaviour
     private void OnGameGridReady(GameGridCell[][] gameGrid)
     {
         CreateTiles(gameGrid);
+        acceptingInput = true;
     }
     
     // main grid is ready at the beginning of a level, create tiles 
