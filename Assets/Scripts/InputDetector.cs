@@ -18,9 +18,8 @@ public class InputDetector : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log($"input detected: screen space: {Input.mousePosition}");
             Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            Debug.Log($"input detected: world space: {mouseWorldPosition}");
+            GameEvents.RaiseInputDetectedEvent(mouseWorldPosition);
         }
     }
 }
