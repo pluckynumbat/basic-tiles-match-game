@@ -37,6 +37,26 @@ public class GameTilesManager : MonoBehaviour
     // main grid is ready at the beginning of a level, create tiles 
     private void CreateTiles(GameGridCell[][] gameGrid)
     {
+        // 1. create other required structures
+        CreateTileContainers();
+        CreateTileCollections();
+    }
+    
+    private void CreateTileContainers()
+    {
+        if (tileContainer == null)
+        {
+            tileContainer = new GameObject("TileContainer").transform;
+            tileContainer.transform.position = tileContainerPosition;
+        }
+    }
+    
+    private void CreateTileCollections()
+    {
+        if (activeTilesDictionary == null)
+        {
+            activeTilesDictionary = new Dictionary<int, GameTile>();
+        }
     }
     
 }
