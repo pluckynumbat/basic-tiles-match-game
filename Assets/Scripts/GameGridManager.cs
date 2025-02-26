@@ -42,7 +42,16 @@ public class GameGridManager : MonoBehaviour
             for (int x = 0; x < gridLength; x++)
             {
                 mainGrid[y][x] = new GameGridCell(y, x);
-                // TODO: add color selection logic here
+                if (isGridRandom)
+                {
+                    mainGrid[y][x].Color = GetRandomGridCellColor(levelData.colorCount);
+                }
+                else // get the grid specified in the level data
+                {
+                    //mapping from a top first list, to a bottom first 2D array
+                    int mapping =  ((gridLength - 1 - y) * gridLength) + x;
+                    mainGrid[y][x].Color = GetGridCellColorFromString(levelData.startingGrid[mapping]);
+                }
             }
         }
     }
