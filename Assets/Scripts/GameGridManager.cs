@@ -46,4 +46,34 @@ public class GameGridManager : MonoBehaviour
             }
         }
     }
+    
+    // randomly generate a new grid cell color
+    private GameGridCell.GridCellColor GetRandomGridCellColor(int validColorCount)
+    {
+        //TODO init seed?
+        int randomRoll = Random.Range(0, validColorCount);
+        return (GameGridCell.GridCellColor)randomRoll;
+    }
+
+    //helper to select color based on string input
+    private GameGridCell.GridCellColor GetGridCellColorFromString(string colorString)
+    {
+        switch (colorString)
+        {
+            case "R":
+                return GameGridCell.GridCellColor.Red;
+            
+            case "G":
+                return GameGridCell.GridCellColor.Green;
+            
+            case "B":
+                return GameGridCell.GridCellColor.Blue;
+            
+            case "Y":
+                return GameGridCell.GridCellColor.Yellow;
+        }
+        
+        Debug.LogError($"Invalid color string: {colorString}");
+        return GameGridCell.GridCellColor.None;
+    }
 }
