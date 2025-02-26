@@ -59,6 +59,17 @@ public class GameTilesManager : MonoBehaviour
         }
     }
     
+    
+    
+    // provides mapping from a tile's Y & X indices in the game grid to its position in the world, based on the container it is a part of
+    private Vector2 GetWorldPositionFromGridPositionAndContainer(int gridY, int gridX, Transform container)
+    {
+        // grids go from 0 to gridLength, tile containers are centered on the X axis
+        float mappingY = gridY - (gridLength * 0.5f) + 0.5f;
+        float mappingX = gridX - (gridLength * 0.5f) + 0.5f;
+        return new Vector2(container.position.x + (mappingX), container.position.y + (mappingY));
+    }
+    
     // helper function to select the sprite from the available options based on the input color
     public Sprite GetSpriteBasedOnColor(GameGridCell.GridCellColor color)
     {
