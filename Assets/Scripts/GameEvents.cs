@@ -37,4 +37,11 @@ public static class GameEvents
         ActiveTileTappedEvent?.Invoke(gridY, gridX);
     }
     
+    // raised by the game grid manager when the player makes any sort of invalid move
+    public delegate void InvalidMoveEventHandler(int gridY, int gridX);
+    public static event InvalidMoveEventHandler InvalidMoveEvent;
+    public static void RaiseInvalidMoveEvent(int gridY, int gridX)
+    {
+        InvalidMoveEvent?.Invoke(gridY, gridX);
+    }
 }
