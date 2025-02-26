@@ -25,4 +25,18 @@ public class LevelJSONReader : MonoBehaviour
 [System.Serializable]
 public class LevelData
 {
+    public string name; // name of the level
+    public int gridLength; // length of 1 dimension of the square grid (e.g. length 6 means the grid is 6x6)
+    public bool isStartingGridRandom; // should the starting grid be random?
+    public List<string> startingGrid; // specification of the starting grid, if not random
+    public List<LevelGoal> goals; // list of goals for the level
+    public int startingMoveCount; // moves the player has to finish the level
 }
+
+[System.Serializable]
+public class LevelGoal
+{
+    public string goalType; // type of goal (e.g. goal type "R" might represent having to collect red tiles)
+    public int goalAmount; // amount required to fulfill this goal
+}
+
