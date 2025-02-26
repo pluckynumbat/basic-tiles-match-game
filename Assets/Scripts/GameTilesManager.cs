@@ -40,6 +40,24 @@ public class GameTilesManager : MonoBehaviour
         // 1. create other required structures
         CreateTileContainers();
         CreateTileCollections();
+        
+        // 2. cache the grid length
+        gridLength = gameGrid.Length;
+
+        // 3. instantiate GameTile GameObjects for each active tile 
+        for (int y = 0; y < gridLength; y++)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                GameTile newTile = Instantiate(tilePrefab, Vector3.zero, Quaternion.identity).GetComponent<GameTile>();
+               
+                // setup various properties of the game tile
+                SetupGameTile(newTile, y, x, gameGrid[y][x], tileContainer);
+                                
+                // add tile to active tiles dictionary at a key created from the tile's game grid Y and X indices
+                activeTilesDictionary[(y * gameGrid.Length) + x] = newTile; 
+            }
+        }
     }
     
     private void CreateTileContainers()
@@ -74,7 +92,7 @@ public class GameTilesManager : MonoBehaviour
         tile.transform.position = GetWorldPositionFromGridPositionAndContainer(tile.GridY, tile.GridX, container);
                 
         // set limits that the tile should care about based on the grid item it will represent
-         tile.SetLimits(tile.transform.position);
+        tile.SetLimits(tile.transform.position);
         
         //set the tile as active
         tile.IsTileActive = true;
