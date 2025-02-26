@@ -9,11 +9,34 @@ using UnityEngine;
 public class GameTilesManager : MonoBehaviour
 {
     public GameObject tilePrefab; // prefab for the tiles
-    public Vector2 tilesContainerPosition; // where should the tile container be placed
+    public Vector2 tileContainerPosition; // where should the tile container be placed
+    public Sprite[] tileSpriteOptions;
     
-    private Transform tilesContainer; // parent gameObject for active tiles (part of the main grid)
+    private Transform tileContainer; // parent gameObject for active tiles (part of the main grid)
     
     private Dictionary<int, GameTile> activeTilesDictionary; // collection of all the active tiles (part of the main grid)
     
     private int gridLength; // cache the grid length in this
+    
+    private void Awake()
+    {
+        GameEvents.GameGridReadyEvent -= OnGameGridReady;
+        GameEvents.GameGridReadyEvent += OnGameGridReady;
+    }
+    private void OnDestroy()
+    {
+        GameEvents.GameGridReadyEvent -= OnGameGridReady;
+    }
+
+    // main grid is ready at the beginning of a level, create tiles 
+    private void OnGameGridReady(GameGridCell[][] gameGrid)
+    {
+        CreateTiles(gameGrid);
+    }
+    
+    // main grid is ready at the beginning of a level, create tiles 
+    private void CreateTiles(GameGridCell[][] gameGrid)
+    {
+    }
+    
 }
