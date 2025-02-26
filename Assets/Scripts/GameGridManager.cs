@@ -16,11 +16,15 @@ public class GameGridManager : MonoBehaviour
     {
         GameEvents.LevelDataReadyEvent -= OnLevelDataReady;
         GameEvents.LevelDataReadyEvent += OnLevelDataReady;
+        
+        GameEvents.ActiveTileTappedEvent -= OnActiveTileTapped;
+        GameEvents.ActiveTileTappedEvent += OnActiveTileTapped;
     }
 
     private void OnDestroy()
     {
         GameEvents.LevelDataReadyEvent -= OnLevelDataReady;
+        GameEvents.ActiveTileTappedEvent -= OnActiveTileTapped;
     }
 
     private void OnLevelDataReady(LevelData data)
@@ -86,5 +90,33 @@ public class GameGridManager : MonoBehaviour
         
         Debug.LogError($"Invalid color string: {colorString}");
         return GameGridCell.GridCellColor.None;
+    }
+    
+    // player attempted a move on the game board, process the move
+    private void OnActiveTileTapped(int gridY, int gridX)
+    {
+        // check if the grid position is valid, and grid item is valid
+        if (!IsWithinGridBounds(gridY, gridX))
+        {
+            GameEvents.RaiseInvalidMoveEvent(gridY, gridX);
+            Debug.LogError($"Invalid input in OnActiveTileTapped (out of bounds), x: {gridX}, y: {gridY}");
+            return;
+        }
+
+        GameGridCell cell = mainGrid[gridY][gridX];
+        if (!cell.Occupied || cell.Color == GameGridCell.GridCellColor.None)
+        {
+            GameEvents.RaiseInvalidMoveEvent(gridY, gridX);
+            Debug.LogError($"Invalid input in OnActiveTileTapped (cell is empty), x: {gridX}, y: {gridY}");
+            return;
+        }
+        
+        Debug.Log($"Active tile tapped: X: {gridX}, Y: {gridY}");
+    }
+    
+    // helper function to check if given y and x co-ordinates are valid for the game grid(s)
+    private bool IsWithinGridBounds(int y, int x)
+    {
+        return  0 <= y && y < gridLength && x >= 0 && x <gridLength;
     }
 }

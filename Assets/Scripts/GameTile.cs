@@ -33,6 +33,7 @@ public class GameTile : MonoBehaviour
     }
 
     // TODO: these will overlap at borders, fix that
+    // these are the positions the tile cares about when detecting input
     public void SetLimits(Vector2 position)
     {
         float halfWidth = TILE_WIDTH * 0.5f;
@@ -41,5 +42,12 @@ public class GameTile : MonoBehaviour
         
         lowerY = position.y - halfWidth;
         upperY = position.y + halfWidth;
+    }
+    
+    //used to check if player interacted with this tile
+    public bool IsPositionWithinMyLimits(Vector2 inputPosition)
+    {
+        return lowerX < inputPosition.x && inputPosition.x < upperX && 
+               lowerY < inputPosition.y && inputPosition.y < upperY;
     }
 }

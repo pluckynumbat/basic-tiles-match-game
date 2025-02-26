@@ -18,20 +18,31 @@ public class GameTilesManager : MonoBehaviour
     
     private int gridLength; // cache the grid length in this
     
+    private bool acceptingInput = false; // can the player interact with the tiles on the game board?
+    
     private void Awake()
     {
         GameEvents.GameGridReadyEvent -= OnGameGridReady;
         GameEvents.GameGridReadyEvent += OnGameGridReady;
+        
+        GameEvents.InputDetectedEvent -= OnInputDetected;
+        GameEvents.InputDetectedEvent += OnInputDetected;
+        
+        GameEvents.InvalidMoveEvent -= OnInvalidMove;
+        GameEvents.InvalidMoveEvent += OnInvalidMove;
     }
     private void OnDestroy()
     {
         GameEvents.GameGridReadyEvent -= OnGameGridReady;
+        GameEvents.InputDetectedEvent -= OnInputDetected;
+        GameEvents.InvalidMoveEvent -= OnInvalidMove;
     }
 
     // main grid is ready at the beginning of a level, create tiles 
     private void OnGameGridReady(GameGridCell[][] gameGrid)
     {
         CreateTiles(gameGrid);
+        acceptingInput = true;
     }
     
     // main grid is ready at the beginning of a level, create tiles 
@@ -126,5 +137,44 @@ public class GameTilesManager : MonoBehaviour
         }
 
         return null;
+    }
+    
+    // check if the player attempted a move on the game board
+    private void OnInputDetected(Vector3 inputWorldPosition)
+    {
+        if (!acceptingInput)
+        {
+            return;
+        }
+
+        GameTile activeTileTapped = null;
+        foreach (GameTile tile in activeTilesDictionary.Values)
+        {
+            if (tile == null || !tile.IsTileActive)
+            {
+                continue;
+            }
+            
+            if (tile.IsPositionWithinMyLimits(inputWorldPosition))
+            {
+                // player tapped an active tile!
+                activeTileTapped = tile;
+                break; // only care for one input at a time
+            }
+        }
+
+        // send the tile's grid Y & X indices for further processing
+        if (activeTileTapped != null)
+        {
+            acceptingInput = false;
+            GameEvents.RaiseActiveTileTappedEvent(activeTileTapped.GridY, activeTileTapped.GridX);
+        }
+    }
+    
+    // the player's attempted move was invalid
+    private void OnInvalidMove(int gridY, int gridX)
+    {
+        //TODO: check if it is safe to set this to true in all cases
+        acceptingInput = true;
     }
 }
