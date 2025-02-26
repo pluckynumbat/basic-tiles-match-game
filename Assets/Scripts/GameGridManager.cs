@@ -26,6 +26,7 @@ public class GameGridManager : MonoBehaviour
     private void OnLevelDataReady(LevelData data)
     {
         SetupGameGrid(data);
+        GameEvents.RaiseGameGridReadyEvent(mainGrid);
     }
     
     // does the initial setup of the game grid when a new level begins

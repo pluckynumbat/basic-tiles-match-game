@@ -20,4 +20,12 @@ public static class GameEvents
     {
         LevelDataReadyEvent?.Invoke(levelData);
     }
+    
+    // raised by the game grid manager when the intiaal setup for the game grid is done
+    public delegate void GameGridReadyHandler(GameGridCell[][] gameGrid);
+    public static event GameGridReadyHandler GameGridReadyEvent;
+    public static void RaiseGameGridReadyEvent(GameGridCell[][] gameGrid)
+    {
+        GameGridReadyEvent?.Invoke(gameGrid);
+    }
 }
