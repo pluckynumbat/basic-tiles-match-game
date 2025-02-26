@@ -1,6 +1,8 @@
 {
   "name": "7x7_test_level",
   
+  "colorCount": 4,
+  
   "gridLength": 7,
   
   "isStartingGridRandom": false,
