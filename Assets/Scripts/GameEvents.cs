@@ -12,4 +12,20 @@ public static class GameEvents
     {
         InputDetectedEvent?.Invoke(inputWorldPosition);
     }
+    
+    // raised by the level manager when level data is loaded from a file and ready
+    public delegate void LevelDataReadyHandler(LevelData levelData);
+    public static event LevelDataReadyHandler LevelDataReadyEvent;
+    public static void RaiseLevelDataReadyEvent(LevelData levelData)
+    {
+        LevelDataReadyEvent?.Invoke(levelData);
+    }
+    
+    // raised by the game grid manager when the intiaal setup for the game grid is done
+    public delegate void GameGridReadyHandler(GameGridCell[][] gameGrid);
+    public static event GameGridReadyHandler GameGridReadyEvent;
+    public static void RaiseGameGridReadyEvent(GameGridCell[][] gameGrid)
+    {
+        GameGridReadyEvent?.Invoke(gameGrid);
+    }
 }

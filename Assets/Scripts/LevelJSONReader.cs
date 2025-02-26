@@ -26,6 +26,7 @@ public class LevelJSONReader : MonoBehaviour
 public class LevelData
 {
     public string name; // name of the level
+    public int colorCount; //number of different colors that the gird can be populated with
     public int gridLength; // length of 1 dimension of the square grid (e.g. length 6 means the grid is 6x6)
     public bool isStartingGridRandom; // should the starting grid be random?
     public List<string> startingGrid; // specification of the starting grid, if not random
