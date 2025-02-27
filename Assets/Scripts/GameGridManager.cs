@@ -216,6 +216,16 @@ public class GameGridManager : MonoBehaviour
 #if GAME_GRID_LOGGING
         PrintGridToConsole(mainGrid);
 #endif
+        
+        //5. Bring in the 'new' cells
+
+        //5a. populate the refill grid with cells only at hole positions in main grid
+        PopulateRefillGrid(mainGrid);
+        
+#if GAME_GRID_LOGGING
+        PrintGridToConsole(refillGrid);
+#endif    
+        
     }
     
     // helper function to check if given y and x co-ordinates are valid for the game grid(s)
@@ -387,6 +397,28 @@ public class GameGridManager : MonoBehaviour
 
             upperCell.Occupied = false;
             upperCell.Color = GameGridCell.GridCellColor.None;
+        }
+    }
+    
+    //populate the refill grid. positions where the main grid has holes will be populated in the refill grid
+    private void PopulateRefillGrid(GameGridCell[][] source)
+    {
+        // first reset the whole refill grid
+        for (int y = 0; y < gridLength; y++)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                if (source[y][x].Occupied) // occupied cells in the main grid are empty in the refill grid
+                {
+                    refillGrid[y][x].Color = GameGridCell.GridCellColor.None;
+                    refillGrid[y][x].Occupied = false;
+                }
+                else // empty cells in the main grid will be occupied in the refill grid
+                {
+                    refillGrid[y][x].Occupied = true;
+                    refillGrid[y][x].Color = GetRandomGridCellColor(validColorCount);
+                }
+            } 
         }
     }
     
