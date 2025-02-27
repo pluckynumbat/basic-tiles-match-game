@@ -22,6 +22,8 @@ public class GameTile : MonoBehaviour
     private float upperX;
     private float lowerY;
     private float upperY;
+
+    private bool isTileMoving;
     
     public void SetSprite(Sprite inputSprite)
     {
@@ -58,5 +60,39 @@ public class GameTile : MonoBehaviour
     {
         return lowerX < inputPosition.x && inputPosition.x < upperX && 
                lowerY < inputPosition.y && inputPosition.y < upperY;
+    }
+    
+    // drop the tile into its new position
+    public IEnumerator MoveTileToNewPosition(Vector2 newPosition, float tileSpeed)
+    {
+        if (isTileMoving)
+        {
+            Debug.LogError("tile is already moving, abort");
+            yield break;
+        }
+        
+        isTileMoving = true;
+        
+        // we will only be changing the Y position
+        float initialYValue = transform.position.y;
+        float finalYValue = newPosition.y;
+        
+        // calculate fall time
+        float yDistance = transform.position.y - newPosition.y;
+        float fallTime = yDistance / tileSpeed;
+
+        //perform a linear interpolation of the Y value over fall time
+        float timeSinceStart = 0f;
+        while (timeSinceStart < fallTime)
+        {
+            float yValue = Mathf.Lerp(initialYValue, finalYValue, timeSinceStart / fallTime);
+            transform.position = new Vector2(transform.position.x, yValue);
+            timeSinceStart += Time.deltaTime;
+            yield return null;
+        }
+
+        // set final position
+        transform.position = newPosition;
+        isTileMoving = false;
     }
 }
