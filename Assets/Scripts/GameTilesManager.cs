@@ -297,4 +297,38 @@ public class GameTilesManager : MonoBehaviour
             StartCoroutine(tileToMove.MoveTileToNewPosition(newWorldPosition, tileFillHoleSpeed));
         }
     }
+    
+    //holes in the main tiles array now need to be filled at the end of the turn
+    //new set of tiles will be put in the refill container
+    private void OnRefillGridReady(GameGridCell[][] refillGrid, int[][] holeDistances)
+    {
+        List<GameTile> revivedTiles = new List<GameTile>();
+
+        //1. first initialize tiles for all the new holes to be filled at the end of a turn
+        for (int y = 0; y < gridLength; y++)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                if (!refillGrid[y][x].Occupied)
+                {
+                    continue;
+                }
+
+                // bring the element from the front of the inactive tile pool queue
+                GameTile revivedTile = inactiveTilesQueue.Dequeue();
+
+                // set it up like a new tile, but it goes in the refill container first
+                SetupGameTile(revivedTile, y, x, refillGrid[y][x], refillContainer);
+
+                // add tile to active tile dictionary
+                activeTilesDictionary[(y * gridLength) + x] = revivedTile;
+
+                //activate the tile's sprite renderer
+                revivedTile.SetSpriteVisibility(true);
+
+                //add it to the list of newly revived tiles
+                revivedTiles.Add(revivedTile);
+            }
+        }
+    }
 }
