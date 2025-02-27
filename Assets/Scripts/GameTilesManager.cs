@@ -81,7 +81,7 @@ public class GameTilesManager : MonoBehaviour
                 SetupGameTile(newTile, y, x, gameGrid[y][x], tileContainer);
                                 
                 // add tile to active tiles dictionary at a key created from the tile's game grid Y and X indices
-                activeTilesDictionary[(y * gameGrid.Length) + x] = newTile; 
+                activeTilesDictionary[(y * gridLength) + x] = newTile; 
             }
         }
         
