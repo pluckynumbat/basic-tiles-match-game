@@ -11,6 +11,7 @@ public class GameTilesManager : MonoBehaviour
     public GameObject tilePrefab; // prefab for the tiles
     public Vector2 tileContainerPosition; // where should the tile container be placed
     public Sprite[] tileSpriteOptions;
+    public float tileFillHoleSpeed = 20.0f;
     
     private readonly Vector2 offScreen = new Vector2(-1000, -1000);  // this is where the inactive tiles (and purgatory container) reside
     
@@ -37,6 +38,9 @@ public class GameTilesManager : MonoBehaviour
         
         GameEvents.GridCellsRemovedEvent -= OnGridCellsRemoved;
         GameEvents.GridCellsRemovedEvent += OnGridCellsRemoved;
+        
+        GameEvents.GridCellsFillHolesEvent -= OnGridCellsFillHoles;
+        GameEvents.GridCellsFillHolesEvent += OnGridCellsFillHoles;
     }
     private void OnDestroy()
     {
@@ -44,6 +48,7 @@ public class GameTilesManager : MonoBehaviour
         GameEvents.InputDetectedEvent -= OnInputDetected;
         GameEvents.InvalidMoveEvent -= OnInvalidMove;
         GameEvents.GridCellsRemovedEvent -= OnGridCellsRemoved;
+        GameEvents.GridCellsFillHolesEvent -= OnGridCellsFillHoles;
     }
 
     // main grid is ready at the beginning of a level, create tiles 
@@ -233,5 +238,51 @@ public class GameTilesManager : MonoBehaviour
         tileToDeactivate.transform.SetParent(purgatoryContainer);
         tileToDeactivate.transform.position = offScreen;
         inactiveTilesQueue.Enqueue(tileToDeactivate);
+    }
+    
+    //existing grid cells have filled holes in the grid,
+    //assign new grid locations to the tiles representing them,
+    //and then move these tiles to their new positions
+    private void OnGridCellsFillHoles(List<GameGridCell> cellsThatFillHoles, int[][] holeDistances)
+    {
+        foreach (GameGridCell cell in cellsThatFillHoles)
+        {
+            // Part 1: changing the Y grid index of the tile and the entry of the tile in the active tiles dictionary
+            
+            // use the original key, and get the tile from it
+            int originalKey = (cell.Y * gridLength) + cell.X;
+            GameTile tileToMove = activeTilesDictionary[originalKey];
+            
+            // calculate the new grid Y index for the tile 
+            int delta = holeDistances[cell.Y][cell.X];
+            int newY = cell.Y - delta;
+            
+            // change the grid Y index associated with the tile
+            tileToMove.GridY = newY;
+            
+            // calculate the new key for the tile
+            int newKey =  (newY * gridLength) + cell.X;
+            if (activeTilesDictionary[newKey] != null)  //this place should be vacant
+            {
+                Debug.LogError($"position to move into is not vacant! x:{cell.X}, y:{newY}");
+                continue;
+            }
+            
+            // move the tile to the new symbolic position in the dictionary
+            activeTilesDictionary[newKey] = tileToMove;
+            activeTilesDictionary[originalKey] = null;
+            
+            
+            //Part 2. Actually move the tile
+            
+            // get new world position of the tile
+            Vector2 newWorldPosition = GetWorldPositionFromGridPositionAndContainer(tileToMove.GridY, tileToMove.GridX, tileContainer);
+            
+            // set limits of the tile based on new world position
+            tileToMove.SetLimits(newWorldPosition);
+            
+            // call the function to actually move the tile till it is in the correct spot
+            StartCoroutine(tileToMove.MoveTileToNewPosition(newWorldPosition, tileFillHoleSpeed));
+        }
     }
 }

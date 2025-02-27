@@ -14,6 +14,8 @@ public class GameGridManager : MonoBehaviour
 
     private bool[][] visited; // 2d array used during the Breadth First Search to check and mark if a grid cell has been visited already
 
+    private int[][] holesBelowCells; // 2d array which for each location in the given grid, stores the count of holes below that cell's location
+
     private void Awake()
     {
         GameEvents.LevelDataReadyEvent -= OnLevelDataReady;
@@ -73,6 +75,13 @@ public class GameGridManager : MonoBehaviour
         for (int y = 0; y < gridLength; y++)
         {
             visited[y] = new bool[gridLength];
+        }
+        
+        // create the holes below cells array once
+        holesBelowCells = new int[gridLength][];
+        for (int y = 0; y < gridLength; y++)
+        {
+            holesBelowCells[y] = new int[gridLength];
         }
     }
     
@@ -157,6 +166,22 @@ public class GameGridManager : MonoBehaviour
         // (e.g. tiles manager will have to actually remove tiles based on this list)
         GameEvents.RaiseGridCellsRemovedEvent(gridCellsToRemove);
         
+        //4. Fill holes with existing cells
+        
+        //4a. for each cell location in the main grid, calculate the number of holes below it
+        holesBelowCells = CalculateHolesBelowCells(mainGrid);
+        
+        //4b. collect all grid cells with holes below them which are not holes themselves
+        // these will be used to fill the holes
+        List<GameGridCell> cellsThatFillHoles = CollectGridCellsThatFillHoles(mainGrid);
+        
+        //4c. Let other systems know that these cells will fill existing holes
+        // along with the holesBelowCells array (which has the hole amounts)
+        //(e.g. this will be used by the tile manager to actually move the tiles)
+        GameEvents.RaiseGridCellsFillHolesEvent(cellsThatFillHoles, holesBelowCells);
+        
+        //4d. swap holes with the cells that will fill them (based on the holesBelowCells values)
+        SwapHolesWithExistingCells(cellsThatFillHoles, mainGrid);
     }
     
     // helper function to check if given y and x co-ordinates are valid for the game grid(s)
@@ -264,5 +289,70 @@ public class GameGridManager : MonoBehaviour
         }
         
         return relevantCells;
+    }
+    
+    // after there are holes in a grid, calculate how much each grid cell will have to move to fill
+    // the holes beneath them (note that the grid cells won't actually be moving, they will just be swapping colors with the existing holes)
+    private int[][] CalculateHolesBelowCells(GameGridCell[][] grid)
+    {
+        // reset the holes below cells array
+        for (int y = 0; y < gridLength; y++)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                holesBelowCells[y][x] = 0;
+            } 
+        }
+        
+        //bottom most row cannot fall, all entries will be 0, regardless of whether it is a hole or not
+        //each row will collect amount of holes beneath it, and let the upper rows know
+        for (int y = 1; y < gridLength; y++)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                holesBelowCells[y][x] = grid[y - 1][x].Occupied ? holesBelowCells[y - 1][x] : holesBelowCells[y - 1][x] + 1;
+            } 
+        }
+
+        return holesBelowCells;
+    }
+    
+    //collect all grid cells where the corresponding holesBelowCells entry is more than 0 and the cell itself is not a hole
+    //this indicates that those cells will fill existing cells
+    private List<GameGridCell> CollectGridCellsThatFillHoles(GameGridCell[][] grid)
+    {
+        List<GameGridCell> cellsThatFillHoles = new List<GameGridCell>();
+        for (int y = 1; y < gridLength; y++) // exclude bottom most row (non-empty cells cannot fill anything)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                if (!grid[y][x].Occupied) // if a cell is a hole itself, it cannot fill other holes
+                {
+                    continue;
+                }
+                if (holesBelowCells[y][x] > 0)
+                {
+                    cellsThatFillHoles.Add(grid[y][x]);
+                }
+            }
+        }
+
+        return cellsThatFillHoles;
+    }
+    
+    //swap occupancy and colors of cells that fill holes, with the holes they will be filling
+    private void SwapHolesWithExistingCells(List<GameGridCell> cellsThatFillHoles, GameGridCell[][] grid)
+    {
+        foreach (GameGridCell upperCell in cellsThatFillHoles)
+        {
+            int delta = holesBelowCells[upperCell.Y][upperCell.X];
+            GameGridCell hole = grid[upperCell.Y - delta][upperCell.X];
+
+            hole.Occupied = true;
+            hole.Color = upperCell.Color;
+
+            upperCell.Occupied = false;
+            upperCell.Color = GameGridCell.GridCellColor.None;
+        }
     }
 }
