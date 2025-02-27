@@ -192,4 +192,15 @@ public class GameTilesManager : MonoBehaviour
         //TODO: check if it is safe to set this to true in all cases
         acceptingInput = true;
     }
+    
+    
+    // De-activate a given game tile ≈
+    private void DeactivateTile(GameTile tileToDeactivate)
+    {
+        tileToDeactivate.IsTileActive = false;
+        tileToDeactivate.SetSpriteVisibility(false);
+        tileToDeactivate.transform.SetParent(purgatoryContainer);
+        tileToDeactivate.transform.position = offScreen;
+        inactiveTilesQueue.Enqueue(tileToDeactivate);
+    }
 }
