@@ -61,4 +61,22 @@ public static class GameEvents
     {
         GridCellsFillHolesEvent?.Invoke(cellsThatFillHoles, holesBelowCells);
     }
+    
+    // raised by the game grid manager when a refill grid has been populated with cells in hole positions of the main grid,
+    // and a new holes below cells has been calculated for the refill grid
+    public delegate void RefillGridReadyHandler(GameGridCell[][] refillGrid, int[][] holesBelowCells);
+    public static event RefillGridReadyHandler RefillGridReadyEvent;
+    public static void RaiseRefillGridReadyEvent(GameGridCell[][] refillGrid, int[][] holesBelowCells)
+    {
+        RefillGridReadyEvent?.Invoke(refillGrid, holesBelowCells);
+    }
+    
+    // raised by the game tiles manager when the last new tile has reached
+    // its final destination in the main grid, signalling the end of a move
+    public delegate void MoveCompletedHandler();
+    public static event MoveCompletedHandler MoveCompletedEvent;
+    public static void RaiseMoveCompletedEvent()
+    {
+        MoveCompletedEvent?.Invoke();
+    }
 }

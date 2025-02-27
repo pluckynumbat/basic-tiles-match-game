@@ -12,12 +12,16 @@ using UnityEngine;
 public class GameGridManager : MonoBehaviour
 {
     private GameGridCell[][] mainGrid; // the main / active grid in the level
+
+    private GameGridCell[][] refillGrid; // a grid used to refill the main grid in the last part of the player's move
     
     private int gridLength; // both height and width of the grid are the same, store in this variable
 
     private bool[][] visited; // 2d array used during the Breadth First Search to check and mark if a grid cell has been visited already
 
     private int[][] holesBelowCells; // 2d array which for each location in the given grid, stores the count of holes below that cell's location
+
+    private int validColorCount; // stores the amount of different colors available for the cells in a given level
 
     private void Awake()
     {
@@ -37,6 +41,7 @@ public class GameGridManager : MonoBehaviour
     private void OnLevelDataReady(LevelData data)
     {
         SetupGameGrid(data);
+        InitializeRefillGrid();
         SetupOtherDataStructures();
         GameEvents.RaiseGameGridReadyEvent(mainGrid);
     }
@@ -44,6 +49,7 @@ public class GameGridManager : MonoBehaviour
     // does the initial setup of the game grid when a new level begins
     private void SetupGameGrid(LevelData levelData)
     {
+        validColorCount = levelData.colorCount;
         gridLength = levelData.gridLength;
 
         bool isGridRandom = levelData.isStartingGridRandom;
@@ -57,7 +63,7 @@ public class GameGridManager : MonoBehaviour
                 mainGrid[y][x] = new GameGridCell(y, x);
                 if (isGridRandom)
                 {
-                    mainGrid[y][x].Color = GetRandomGridCellColor(levelData.colorCount);
+                    mainGrid[y][x].Color = GetRandomGridCellColor(validColorCount);
                 }
                 else // get the grid specified in the level data
                 {
@@ -71,6 +77,22 @@ public class GameGridManager : MonoBehaviour
 #if GAME_GRID_LOGGING
         PrintGridToConsole(mainGrid);
 #endif
+    }
+    
+    // the refill grid should be set to all empty at the beginning of a level
+    private void InitializeRefillGrid()
+    {
+        refillGrid = new GameGridCell[gridLength][];
+        for (int y = 0; y < gridLength; y++)
+        {
+            refillGrid[y] = new GameGridCell[gridLength];
+            for (int x = 0; x < gridLength; x++)
+            {
+                refillGrid[y][x] = new GameGridCell(y,x);
+                refillGrid[y][x].Color = GameGridCell.GridCellColor.None;
+                refillGrid[y][x].Occupied = false;
+            }
+        }
     }
     
     // set up the different helper data structures that will be used during grid processing
@@ -194,6 +216,27 @@ public class GameGridManager : MonoBehaviour
 #if GAME_GRID_LOGGING
         PrintGridToConsole(mainGrid);
 #endif
+        
+        //5. Bring in the 'new' cells
+
+        //5a. populate the refill grid with cells only at hole positions in main grid
+        PopulateRefillGrid(mainGrid);
+        
+#if GAME_GRID_LOGGING
+        PrintGridToConsole(refillGrid);
+#endif    
+        
+        //5b. create a holesBelowCells for this refill grid
+        // (this is needed for the new tiles to reposition themselves before dropping in)
+        holesBelowCells = CalculateHolesBelowCells(refillGrid);
+        
+        //5c. send the refill Grid and the new 'holesBelowCells' array to other systems
+        // (e.g. the tiles manager will use these to inform the starting positions of the new tiles
+        // as well as their end destinations to be moved to)
+        GameEvents.RaiseRefillGridReadyEvent(refillGrid, holesBelowCells);
+        
+        //5d. finally, set the empty cells to in the main grid to the colors of the ones in the refill grid (these will be the final cells)
+        CompleteMainGridUsingRefillGrid();
     }
     
     // helper function to check if given y and x co-ordinates are valid for the game grid(s)
@@ -368,6 +411,46 @@ public class GameGridManager : MonoBehaviour
         }
     }
     
+    //populate the refill grid. positions where the main grid has holes will be populated in the refill grid
+    private void PopulateRefillGrid(GameGridCell[][] source)
+    {
+        // first reset the whole refill grid
+        for (int y = 0; y < gridLength; y++)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                if (source[y][x].Occupied) // occupied cells in the main grid are empty in the refill grid
+                {
+                    refillGrid[y][x].Color = GameGridCell.GridCellColor.None;
+                    refillGrid[y][x].Occupied = false;
+                }
+                else // empty cells in the main grid will be occupied in the refill grid
+                {
+                    refillGrid[y][x].Occupied = true;
+                    refillGrid[y][x].Color = GetRandomGridCellColor(validColorCount);
+                }
+            } 
+        }
+    }
+    
+    // refill grid will have cells at exactly the points where the main grid will have holes
+    // (and vice versa) complete the main grid by replacing hole cells with those from the refill grid
+    private void CompleteMainGridUsingRefillGrid()
+    {
+        for (int y = 0; y < gridLength; y++)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                if (mainGrid[y][x].Occupied)
+                {
+                    continue;
+                }
+
+                mainGrid[y][x].Occupied = true;
+                mainGrid[y][x].Color = refillGrid[y][x].Color;
+            } 
+        }
+    }
     
     // helper function to print a given grid to the console
     private void PrintGridToConsole(GameGridCell[][] grid)

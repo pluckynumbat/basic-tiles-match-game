@@ -10,13 +10,16 @@ public class GameTilesManager : MonoBehaviour
 {
     public GameObject tilePrefab; // prefab for the tiles
     public Vector2 tileContainerPosition; // where should the tile container be placed
-    public Sprite[] tileSpriteOptions;
-    public float tileFillHoleSpeed = 20.0f;
+    public float refillContainerOffset; // where should the refill container be placed w.r.t. the tile container
+    public Sprite[] tileSpriteOptions; // the different sprite options for the tiles
+    public float tileFillHoleSpeed; // speed of a tile which is already on the main grid, falling to fill a hole
+    public float newTileDropSpeed; // speed of a new tile dropping from above into the main grid during the last part of the player's move
     
     private readonly Vector2 offScreen = new Vector2(-1000, -1000);  // this is where the inactive tiles (and purgatory container) reside
     
     private Transform tileContainer; // parent gameObject for active tiles (part of the main grid)
     private Transform purgatoryContainer; // parent gameObject for deactivated tiles
+    private Transform refillContainer; // parent gameObject for tiles that will refill the main grid during the last part of the player's move
     
     private Dictionary<int, GameTile> activeTilesDictionary; // collection of all the active tiles (part of the main grid)
     private Queue<GameTile> inactiveTilesQueue; // a collection (pool) of currently inactive tiles (that can be re-used)
@@ -41,6 +44,9 @@ public class GameTilesManager : MonoBehaviour
         
         GameEvents.GridCellsFillHolesEvent -= OnGridCellsFillHoles;
         GameEvents.GridCellsFillHolesEvent += OnGridCellsFillHoles;
+        
+        GameEvents.RefillGridReadyEvent -= OnRefillGridReady;
+        GameEvents.RefillGridReadyEvent += OnRefillGridReady;
     }
     private void OnDestroy()
     {
@@ -49,6 +55,7 @@ public class GameTilesManager : MonoBehaviour
         GameEvents.InvalidMoveEvent -= OnInvalidMove;
         GameEvents.GridCellsRemovedEvent -= OnGridCellsRemoved;
         GameEvents.GridCellsFillHolesEvent -= OnGridCellsFillHoles;
+        GameEvents.RefillGridReadyEvent -= OnRefillGridReady;
     }
 
     // main grid is ready at the beginning of a level, create tiles 
@@ -79,7 +86,7 @@ public class GameTilesManager : MonoBehaviour
                 SetupGameTile(newTile, y, x, gameGrid[y][x], tileContainer);
                                 
                 // add tile to active tiles dictionary at a key created from the tile's game grid Y and X indices
-                activeTilesDictionary[(y * gameGrid.Length) + x] = newTile; 
+                activeTilesDictionary[(y * gridLength) + x] = newTile; 
             }
         }
         
@@ -103,6 +110,12 @@ public class GameTilesManager : MonoBehaviour
         {
             purgatoryContainer = new GameObject("PurgatoryContainer").transform;
             purgatoryContainer.transform.position = offScreen;
+        }
+        
+        if (refillContainer == null)
+        {
+            refillContainer = new GameObject("RefillContainer").transform;
+            refillContainer.transform.position = new Vector2(tileContainerPosition.x, tileContainerPosition.y + refillContainerOffset);
         }
     }
     
@@ -284,5 +297,102 @@ public class GameTilesManager : MonoBehaviour
             // call the function to actually move the tile till it is in the correct spot
             StartCoroutine(tileToMove.MoveTileToNewPosition(newWorldPosition, tileFillHoleSpeed));
         }
+    }
+    
+    //holes in the main tiles array now need to be filled at the end of the turn
+    //new set of tiles will be put in the refill container
+    //their starting positions informed by the holes distances in the refill grid (for visuals to start on same line)
+    //final destinations of the tiles will be informed by their Y & X grid indices in the refill grid 
+    private void OnRefillGridReady(GameGridCell[][] refillGrid, int[][] holeDistances)
+    {
+        List<GameTile> revivedTiles = new List<GameTile>();
+
+        //1. first initialize tiles for all the new holes to be filled at the end of a turn
+        for (int y = 0; y < gridLength; y++)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                if (!refillGrid[y][x].Occupied)
+                {
+                    continue;
+                }
+
+                // bring the element from the front of the inactive tile pool queue
+                GameTile revivedTile = inactiveTilesQueue.Dequeue();
+
+                // set it up like a new tile, but it goes in the refill container first
+                SetupGameTile(revivedTile, y, x, refillGrid[y][x], refillContainer);
+
+                // add tile to active tile dictionary
+                activeTilesDictionary[(y * gridLength) + x] = revivedTile;
+
+                //activate the tile's sprite renderer
+                revivedTile.SetSpriteVisibility(true);
+
+                //add it to the list of newly revived tiles
+                revivedTiles.Add(revivedTile);
+            }
+        }
+        
+        //2. add adjustment based on the hole distances in the refill grid (for visual purposes)
+        // this is done so that all the incoming tiles from the refill container
+        // are aligned at the bottom row's Y value instead of the top row's Y value
+        ////////// for example ////////////
+        //   before:                after:
+        //   TTTTT                  T---T
+        //   TT-TT                  TT-TT
+        //   T---T                  TTTTT
+        /////////////////////////////////
+        foreach (GameTile refillTile in revivedTiles)
+        {
+            //move the tiles to the bottom of their current container (so that all holes are above)
+            if (holeDistances[refillTile.GridY][refillTile.GridX] > 0)
+            {
+                float adjustedY = refillTile.transform.localPosition.y - holeDistances[refillTile.GridY][refillTile.GridX];
+                refillTile.transform.localPosition = new Vector2(refillTile.transform.localPosition.x, adjustedY);
+            }
+        }
+        
+        //3. let the new tiles come in and take their place in the main tile container
+        // also calculate required time for last tile to reach its position, that's when we can re-enable input
+        float maxDistance = 0f;
+        foreach (GameTile refillTile in revivedTiles)
+        {
+            //set parent to the tile container
+            refillTile.transform.SetParent(tileContainer);
+            
+            //get new world position of the tile
+            Vector2 newWorldPosition = GetWorldPositionFromGridPositionAndContainer(refillTile.GridY, refillTile.GridX, tileContainer);
+            
+            //set limits of the tile based on new world position
+            refillTile.SetLimits(newWorldPosition);
+            
+            //check the distance of its upcoming move vs max distance till now
+            if (refillTile.transform.position.y - newWorldPosition.y > maxDistance)
+            {
+                maxDistance = refillTile.transform.position.y - newWorldPosition.y;
+            }
+            
+            //call the function to actually move the tile till it is in the correct spot
+            StartCoroutine(refillTile.MoveTileToNewPosition(newWorldPosition, newTileDropSpeed));
+        }
+        
+        //4. start the coroutine to wait till the last tile has reached the destination, before re-enabling input
+        if (newTileDropSpeed == 0f)
+        {
+            Debug.LogError("new tile drop speed is zero, please check the prefab");
+        }
+        else
+        {
+            StartCoroutine(MarkMoveCompleteAfterDelay(maxDistance / newTileDropSpeed));
+        }
+    }
+    
+    // wait for the time the last tile to be placed should take, then mark the move as complete, re-enabling input
+    public IEnumerator MarkMoveCompleteAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        acceptingInput = true;
+        GameEvents.RaiseMoveCompletedEvent();
     }
 }
