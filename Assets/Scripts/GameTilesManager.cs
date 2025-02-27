@@ -376,5 +376,22 @@ public class GameTilesManager : MonoBehaviour
             //call the function to actually move the tile till it is in the correct spot
             StartCoroutine(refillTile.MoveTileToNewPosition(newWorldPosition, newTileDropSpeed));
         }
+        
+        //4. start the coroutine to wait till the last tile has reached the destination, before re-enabling input
+        if (newTileDropSpeed == 0f)
+        {
+            Debug.LogError("new tile drop speed is zero, please check the prefab");
+        }
+        else
+        {
+            StartCoroutine(MarkMoveCompleteAfterDelay(maxDistance / newTileDropSpeed));
+        }
+    }
+    
+    // wait for the time the last tile to be placed should take, then mark the move as complete, re-enabling input
+    public IEnumerator MarkMoveCompleteAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        acceptingInput = true;
     }
 }
