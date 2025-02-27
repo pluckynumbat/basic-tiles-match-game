@@ -301,6 +301,7 @@ public class GameTilesManager : MonoBehaviour
     
     //holes in the main tiles array now need to be filled at the end of the turn
     //new set of tiles will be put in the refill container
+    //their starting positions informed by the holes distances in the refill grid (for visuals to start on same line)
     //final destinations of the tiles will be informed by their Y & X grid indices in the refill grid 
     private void OnRefillGridReady(GameGridCell[][] refillGrid, int[][] holeDistances)
     {
@@ -333,7 +334,24 @@ public class GameTilesManager : MonoBehaviour
             }
         }
         
-        //2. TODO: Do the adjustment based on holeDistances before dropping the new tiles in
+        //2. add adjustment based on the hole distances in the refill grid (for visual purposes)
+        // this is done so that all the incoming tiles from the refill container
+        // are aligned at the bottom row's Y value instead of the top row's Y value
+        ////////// for example ////////////
+        //   before:                after:
+        //   TTTTT                  T---T
+        //   TT-TT                  TT-TT
+        //   T---T                  TTTTT
+        /////////////////////////////////
+        foreach (GameTile refillTile in revivedTiles)
+        {
+            //move the tiles to the bottom of their current container (so that all holes are above)
+            if (holeDistances[refillTile.GridY][refillTile.GridX] > 0)
+            {
+                float adjustedY = refillTile.transform.localPosition.y - holeDistances[refillTile.GridY][refillTile.GridX];
+                refillTile.transform.localPosition = new Vector2(refillTile.transform.localPosition.x, adjustedY);
+            }
+        }
         
         //3. let the new tiles come in and take their place in the main tile container
         foreach (GameTile refillTile in revivedTiles)
