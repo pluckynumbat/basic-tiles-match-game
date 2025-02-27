@@ -300,6 +300,7 @@ public class GameTilesManager : MonoBehaviour
     
     //holes in the main tiles array now need to be filled at the end of the turn
     //new set of tiles will be put in the refill container
+    //final destinations of the tiles will be informed by their Y & X grid indices in the refill grid 
     private void OnRefillGridReady(GameGridCell[][] refillGrid, int[][] holeDistances)
     {
         List<GameTile> revivedTiles = new List<GameTile>();
@@ -329,6 +330,24 @@ public class GameTilesManager : MonoBehaviour
                 //add it to the list of newly revived tiles
                 revivedTiles.Add(revivedTile);
             }
+        }
+        
+        //2. TODO: Do the adjustment based on holeDistances before dropping the new tiles in
+        
+        //3. let the new tiles come in and take their place in the main tile container
+        foreach (GameTile refillTile in revivedTiles)
+        {
+            //set parent to the tile container
+            refillTile.transform.SetParent(tileContainer);
+            
+            //get new world position of the tile
+            Vector2 newWorldPosition = GetWorldPositionFromGridPositionAndContainer(refillTile.GridY, refillTile.GridX, tileContainer);
+            
+            //set limits of the tile based on new world position
+            refillTile.SetLimits(newWorldPosition);
+
+            //call the function to actually move the tile till it is in the correct spot
+            StartCoroutine(refillTile.MoveTileToNewPosition(newWorldPosition, tileFillHoleSpeed));
         }
     }
 }
