@@ -13,6 +13,7 @@ public class GameTilesManager : MonoBehaviour
     public float refillContainerOffset; // where should the refill container be placed w.r.t. the tile container
     public Sprite[] tileSpriteOptions; // the different sprite options for the tiles
     public float tileFillHoleSpeed; // speed of a tile which is already on the main grid, falling to fill a hole
+    public float newTileDropSpeed; // speed of a new tile dropping from above into the main grid during the last part of the player's move
     
     private readonly Vector2 offScreen = new Vector2(-1000, -1000);  // this is where the inactive tiles (and purgatory container) reside
     
@@ -347,7 +348,7 @@ public class GameTilesManager : MonoBehaviour
             refillTile.SetLimits(newWorldPosition);
 
             //call the function to actually move the tile till it is in the correct spot
-            StartCoroutine(refillTile.MoveTileToNewPosition(newWorldPosition, tileFillHoleSpeed));
+            StartCoroutine(refillTile.MoveTileToNewPosition(newWorldPosition, newTileDropSpeed));
         }
     }
 }
