@@ -106,6 +106,12 @@ public class GameTilesManager : MonoBehaviour
             purgatoryContainer = new GameObject("PurgatoryContainer").transform;
             purgatoryContainer.transform.position = offScreen;
         }
+        
+        if (refillContainer == null)
+        {
+            refillContainer = new GameObject("RefillContainer").transform;
+            refillContainer.transform.position = new Vector2(tileContainerPosition.x, tileContainerPosition.y + refillContainerOffset);
+        }
     }
     
     private void CreateTileCollections()
