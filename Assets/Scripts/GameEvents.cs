@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -43,5 +44,13 @@ public static class GameEvents
     public static void RaiseInvalidMoveEvent(int gridY, int gridX)
     {
         InvalidMoveEvent?.Invoke(gridY, gridX);
+    }
+    
+    // raised by the game grid manager during a move, when grid cells have been 'removed' from the grid (marked as empty)
+    public delegate void GridCellsRemovedHandler(List<GameGridCell> gridCellsRemoved);
+    public static event GridCellsRemovedHandler GridCellsRemovedEvent;
+    public static void RaiseGridCellsRemovedEvent(List<GameGridCell> gridCellsRemoved)
+    {
+        GridCellsRemovedEvent?.Invoke(gridCellsRemoved);
     }
 }

@@ -12,9 +12,13 @@ public class GameTilesManager : MonoBehaviour
     public Vector2 tileContainerPosition; // where should the tile container be placed
     public Sprite[] tileSpriteOptions;
     
+    private readonly Vector2 offScreen = new Vector2(-1000, -1000);  // this is where the inactive tiles (and purgatory container) reside
+    
     private Transform tileContainer; // parent gameObject for active tiles (part of the main grid)
+    private Transform purgatoryContainer; // parent gameObject for deactivated tiles
     
     private Dictionary<int, GameTile> activeTilesDictionary; // collection of all the active tiles (part of the main grid)
+    private Queue<GameTile> inactiveTilesQueue; // a collection (pool) of currently inactive tiles (that can be re-used)
     
     private int gridLength; // cache the grid length in this
     
@@ -30,12 +34,16 @@ public class GameTilesManager : MonoBehaviour
         
         GameEvents.InvalidMoveEvent -= OnInvalidMove;
         GameEvents.InvalidMoveEvent += OnInvalidMove;
+        
+        GameEvents.GridCellsRemovedEvent -= OnGridCellsRemoved;
+        GameEvents.GridCellsRemovedEvent += OnGridCellsRemoved;
     }
     private void OnDestroy()
     {
         GameEvents.GameGridReadyEvent -= OnGameGridReady;
         GameEvents.InputDetectedEvent -= OnInputDetected;
         GameEvents.InvalidMoveEvent -= OnInvalidMove;
+        GameEvents.GridCellsRemovedEvent -= OnGridCellsRemoved;
     }
 
     // main grid is ready at the beginning of a level, create tiles 
@@ -69,6 +77,13 @@ public class GameTilesManager : MonoBehaviour
                 activeTilesDictionary[(y * gameGrid.Length) + x] = newTile; 
             }
         }
+        
+        //4. create a buffer of inactive tiles
+        for (int i = 0;  i < gridLength * gridLength; i++)
+        {
+            GameTile tile = Instantiate(tilePrefab, offScreen, Quaternion.identity).GetComponent<GameTile>();
+            DeactivateTile(tile);
+        }
     }
     
     private void CreateTileContainers()
@@ -78,6 +93,12 @@ public class GameTilesManager : MonoBehaviour
             tileContainer = new GameObject("TileContainer").transform;
             tileContainer.transform.position = tileContainerPosition;
         }
+        
+        if (purgatoryContainer == null)
+        {
+            purgatoryContainer = new GameObject("PurgatoryContainer").transform;
+            purgatoryContainer.transform.position = offScreen;
+        }
     }
     
     private void CreateTileCollections()
@@ -85,6 +106,11 @@ public class GameTilesManager : MonoBehaviour
         if (activeTilesDictionary == null)
         {
             activeTilesDictionary = new Dictionary<int, GameTile>();
+        }
+        
+        if (inactiveTilesQueue == null)
+        {
+            inactiveTilesQueue = new Queue<GameTile>();
         }
     }
     
@@ -119,7 +145,7 @@ public class GameTilesManager : MonoBehaviour
     }
     
     // helper function to select the sprite from the available options based on the input color
-    public Sprite GetSpriteBasedOnColor(GameGridCell.GridCellColor color)
+    private Sprite GetSpriteBasedOnColor(GameGridCell.GridCellColor color)
     {
         switch (color)
         {
@@ -176,5 +202,36 @@ public class GameTilesManager : MonoBehaviour
     {
         //TODO: check if it is safe to set this to true in all cases
         acceptingInput = true;
+    }
+    
+    // some grid cells have been removed from the game grid, so remove the corresponding game tiles from the tiles container
+    // and de-activate them
+    private void OnGridCellsRemoved(List<GameGridCell> removedCells)
+    {
+        foreach (GameGridCell cell in removedCells)
+        {
+            int key = (cell.Y * gridLength) + cell.X; // key into the dictionary based on Y & X indices
+            GameTile tileToDeactivate = activeTilesDictionary[key];
+            
+            //this tile should not be null
+            if (tileToDeactivate == null)
+            {
+                Debug.LogError($"tile to deactivate is null! x:{cell.Y}, y:{cell.X}");
+                continue;
+            }
+            
+            DeactivateTile(tileToDeactivate);
+            activeTilesDictionary[key] = null; // remove the entry from the active tiles dictionary
+        }
+    }
+    
+    // De-activate a given game tile (disable its sprite, send it to the purgatory container, and add it to the pool of inactive tiles)
+    private void DeactivateTile(GameTile tileToDeactivate)
+    {
+        tileToDeactivate.IsTileActive = false;
+        tileToDeactivate.SetSpriteVisibility(false);
+        tileToDeactivate.transform.SetParent(purgatoryContainer);
+        tileToDeactivate.transform.position = offScreen;
+        inactiveTilesQueue.Enqueue(tileToDeactivate);
     }
 }

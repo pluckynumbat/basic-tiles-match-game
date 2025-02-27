@@ -31,6 +31,15 @@ public class GameTile : MonoBehaviour
         }
         spriteRenderer.sprite = inputSprite;
     }
+    
+    public void SetSpriteVisibility(bool visible)
+    {
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+        spriteRenderer.enabled = visible;
+    }
 
     // TODO: these will overlap at borders, fix that
     // these are the positions the tile cares about when detecting input
