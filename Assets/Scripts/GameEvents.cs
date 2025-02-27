@@ -53,4 +53,12 @@ public static class GameEvents
     {
         GridCellsRemovedEvent?.Invoke(gridCellsRemoved);
     }
+    
+    // raised by the game grid manager during a move, when existing grid cells are assigned to 'fill holes' in the grid
+    public delegate void GridCellsFillHolesHandler(List<GameGridCell> cellsThatFillHoles, int[][] holesBelowCells);
+    public static event GridCellsFillHolesHandler GridCellsFillHolesEvent;
+    public static void RaiseGridCellsFillHolesEvent(List<GameGridCell> cellsThatFillHoles, int[][] holesBelowCells)
+    {
+        GridCellsFillHolesEvent?.Invoke(cellsThatFillHoles, holesBelowCells);
+    }
 }

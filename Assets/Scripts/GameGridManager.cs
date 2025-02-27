@@ -175,6 +175,11 @@ public class GameGridManager : MonoBehaviour
         // these will be used to fill the holes
         List<GameGridCell> cellsThatFillHoles = CollectGridCellsThatFillHoles(mainGrid);
         
+        //4c. Let other systems know that these cells will fill existing holes
+        // along with the holesBelowCells array (which has the hole amounts)
+        //(e.g. this will be used by the tile manager to actually move the tiles)
+        GameEvents.RaiseGridCellsFillHolesEvent(cellsThatFillHoles, holesBelowCells);
+        
     }
     
     // helper function to check if given y and x co-ordinates are valid for the game grid(s)
