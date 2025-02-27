@@ -1,4 +1,7 @@
-using System.Collections;
+// TODO: remove this later if not required
+// Uncomment the following line to enable grid related logs
+#define GAME_GRID_LOGGING
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -65,6 +68,9 @@ public class GameGridManager : MonoBehaviour
                 mainGrid[y][x].Occupied = true;
             }
         }
+#if GAME_GRID_LOGGING
+        PrintGridToConsole(mainGrid);
+#endif
     }
     
     // set up the different helper data structures that will be used during grid processing
@@ -135,8 +141,10 @@ public class GameGridManager : MonoBehaviour
             return;
         }
         
+#if GAME_GRID_LOGGING
         //TODO: remove this log later? 
         Debug.Log($"Active tile tapped: X: {gridX}, Y: {gridY}");
+#endif
         
         // Start actual processing
         
@@ -182,6 +190,10 @@ public class GameGridManager : MonoBehaviour
         
         //4d. swap holes with the cells that will fill them (based on the holesBelowCells values)
         SwapHolesWithExistingCells(cellsThatFillHoles, mainGrid);
+        
+#if GAME_GRID_LOGGING
+        PrintGridToConsole(mainGrid);
+#endif
     }
     
     // helper function to check if given y and x co-ordinates are valid for the game grid(s)
@@ -354,5 +366,42 @@ public class GameGridManager : MonoBehaviour
             upperCell.Occupied = false;
             upperCell.Color = GameGridCell.GridCellColor.None;
         }
+    }
+    
+    
+    // helper function to print a given grid to the console
+    private void PrintGridToConsole(GameGridCell[][] grid)
+    {
+        string gridString = "";
+        //swap from bottom first grid to top first console output
+        for (int y = gridLength - 1; y >= 0; y --)
+        {
+            gridString += $"\n";
+            for (int x = 0; x < gridLength; x++)
+            {
+                gridString += $" {GetGridCellStringFromColor(grid[y][x].Color)}";
+            }
+        }
+        Debug.Log(gridString);
+    }
+    
+    //helper to select color based on string input
+    private string GetGridCellStringFromColor(GameGridCell.GridCellColor color)
+    {
+        switch (color)
+        {
+            case GameGridCell.GridCellColor.Red:
+                return "R";
+
+            case GameGridCell.GridCellColor.Green:
+                return "G";
+
+            case GameGridCell.GridCellColor.Blue:
+                return "B";
+
+            case GameGridCell.GridCellColor.Yellow:
+                return "Y";
+        }
+        return "_";
     }
 }
