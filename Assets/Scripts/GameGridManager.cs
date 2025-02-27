@@ -1,6 +1,6 @@
 // TODO: remove this later if not required
 // Uncomment the following line to enable grid related logs
-#define GRID_LOGGING
+#define GAME_GRID_LOGGING
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -68,7 +68,7 @@ public class GameGridManager : MonoBehaviour
                 mainGrid[y][x].Occupied = true;
             }
         }
-#if GRID_LOGGING
+#if GAME_GRID_LOGGING
         PrintGridToConsole(mainGrid);
 #endif
     }
@@ -141,7 +141,7 @@ public class GameGridManager : MonoBehaviour
             return;
         }
         
-#if GRID_LOGGING
+#if GAME_GRID_LOGGING
         //TODO: remove this log later? 
         Debug.Log($"Active tile tapped: X: {gridX}, Y: {gridY}");
 #endif
@@ -191,7 +191,7 @@ public class GameGridManager : MonoBehaviour
         //4d. swap holes with the cells that will fill them (based on the holesBelowCells values)
         SwapHolesWithExistingCells(cellsThatFillHoles, mainGrid);
         
-#if GRID_LOGGING
+#if GAME_GRID_LOGGING
         PrintGridToConsole(mainGrid);
 #endif
     }
