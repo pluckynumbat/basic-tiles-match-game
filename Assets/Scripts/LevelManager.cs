@@ -1,5 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+// TODO: remove this later if not required
+// Uncomment the following line to enable level manager logs
+//#define LEVEL_MANAGER_LOGGING
+
 using UnityEngine;
 
 /// <summary>
@@ -29,6 +31,8 @@ public class LevelManager : MonoBehaviour
 
     private void OnInputDetected(Vector3 inputWorldPosition)
     {
+#if LEVEL_MANAGER_LOGGING
         Debug.Log($"input detected, world position: {inputWorldPosition}");
+#endif
     }
 }
