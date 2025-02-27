@@ -14,6 +14,8 @@ public class GameGridManager : MonoBehaviour
 
     private bool[][] visited; // 2d array used during the Breadth First Search to check and mark if a grid cell has been visited already
 
+    private int[][] holesBelowCells; // 2d array which for each location in the given grid, stores the count of holes below that cell's location
+
     private void Awake()
     {
         GameEvents.LevelDataReadyEvent -= OnLevelDataReady;
@@ -73,6 +75,13 @@ public class GameGridManager : MonoBehaviour
         for (int y = 0; y < gridLength; y++)
         {
             visited[y] = new bool[gridLength];
+        }
+        
+        // create the holes below cells array once
+        holesBelowCells = new int[gridLength][];
+        for (int y = 0; y < gridLength; y++)
+        {
+            holesBelowCells[y] = new int[gridLength];
         }
     }
     
