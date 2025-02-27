@@ -18,6 +18,7 @@ public class GameTilesManager : MonoBehaviour
     private Transform purgatoryContainer; // parent gameObject for deactivated tiles
     
     private Dictionary<int, GameTile> activeTilesDictionary; // collection of all the active tiles (part of the main grid)
+    private Queue<GameTile> inactiveTilesQueue; // a collection (pool) of currently inactive tiles (that can be re-used)
     
     private int gridLength; // cache the grid length in this
     
@@ -94,6 +95,11 @@ public class GameTilesManager : MonoBehaviour
         if (activeTilesDictionary == null)
         {
             activeTilesDictionary = new Dictionary<int, GameTile>();
+        }
+        
+        if (inactiveTilesQueue == null)
+        {
+            inactiveTilesQueue = new Queue<GameTile>();
         }
     }
     
