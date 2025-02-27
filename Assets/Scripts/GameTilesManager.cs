@@ -10,13 +10,15 @@ public class GameTilesManager : MonoBehaviour
 {
     public GameObject tilePrefab; // prefab for the tiles
     public Vector2 tileContainerPosition; // where should the tile container be placed
-    public Sprite[] tileSpriteOptions;
-    public float tileFillHoleSpeed = 20.0f;
+    public float refillContainerOffset; // where should the refill container be placed w.r.t. the tile container
+    public Sprite[] tileSpriteOptions; // the different sprite options for the tiles
+    public float tileFillHoleSpeed; // speed of a tile which is already on the main grid, falling to fill a hole
     
     private readonly Vector2 offScreen = new Vector2(-1000, -1000);  // this is where the inactive tiles (and purgatory container) reside
     
     private Transform tileContainer; // parent gameObject for active tiles (part of the main grid)
     private Transform purgatoryContainer; // parent gameObject for deactivated tiles
+    private Transform refillContainer; // parent gameObject for tiles that will refill the main grid during the last part of the player's move
     
     private Dictionary<int, GameTile> activeTilesDictionary; // collection of all the active tiles (part of the main grid)
     private Queue<GameTile> inactiveTilesQueue; // a collection (pool) of currently inactive tiles (that can be re-used)
