@@ -73,6 +73,13 @@ public class GameTilesManager : MonoBehaviour
                 activeTilesDictionary[(y * gameGrid.Length) + x] = newTile; 
             }
         }
+        
+        //4. create a buffer of inactive tiles
+        for (int i = 0;  i < gridLength * gridLength; i++)
+        {
+            GameTile tile = Instantiate(tilePrefab, offScreen, Quaternion.identity).GetComponent<GameTile>();
+            DeactivateTile(tile);
+        }
     }
     
     private void CreateTileContainers()
