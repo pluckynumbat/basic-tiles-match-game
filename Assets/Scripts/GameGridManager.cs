@@ -180,6 +180,8 @@ public class GameGridManager : MonoBehaviour
         //(e.g. this will be used by the tile manager to actually move the tiles)
         GameEvents.RaiseGridCellsFillHolesEvent(cellsThatFillHoles, holesBelowCells);
         
+        //4d. swap holes with the cells that will fill them (based on the holesBelowCells values)
+        SwapHolesWithExistingCells(cellsThatFillHoles, mainGrid);
     }
     
     // helper function to check if given y and x co-ordinates are valid for the game grid(s)
@@ -338,5 +340,19 @@ public class GameGridManager : MonoBehaviour
         return cellsThatFillHoles;
     }
     
-    
+    //swap occupancy and colors of cells that fill holes, with the holes they will be filling
+    private void SwapHolesWithExistingCells(List<GameGridCell> cellsThatFillHoles, GameGridCell[][] grid)
+    {
+        foreach (GameGridCell upperCell in cellsThatFillHoles)
+        {
+            int delta = holesBelowCells[upperCell.Y][upperCell.X];
+            GameGridCell hole = grid[upperCell.Y - delta][upperCell.X];
+
+            hole.Occupied = true;
+            hole.Color = upperCell.Color;
+
+            upperCell.Occupied = false;
+            upperCell.Color = GameGridCell.GridCellColor.None;
+        }
+    }
 }
