@@ -111,12 +111,56 @@ public class GameGridManager : MonoBehaviour
             return;
         }
         
+        //TODO: remove this log later? 
         Debug.Log($"Active tile tapped: X: {gridX}, Y: {gridY}");
+        
+        // Start actual processing
+        
+        //1. Check if the grid cell has neighbors with the same color
+        if (!AnyNeighborWithSameColor(gridY, gridX, cell.Color, mainGrid))
+        {
+            // if not, raise invalid move event, and return
+            GameEvents.RaiseInvalidMoveEvent(gridY, gridX);
+            //TODO: some feedback here or in the tiles manager to let the player know that a single tile cannot be removed?
+            Debug.Log($"(single cell cannot be removed), x: {gridX}, y: {gridY}");
+            return;
+        }
+        
     }
     
     // helper function to check if given y and x co-ordinates are valid for the game grid(s)
     private bool IsWithinGridBounds(int y, int x)
     {
         return  0 <= y && y < gridLength && x >= 0 && x <gridLength;
+    }
+    
+    // helper function to check for a given cell Y and X indices, if there exists at least 1 neighbor with the same color in the given grid
+    private bool AnyNeighborWithSameColor(int y, int x, GameGridCell.GridCellColor color, GameGridCell[][] grid)
+    {
+        // north neighbor
+        if (IsWithinGridBounds(y + 1, x) && grid[y + 1][x].Color == color)
+        {
+            return true;
+        }
+        
+        // east neighbor
+        if (IsWithinGridBounds(y, x + 1) && grid[y][x + 1].Color == color)
+        {
+            return true;
+        }
+        
+        // south neighbor
+        if (IsWithinGridBounds(y - 1, x) && grid[y - 1][x].Color == color)
+        {
+            return true;
+        }
+        
+        // west neighbor
+        if (IsWithinGridBounds(y, x - 1) && grid[y][x - 1].Color == color)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
