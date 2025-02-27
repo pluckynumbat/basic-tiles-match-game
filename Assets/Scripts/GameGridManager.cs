@@ -12,6 +12,8 @@ public class GameGridManager : MonoBehaviour
     
     private int gridLength; // both height and width of the grid are the same, store in this variable
 
+    private bool[][] visited; // 2d array used during the Breadth First Search to check and mark if a grid cell has been visited already
+
     private void Awake()
     {
         GameEvents.LevelDataReadyEvent -= OnLevelDataReady;
@@ -30,6 +32,7 @@ public class GameGridManager : MonoBehaviour
     private void OnLevelDataReady(LevelData data)
     {
         SetupGameGrid(data);
+        SetupOtherDataStructures();
         GameEvents.RaiseGameGridReadyEvent(mainGrid);
     }
     
@@ -59,6 +62,17 @@ public class GameGridManager : MonoBehaviour
                 }
                 mainGrid[y][x].Occupied = true;
             }
+        }
+    }
+    
+    // set up the different helper data structures that will be used during grid processing
+    private void SetupOtherDataStructures()
+    {
+        // create the visited array once
+        visited = new bool[gridLength][];
+        for (int y = 0; y < gridLength; y++)
+        {
+            visited[y] = new bool[gridLength];
         }
     }
     
@@ -103,8 +117,9 @@ public class GameGridManager : MonoBehaviour
             return;
         }
 
-        GameGridCell cell = mainGrid[gridY][gridX];
-        if (!cell.Occupied || cell.Color == GameGridCell.GridCellColor.None)
+        // get the cell at the tapped tile's location in the grid
+        GameGridCell tappedCell = mainGrid[gridY][gridX];
+        if (!tappedCell.Occupied || tappedCell.Color == GameGridCell.GridCellColor.None)
         {
             GameEvents.RaiseInvalidMoveEvent(gridY, gridX);
             Debug.LogError($"Invalid input in OnActiveTileTapped (cell is empty), x: {gridX}, y: {gridY}");
@@ -117,7 +132,7 @@ public class GameGridManager : MonoBehaviour
         // Start actual processing
         
         //1. Check if the grid cell has neighbors with the same color
-        if (!AnyNeighborWithSameColor(gridY, gridX, cell.Color, mainGrid))
+        if (!AnyNeighborWithSameColor(gridY, gridX, tappedCell.Color, mainGrid))
         {
             // if not, raise invalid move event, and return
             GameEvents.RaiseInvalidMoveEvent(gridY, gridX);
