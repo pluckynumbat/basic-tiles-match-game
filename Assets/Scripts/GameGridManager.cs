@@ -21,6 +21,8 @@ public class GameGridManager : MonoBehaviour
 
     private int[][] holesBelowCells; // 2d array which for each location in the given grid, stores the count of holes below that cell's location
 
+    private int validColorCount; // stores the amount of different colors available for the cells in a given level
+
     private void Awake()
     {
         GameEvents.LevelDataReadyEvent -= OnLevelDataReady;
@@ -47,6 +49,7 @@ public class GameGridManager : MonoBehaviour
     // does the initial setup of the game grid when a new level begins
     private void SetupGameGrid(LevelData levelData)
     {
+        validColorCount = levelData.colorCount;
         gridLength = levelData.gridLength;
 
         bool isGridRandom = levelData.isStartingGridRandom;
@@ -60,7 +63,7 @@ public class GameGridManager : MonoBehaviour
                 mainGrid[y][x] = new GameGridCell(y, x);
                 if (isGridRandom)
                 {
-                    mainGrid[y][x].Color = GetRandomGridCellColor(levelData.colorCount);
+                    mainGrid[y][x].Color = GetRandomGridCellColor(validColorCount);
                 }
                 else // get the grid specified in the level data
                 {
