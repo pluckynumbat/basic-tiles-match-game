@@ -145,7 +145,7 @@ public class GameTilesManager : MonoBehaviour
     }
     
     // helper function to select the sprite from the available options based on the input color
-    public Sprite GetSpriteBasedOnColor(GameGridCell.GridCellColor color)
+    private Sprite GetSpriteBasedOnColor(GameGridCell.GridCellColor color)
     {
         switch (color)
         {
