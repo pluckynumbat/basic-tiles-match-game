@@ -354,6 +354,8 @@ public class GameTilesManager : MonoBehaviour
         }
         
         //3. let the new tiles come in and take their place in the main tile container
+        // also calculate required time for last tile to reach its position, that's when we can re-enable input
+        float maxDistance = 0f;
         foreach (GameTile refillTile in revivedTiles)
         {
             //set parent to the tile container
@@ -364,7 +366,13 @@ public class GameTilesManager : MonoBehaviour
             
             //set limits of the tile based on new world position
             refillTile.SetLimits(newWorldPosition);
-
+            
+            //check the distance of its upcoming move vs max distance till now
+            if (refillTile.transform.position.y - newWorldPosition.y > maxDistance)
+            {
+                maxDistance = refillTile.transform.position.y - newWorldPosition.y;
+            }
+            
             //call the function to actually move the tile till it is in the correct spot
             StartCoroutine(refillTile.MoveTileToNewPosition(newWorldPosition, newTileDropSpeed));
         }
