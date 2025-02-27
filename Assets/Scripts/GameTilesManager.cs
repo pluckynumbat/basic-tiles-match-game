@@ -34,12 +34,16 @@ public class GameTilesManager : MonoBehaviour
         
         GameEvents.InvalidMoveEvent -= OnInvalidMove;
         GameEvents.InvalidMoveEvent += OnInvalidMove;
+        
+        GameEvents.GridCellsRemovedEvent -= OnGridCellsRemoved;
+        GameEvents.GridCellsRemovedEvent += OnGridCellsRemoved;
     }
     private void OnDestroy()
     {
         GameEvents.GameGridReadyEvent -= OnGameGridReady;
         GameEvents.InputDetectedEvent -= OnInputDetected;
         GameEvents.InvalidMoveEvent -= OnInvalidMove;
+        GameEvents.GridCellsRemovedEvent -= OnGridCellsRemoved;
     }
 
     // main grid is ready at the beginning of a level, create tiles 
@@ -200,8 +204,28 @@ public class GameTilesManager : MonoBehaviour
         acceptingInput = true;
     }
     
+    // some grid cells have been removed from the game grid, so remove the corresponding game tiles from the tiles container
+    // and de-activate them
+    private void OnGridCellsRemoved(List<GameGridCell> removedCells)
+    {
+        foreach (GameGridCell cell in removedCells)
+        {
+            int key = (cell.Y * gridLength) + cell.X; // key into the dictionary based on Y & X indices
+            GameTile tileToDeactivate = activeTilesDictionary[key];
+            
+            //this tile should not be null
+            if (tileToDeactivate == null)
+            {
+                Debug.LogError($"tile to deactivate is null! x:{cell.Y}, y:{cell.X}");
+                continue;
+            }
+            
+            DeactivateTile(tileToDeactivate);
+            activeTilesDictionary[key] = null; // remove the entry from the active tiles dictionary
+        }
+    }
     
-    // De-activate a given game tile ≈
+    // De-activate a given game tile (disable its sprite, send it to the purgatory container, and add it to the pool of inactive tiles)
     private void DeactivateTile(GameTile tileToDeactivate)
     {
         tileToDeactivate.IsTileActive = false;
