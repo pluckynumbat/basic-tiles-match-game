@@ -12,7 +12,10 @@ public class GameTilesManager : MonoBehaviour
     public Vector2 tileContainerPosition; // where should the tile container be placed
     public Sprite[] tileSpriteOptions;
     
+    private readonly Vector2 offScreen = new Vector2(-1000, -1000);
+    
     private Transform tileContainer; // parent gameObject for active tiles (part of the main grid)
+    private Transform purgatoryContainer; // parent gameObject for deactivated tiles
     
     private Dictionary<int, GameTile> activeTilesDictionary; // collection of all the active tiles (part of the main grid)
     
@@ -77,6 +80,12 @@ public class GameTilesManager : MonoBehaviour
         {
             tileContainer = new GameObject("TileContainer").transform;
             tileContainer.transform.position = tileContainerPosition;
+        }
+        
+        if (purgatoryContainer == null)
+        {
+            purgatoryContainer = new GameObject("PurgatoryContainer").transform;
+            purgatoryContainer.transform.position = offScreen;
         }
     }
     
