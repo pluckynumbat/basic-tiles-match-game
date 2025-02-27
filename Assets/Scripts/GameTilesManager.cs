@@ -12,7 +12,7 @@ public class GameTilesManager : MonoBehaviour
     public Vector2 tileContainerPosition; // where should the tile container be placed
     public Sprite[] tileSpriteOptions;
     
-    private readonly Vector2 offScreen = new Vector2(-1000, -1000);
+    private readonly Vector2 offScreen = new Vector2(-1000, -1000);  // this is where the inactive tiles (and purgatory container) reside
     
     private Transform tileContainer; // parent gameObject for active tiles (part of the main grid)
     private Transform purgatoryContainer; // parent gameObject for deactivated tiles
