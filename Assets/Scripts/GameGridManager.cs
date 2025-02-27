@@ -225,6 +225,10 @@ public class GameGridManager : MonoBehaviour
 #if GAME_GRID_LOGGING
         PrintGridToConsole(refillGrid);
 #endif    
+       
+        //5b. create a holesBelowCells for this refill grid
+        // (this is needed for the new tiles to reposition themselves before dropping in)
+        holesBelowCells = CalculateHolesBelowCells(refillGrid);
         
     }
     
