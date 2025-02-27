@@ -225,7 +225,7 @@ public class GameGridManager : MonoBehaviour
 #if GAME_GRID_LOGGING
         PrintGridToConsole(refillGrid);
 #endif    
-       
+        
         //5b. create a holesBelowCells for this refill grid
         // (this is needed for the new tiles to reposition themselves before dropping in)
         holesBelowCells = CalculateHolesBelowCells(refillGrid);
@@ -235,6 +235,8 @@ public class GameGridManager : MonoBehaviour
         // as well as their end destinations to be moved to)
         GameEvents.RaiseRefillGridReadyEvent(refillGrid, holesBelowCells);
         
+        //5d. finally, set the empty cells to in the main grid to the colors of the ones in the refill grid (these will be the final cells)
+        CompleteMainGridUsingRefillGrid();
     }
     
     // helper function to check if given y and x co-ordinates are valid for the game grid(s)
@@ -431,6 +433,24 @@ public class GameGridManager : MonoBehaviour
         }
     }
     
+    // refill grid will have cells at exactly the points where the main grid will have holes
+    // (and vice versa) complete the main grid by replacing hole cells with those from the refill grid
+    private void CompleteMainGridUsingRefillGrid()
+    {
+        for (int y = 0; y < gridLength; y++)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                if (mainGrid[y][x].Occupied)
+                {
+                    continue;
+                }
+
+                mainGrid[y][x].Occupied = true;
+                mainGrid[y][x].Color = refillGrid[y][x].Color;
+            } 
+        }
+    }
     
     // helper function to print a given grid to the console
     private void PrintGridToConsole(GameGridCell[][] grid)
