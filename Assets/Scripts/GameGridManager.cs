@@ -355,4 +355,41 @@ public class GameGridManager : MonoBehaviour
             upperCell.Color = GameGridCell.GridCellColor.None;
         }
     }
+    
+    
+    // helper function to print a given grid to the console
+    private void PrintGridToConsole(GameGridCell[][] grid)
+    {
+        string gridString = "";
+        //swap from bottom first grid to top first console output
+        for (int y = gridLength - 1; y >= 0; y --)
+        {
+            gridString += $"\n";
+            for (int x = 0; x < gridLength; x++)
+            {
+                gridString += $" {GetGridCellStringFromColor(grid[y][x].Color)}";
+            }
+        }
+        Debug.Log(gridString);
+    }
+    
+    //helper to select color based on string input
+    private string GetGridCellStringFromColor(GameGridCell.GridCellColor color)
+    {
+        switch (color)
+        {
+            case GameGridCell.GridCellColor.Red:
+                return "R";
+
+            case GameGridCell.GridCellColor.Green:
+                return "G";
+
+            case GameGridCell.GridCellColor.Blue:
+                return "B";
+
+            case GameGridCell.GridCellColor.Yellow:
+                return "Y";
+        }
+        return "_";
+    }
 }
