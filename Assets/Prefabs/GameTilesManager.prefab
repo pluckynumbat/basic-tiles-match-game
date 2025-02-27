@@ -45,8 +45,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 464704583219888076, guid: ae26c157075704d858bfe3915c068c0f, type: 3}
   tileContainerPosition: {x: 0, y: 0}
+  refillContainerOffset: 20
   tileSpriteOptions:
   - {fileID: 21300000, guid: 906bdef3ac6614feba0f1f9d014ba4a5, type: 3}
   - {fileID: 21300000, guid: bcc554e8116a944c58920484d4e1ceb6, type: 3}
   - {fileID: 21300000, guid: 798fae629aebc4b1b8750394aac70076, type: 3}
   - {fileID: 21300000, guid: 898101787589a4c5984e94a05279f7b6, type: 3}
+  tileFillHoleSpeed: 20
+  newTileDropSpeed: 28
