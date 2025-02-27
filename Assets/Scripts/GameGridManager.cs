@@ -12,6 +12,8 @@ using UnityEngine;
 public class GameGridManager : MonoBehaviour
 {
     private GameGridCell[][] mainGrid; // the main / active grid in the level
+
+    private GameGridCell[][] refillGrid; // a grid used to refill the main grid in the last part of the player's move
     
     private int gridLength; // both height and width of the grid are the same, store in this variable
 
@@ -37,6 +39,7 @@ public class GameGridManager : MonoBehaviour
     private void OnLevelDataReady(LevelData data)
     {
         SetupGameGrid(data);
+        InitializeRefillGrid();
         SetupOtherDataStructures();
         GameEvents.RaiseGameGridReadyEvent(mainGrid);
     }
@@ -71,6 +74,22 @@ public class GameGridManager : MonoBehaviour
 #if GAME_GRID_LOGGING
         PrintGridToConsole(mainGrid);
 #endif
+    }
+    
+    // the refill grid should be set to all empty at the beginning of a level
+    private void InitializeRefillGrid()
+    {
+        refillGrid = new GameGridCell[gridLength][];
+        for (int y = 0; y < gridLength; y++)
+        {
+            refillGrid[y] = new GameGridCell[gridLength];
+            for (int x = 0; x < gridLength; x++)
+            {
+                refillGrid[y][x] = new GameGridCell(y,x);
+                refillGrid[y][x].Color = GameGridCell.GridCellColor.None;
+                refillGrid[y][x].Occupied = false;
+            }
+        }
     }
     
     // set up the different helper data structures that will be used during grid processing
