@@ -43,6 +43,9 @@ public class GameTilesManager : MonoBehaviour
         
         GameEvents.GridCellsFillHolesEvent -= OnGridCellsFillHoles;
         GameEvents.GridCellsFillHolesEvent += OnGridCellsFillHoles;
+        
+        GameEvents.RefillGridReadyEvent -= OnRefillGridReady;
+        GameEvents.RefillGridReadyEvent += OnRefillGridReady;
     }
     private void OnDestroy()
     {
@@ -51,6 +54,7 @@ public class GameTilesManager : MonoBehaviour
         GameEvents.InvalidMoveEvent -= OnInvalidMove;
         GameEvents.GridCellsRemovedEvent -= OnGridCellsRemoved;
         GameEvents.GridCellsFillHolesEvent -= OnGridCellsFillHoles;
+        GameEvents.RefillGridReadyEvent -= OnRefillGridReady;
     }
 
     // main grid is ready at the beginning of a level, create tiles 
