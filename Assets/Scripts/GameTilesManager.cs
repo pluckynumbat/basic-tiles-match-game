@@ -393,5 +393,6 @@ public class GameTilesManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         acceptingInput = true;
+        GameEvents.RaiseMoveCompletedEvent();
     }
 }

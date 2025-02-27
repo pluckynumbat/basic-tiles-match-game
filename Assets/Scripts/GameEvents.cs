@@ -70,4 +70,13 @@ public static class GameEvents
     {
         RefillGridReadyEvent?.Invoke(refillGrid, holesBelowCells);
     }
+    
+    // raised by the game tiles manager when the last new tile has reached
+    // its final destination in the main grid, signalling the end of a move
+    public delegate void MoveCompletedHandler();
+    public static event MoveCompletedHandler MoveCompletedEvent;
+    public static void RaiseMoveCompletedEvent()
+    {
+        MoveCompletedEvent?.Invoke();
+    }
 }
