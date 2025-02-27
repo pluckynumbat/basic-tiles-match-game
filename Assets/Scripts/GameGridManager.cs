@@ -167,9 +167,14 @@ public class GameGridManager : MonoBehaviour
         GameEvents.RaiseGridCellsRemovedEvent(gridCellsToRemove);
         
         //4. Fill holes with existing cells
-                
+        
         //4a. for each cell location in the main grid, calculate the number of holes below it
         holesBelowCells = CalculateHolesBelowCells(mainGrid);
+        
+        //4b. collect all grid cells with holes below them which are not holes themselves
+        // these will be used to fill the holes
+        List<GameGridCell> cellsThatFillHoles = CollectGridCellsThatFillHoles(mainGrid);
+        
     }
     
     // helper function to check if given y and x co-ordinates are valid for the game grid(s)
@@ -304,5 +309,29 @@ public class GameGridManager : MonoBehaviour
 
         return holesBelowCells;
     }
+    
+    //collect all grid cells where the corresponding holesBelowCells entry is more than 0 and the cell itself is not a hole
+    //this indicates that those cells will fill existing cells
+    private List<GameGridCell> CollectGridCellsThatFillHoles(GameGridCell[][] grid)
+    {
+        List<GameGridCell> cellsThatFillHoles = new List<GameGridCell>();
+        for (int y = 1; y < gridLength; y++) // exclude bottom most row (non-empty cells cannot fill anything)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                if (!grid[y][x].Occupied) // if a cell is a hole itself, it cannot fill other holes
+                {
+                    continue;
+                }
+                if (holesBelowCells[y][x] > 0)
+                {
+                    cellsThatFillHoles.Add(grid[y][x]);
+                }
+            }
+        }
+
+        return cellsThatFillHoles;
+    }
+    
     
 }
