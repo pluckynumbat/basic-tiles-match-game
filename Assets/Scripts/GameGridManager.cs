@@ -126,6 +126,22 @@ public class GameGridManager : MonoBehaviour
             return;
         }
         
+        //2. Collect all neighbors with the same color using a Breadth First Search starting at the cell at the tapped tile's location
+        List<GameGridCell> gridCellsToRemove = CollectNeighborsWithSameColor(tappedCell, mainGrid);
+        
+        //3. Grid Cell 'Removal'
+        
+        //3a. Mark all the cells to remove as empty
+        foreach (GameGridCell cell in gridCellsToRemove)
+        {
+            cell.Occupied = false;
+            cell.Color = GameGridCell.GridCellColor.None;
+        }
+        
+        //3b. Let other systems know that these cells have been 'removed' so they can deal with the information
+        // (e.g. tiles manager will have to actually remove tiles based on this list)
+        GameEvents.RaiseGridCellsRemovedEvent(gridCellsToRemove);
+        
     }
     
     // helper function to check if given y and x co-ordinates are valid for the game grid(s)
@@ -162,5 +178,76 @@ public class GameGridManager : MonoBehaviour
         }
 
         return false;
+    }
+    
+    //Collect all neighbors with the same color using a Breadth First Search starting at the cell at the tapped tile's location
+    private List<GameGridCell> CollectNeighborsWithSameColor(GameGridCell tappedCell, GameGridCell[][] grid)
+    {
+        List<GameGridCell> relevantCells = new List<GameGridCell>(); // these will be sent to the caller at the end of the method
+
+        // reset the visited array
+        for (int y = 0; y < gridLength; y++)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                visited[y][x] = false;
+            } 
+        }
+        
+        // create a queue and add the starting cell to it
+        Queue<GameGridCell> queue = new Queue<GameGridCell>();
+        queue.Enqueue(tappedCell);
+
+        while (queue.Count > 0)
+        {
+            // get the next cell to process
+            GameGridCell current = queue.Dequeue();
+            
+            // skip if visited already
+            if (visited[current.Y][current.X])
+            {
+                continue;
+            }
+
+            // mark as visited and add to list of relevant cells
+            visited[current.Y][current.X] = true;
+            relevantCells.Add(current);
+            
+            // check and visit neighbors (within grid bounds) with same color that are unvisited
+            
+            // north neighbor
+            if (IsWithinGridBounds(current.Y + 1, current.X) &&
+                grid[current.Y + 1][current.X].Color == tappedCell.Color &&
+                !visited[current.Y + 1][current.X])
+            {
+                queue.Enqueue(grid[current.Y + 1][current.X]);
+            }
+            
+            // east neighbor
+            if (IsWithinGridBounds(current.Y, current.X + 1) &&
+                grid[current.Y][current.X + 1].Color == tappedCell.Color &&
+                !visited[current.Y][current.X + 1])
+            {
+                queue.Enqueue(grid[current.Y][current.X + 1]);
+            }
+            
+            // south neighbor
+            if (IsWithinGridBounds(current.Y - 1, current.X) &&
+                grid[current.Y - 1][current.X].Color == tappedCell.Color &&
+                !visited[current.Y - 1][current.X])
+            {
+                queue.Enqueue(grid[current.Y - 1][current.X]);
+            }
+            
+            // west neighbor
+            if (IsWithinGridBounds(current.Y, current.X - 1) &&
+                grid[current.Y][current.X - 1].Color == tappedCell.Color &&
+                !visited[current.Y][current.X - 1])
+            {
+                queue.Enqueue(grid[current.Y][current.X - 1]);
+            }
+        }
+        
+        return relevantCells;
     }
 }
