@@ -216,7 +216,7 @@ public class GameTilesManager : MonoBehaviour
             //this tile should not be null
             if (tileToDeactivate == null)
             {
-                Debug.LogError($"tile to deactivate is null! x:{cell.Y}, y:{cell.X}");
+                Debug.LogError($"tile to deactivate is null! x:{cell.X}, y:{cell.Y}");
                 continue;
             }
             
