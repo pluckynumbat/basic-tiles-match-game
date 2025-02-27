@@ -11,6 +11,7 @@ public class GameTilesManager : MonoBehaviour
     public GameObject tilePrefab; // prefab for the tiles
     public Vector2 tileContainerPosition; // where should the tile container be placed
     public Sprite[] tileSpriteOptions;
+    public float tileFillHoleSpeed = 20.0f;
     
     private readonly Vector2 offScreen = new Vector2(-1000, -1000);  // this is where the inactive tiles (and purgatory container) reside
     
@@ -270,6 +271,18 @@ public class GameTilesManager : MonoBehaviour
             // move the tile to the new symbolic position in the dictionary
             activeTilesDictionary[newKey] = tileToMove;
             activeTilesDictionary[originalKey] = null;
+            
+            
+            //Part 2. Actually move the tile
+            
+            // get new world position of the tile
+            Vector2 newWorldPosition = GetWorldPositionFromGridPositionAndContainer(tileToMove.GridY, tileToMove.GridX, tileContainer);
+            
+            // set limits of the tile based on new world position
+            tileToMove.SetLimits(newWorldPosition);
+            
+            // call the function to actually move the tile till it is in the correct spot
+            StartCoroutine(tileToMove.MoveTileToNewPosition(newWorldPosition, tileFillHoleSpeed));
         }
     }
 }
