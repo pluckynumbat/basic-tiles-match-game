@@ -230,6 +230,11 @@ public class GameGridManager : MonoBehaviour
         // (this is needed for the new tiles to reposition themselves before dropping in)
         holesBelowCells = CalculateHolesBelowCells(refillGrid);
         
+        //5c. send the refill Grid and the new 'holesBelowCells' array to other systems
+        // (e.g. the tiles manager will use these to inform the starting positions of the new tiles
+        // as well as their end destinations to be moved to)
+        GameEvents.RaiseRefillGridReadyEvent(refillGrid, holesBelowCells);
+        
     }
     
     // helper function to check if given y and x co-ordinates are valid for the game grid(s)
