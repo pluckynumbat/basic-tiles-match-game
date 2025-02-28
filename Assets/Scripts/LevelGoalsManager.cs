@@ -1,4 +1,7 @@
-using System.Collections;
+// TODO: remove this later if not required
+// Uncomment the following line to enable level goals logs
+#define LEVEL_GOALS_LOGGING
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,6 +36,9 @@ public class LevelGoalsManager : MonoBehaviour
             LevelGoal.GoalType key = GetGoalTypeFromString(goalData.goalType);
             goalProgress[key] = new LevelGoal(key, goalData.goalAmount);
         }
+        
+        // Debug Only TODO: remove this later?
+        PrintGoalStatusToConsole();
     }
 
     //helper to get goal type from a string in the level data
@@ -100,11 +106,16 @@ public class LevelGoalsManager : MonoBehaviour
             }
 
             if (!foundIncompleteGoal)
-            {
+            { 
+#if LEVEL_GOALS_LOGGING
                 Debug.Log("Level ended! You Won!");
+#endif              
                 GameEvents.RaiseLevelEndedEvent(true);
             }
         }
+        
+        // Debug Only TODO: remove this later?
+        PrintGoalStatusToConsole();
     }
     
     // function to update goal progress for a given goal, and raise the goal completed event if applicable
@@ -117,10 +128,13 @@ public class LevelGoalsManager : MonoBehaviour
         if (goalProgress[goalType].Remaining <= 0)
         {
             goalProgress[goalType].Remaining = 0; // lower limit is 0
+#if LEVEL_GOALS_LOGGING
             Debug.Log($"Level goal completed: {goalType}!");
+#endif      
             GameEvents.RaiseGoalCompletedEvent(goalType);
         }
     }
+
 
     // helper to get goal type from a Grid cell color type
     private LevelGoal.GoalType GetGoalTypeFromGridCellColor(GameGridCell.GridCellColor color)
@@ -142,5 +156,18 @@ public class LevelGoalsManager : MonoBehaviour
         
         Debug.LogError($"Goal type does not exist for goal color: {color}");
         return LevelGoal.GoalType.None;
+    }
+
+    //debug only helper to print goal status for the level
+    private void PrintGoalStatusToConsole()
+    {
+        string goalStatusString = "Overall Goal Status: \n";
+        foreach (LevelGoal goal in goalProgress.Values)
+        {
+            goalStatusString += $"Goal: {goal.Type}, Total: {goal.TotalAmount}, Remaining: {goal.Remaining} \n";
+        }
+#if LEVEL_GOALS_LOGGING
+        Debug.Log(goalStatusString);
+#endif
     }
 }
