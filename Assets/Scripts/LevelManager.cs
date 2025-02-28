@@ -2,6 +2,7 @@
 // Uncomment the following line to enable level manager logs
 //#define LEVEL_MANAGER_LOGGING
 
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -9,6 +10,8 @@ using UnityEngine;
 /// </summary>
 public class LevelManager : MonoBehaviour
 {
+    private const string DEFAULT_LEVEL_NAME = "testLevel7x7";
+    public string levelToLoad;
     private void Awake()
     {
         GameEvents.InputDetectedEvent -= OnInputDetected;
@@ -18,7 +21,8 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         //TODO: get the level file name from another manager
-        LevelData levelData = LevelJSONReader.ReadJSON("testLevel1");
+        string levelName = String.IsNullOrEmpty(levelToLoad) ? DEFAULT_LEVEL_NAME : levelToLoad;
+        LevelData levelData = LevelJSONReader.ReadJSON(levelName, DEFAULT_LEVEL_NAME);
         
         //TODO: validate the level data if possible before broadcasting it
         GameEvents.RaiseLevelDataReadyEvent(levelData);
