@@ -19,6 +19,9 @@ public class LevelManager : MonoBehaviour
     {
         GameEvents.InputDetectedEvent -= OnInputDetected;
         GameEvents.InputDetectedEvent += OnInputDetected;
+
+        GameEvents.MoveCompletedEvent -= OnMoveCompleted;
+        GameEvents.MoveCompletedEvent += OnMoveCompleted;
     }
 
     private void Start()
@@ -37,6 +40,7 @@ public class LevelManager : MonoBehaviour
     private void OnDestroy()
     {
         GameEvents.InputDetectedEvent -= OnInputDetected;
+        GameEvents.MoveCompletedEvent += OnMoveCompleted;
     }
 
     private void OnInputDetected(Vector3 inputWorldPosition)
@@ -44,5 +48,10 @@ public class LevelManager : MonoBehaviour
 #if LEVEL_MANAGER_LOGGING
         Debug.Log($"input detected, world position: {inputWorldPosition}");
 #endif
+    }
+
+    private void OnMoveCompleted()
+    {
+
     }
 }
