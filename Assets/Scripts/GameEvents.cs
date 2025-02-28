@@ -46,6 +46,14 @@ public static class GameEvents
         InvalidMoveEvent?.Invoke(gridY, gridX);
     }
     
+    // raised by the game grid manager during a move, when grid cells have been marked as collected
+    public delegate void GridCellsCollectedHandler(List<GameGridCell> gridCellsCollected);
+    public static event GridCellsCollectedHandler GridCellsCollectedEvent;
+    public static void RaiseGridCellsCollectedEvent(List<GameGridCell> gridCellsCollected)
+    {
+        GridCellsCollectedEvent?.Invoke(gridCellsCollected);
+    }
+    
     // raised by the game grid manager during a move, when grid cells have been 'removed' from the grid (marked as empty)
     public delegate void GridCellsRemovedHandler(List<GameGridCell> gridCellsRemoved);
     public static event GridCellsRemovedHandler GridCellsRemovedEvent;
@@ -78,6 +86,14 @@ public static class GameEvents
     public static void RaiseMoveCompletedEvent()
     {
         MoveCompletedEvent?.Invoke();
+    }
+    
+    // raised by the level goals manager during a move, when a new goal is completed
+    public delegate void GoalCompletedHandler(LevelGoal.GoalType goalType);
+    public static event GoalCompletedHandler GoalCompletedEvent;
+    public static void RaiseGoalCompletedEvent(LevelGoal.GoalType goalType)
+    {
+        GoalCompletedEvent?.Invoke(goalType);
     }
     
     // raised by the level manager when the level ends
