@@ -10,8 +10,9 @@ using UnityEngine;
 /// </summary>
 public class LevelManager : MonoBehaviour
 {
-    private const string DEFAULT_LEVEL_NAME = "testLevel7x7";
-    public string levelToLoad;
+    private const string DEFAULT_LEVEL_NAME = "testLevel7x7"; // default level that is used as fallback in case we do not find level to load
+    
+    public string levelToLoad; // name of the level that we want to load
     private void Awake()
     {
         GameEvents.InputDetectedEvent -= OnInputDetected;
