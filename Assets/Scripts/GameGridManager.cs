@@ -180,8 +180,14 @@ public class GameGridManager : MonoBehaviour
             return;
         }
         
-        //2. Collect all neighbors with the same color using a Breadth First Search starting at the cell at the tapped tile's location
+        //2. Grid Cell 'Collection'
+        
+        //2a. Collect all neighbors with the same color using a Breadth First Search starting at the cell at the tapped tile's location
         List<GameGridCell> gridCellsToRemove = CollectNeighborsWithSameColor(tappedCell, mainGrid);
+        
+        //2b. Let other systems know that these cells have been 'collected' so they can deal with the information
+        // (e.g. level goals manager will update goal progress based on this)
+        GameEvents.RaiseGridCellsCollectedEvent(gridCellsToRemove);
         
         //3. Grid Cell 'Removal'
         
