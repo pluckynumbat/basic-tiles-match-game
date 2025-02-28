@@ -36,7 +36,7 @@ public class LevelManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameEvents.MoveCompletedEvent += OnMoveCompleted;
+        GameEvents.MoveCompletedEvent -= OnMoveCompleted;
     }
 
     //update move count and check if the level ends
