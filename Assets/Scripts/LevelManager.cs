@@ -50,8 +50,17 @@ public class LevelManager : MonoBehaviour
 #endif
     }
 
+    //update move count and check if the level ends
     private void OnMoveCompleted()
     {
+        moveCount -= 1; // reduce remaining move count by 1
+        Debug.Log($"Move count: {moveCount}");
 
+        if (moveCount <= 0)
+        {
+            Debug.Log("Level ended, you lost :( ");
+            // let other systems know that the level ended, and that the player lost
+            GameEvents.RaiseLevelEndedEvent(false);
+        }
     }
 }
