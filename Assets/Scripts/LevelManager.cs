@@ -17,9 +17,6 @@ public class LevelManager : MonoBehaviour
     private int moveCount; // number of moves left in the level
     private void Awake()
     {
-        GameEvents.InputDetectedEvent -= OnInputDetected;
-        GameEvents.InputDetectedEvent += OnInputDetected;
-
         GameEvents.MoveCompletedEvent -= OnMoveCompleted;
         GameEvents.MoveCompletedEvent += OnMoveCompleted;
     }
@@ -39,15 +36,7 @@ public class LevelManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameEvents.InputDetectedEvent -= OnInputDetected;
         GameEvents.MoveCompletedEvent += OnMoveCompleted;
-    }
-
-    private void OnInputDetected(Vector3 inputWorldPosition)
-    {
-#if LEVEL_MANAGER_LOGGING
-        Debug.Log($"input detected, world position: {inputWorldPosition}");
-#endif
     }
 
     //update move count and check if the level ends
