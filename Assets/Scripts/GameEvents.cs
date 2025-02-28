@@ -88,6 +88,14 @@ public static class GameEvents
         MoveCompletedEvent?.Invoke();
     }
     
+    // raised by the game gaols manager during a move, when a new goal is completed
+    public delegate void GoalCompletedHandler(LevelGoal.GoalType goalType);
+    public static event GoalCompletedHandler GoalCompletedEvent;
+    public static void RaiseGoalCompletedEvent(LevelGoal.GoalType goalType)
+    {
+        GoalCompletedEvent?.Invoke(goalType);
+    }
+    
     // raised by the level manager when the level ends
     public delegate void LevelEndedHandler(bool won);
     public static event LevelEndedHandler LevelEndedEvent;

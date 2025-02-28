@@ -106,4 +106,20 @@ public class LevelGoalsManager : MonoBehaviour
             }
         }
     }
+    
+    // function to update goal progress for a given goal, and raise the goal completed event if applicable
+    private void UpdateGoalProgress(LevelGoal.GoalType goalType, int amount)
+    {
+        //update progress!
+        goalProgress[goalType].Remaining -= amount;
+            
+        //if it is newly completed, let other systems know
+        if (goalProgress[goalType].Remaining <= 0)
+        {
+            goalProgress[goalType].Remaining = 0; // lower limit is 0
+            Debug.Log($"Level goal completed: {goalType}!");
+            GameEvents.RaiseGoalCompletedEvent(goalType);
+        }
+    }
+    
 }
