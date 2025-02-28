@@ -22,14 +22,18 @@
   [
     {
       "goalType": "R",
-      "goalAmount": 6
+      "goalAmount": 10
     },
     {
       "goalType": "G",
-      "goalAmount": 2
+      "goalAmount": 10
+    },
+    {
+      "goalType": "A",
+      "goalAmount": 20
     }
   ],
   
-  "startingMoveCount": 20
+  "startingMoveCount": 10
   
 }

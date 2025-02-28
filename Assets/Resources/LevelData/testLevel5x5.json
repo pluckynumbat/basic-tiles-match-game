@@ -10,15 +10,15 @@
   "goals": 
   [
     {
-      "goalType": "R",
-      "goalAmount": 6
+      "goalType": "Y",
+      "goalAmount": 5
     },
     {
-      "goalType": "G",
-      "goalAmount": 2
+      "goalType": "B",
+      "goalAmount": 5
     }
   ],
   
-  "startingMoveCount": 20
+  "startingMoveCount": 5
   
 }
