@@ -1,6 +1,6 @@
 // TODO: remove this later if not required
 // Uncomment the following line to enable level manager logs
-//#define LEVEL_MANAGER_LOGGING
+#define LEVEL_MANAGER_LOGGING
 
 using System;
 using UnityEngine;
@@ -54,11 +54,15 @@ public class LevelManager : MonoBehaviour
     private void OnMoveCompleted()
     {
         moveCount -= 1; // reduce remaining move count by 1
+#if LEVEL_MANAGER_LOGGING
         Debug.Log($"Move count: {moveCount}");
+#endif
 
         if (moveCount <= 0)
         {
+#if LEVEL_MANAGER_LOGGING
             Debug.Log("Level ended, you lost :( ");
+#endif
             // let other systems know that the level ended, and that the player lost
             GameEvents.RaiseLevelEndedEvent(false);
         }
