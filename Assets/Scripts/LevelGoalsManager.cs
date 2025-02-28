@@ -133,6 +133,10 @@ public class LevelGoalsManager : MonoBehaviour
 #endif      
             GameEvents.RaiseGoalCompletedEvent(goalType);
         }
+        else // let other systems know that there was progress made
+        {
+            GameEvents.RaiseGoalProgressUpdatedEvent(goalType, goalProgress[goalType].Remaining);
+        }
     }
 
 

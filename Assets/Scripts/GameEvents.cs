@@ -88,6 +88,14 @@ public static class GameEvents
         MoveCompletedEvent?.Invoke();
     }
     
+    // raised by the level goals manager during a move, when a goal's progress is updated
+    public delegate void GoalProgressUpdatedHandler(LevelGoal.GoalType goalType, int remaining);
+    public static event GoalProgressUpdatedHandler GoalProgressUpdatedEvent;
+    public static void RaiseGoalProgressUpdatedEvent(LevelGoal.GoalType goalType, int remaining)
+    {
+        GoalProgressUpdatedEvent?.Invoke(goalType, remaining);
+    }
+    
     // raised by the level goals manager during a move, when a new goal is completed
     public delegate void GoalCompletedHandler(LevelGoal.GoalType goalType);
     public static event GoalCompletedHandler GoalCompletedEvent;
