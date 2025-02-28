@@ -9,11 +9,18 @@ public class LevelJSONReader : MonoBehaviour
 {
     private const string LEVEL_DATA_DIRECTORY = "LevelData/";
     
-    public static LevelData ReadJSON(string fileName)
+    public static LevelData ReadJSON(string fileName, string defaultFile)
     {
         string path = LEVEL_DATA_DIRECTORY + fileName;
+        string defaultPath = LEVEL_DATA_DIRECTORY + defaultFile;
         
         var jsonLevelFile = Resources.Load<TextAsset>(path);
+
+        if (jsonLevelFile == null)
+        {
+            Debug.LogError($"requested level file with file name: '{fileName}' does not exist!, falling back to default level");
+            jsonLevelFile = Resources.Load<TextAsset>(defaultPath);
+        }
 
         LevelData levelData = JsonUtility.FromJson<LevelData>(jsonLevelFile.ToString());
 
