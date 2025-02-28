@@ -27,4 +27,29 @@ public class LevelGoal
         TotalAmount = total;
         Remaining = total;
     }
+    
+    //helper to get goal type from a string in the level data
+    public static GoalType GetGoalTypeFromString(string goalString)
+    {
+        switch (goalString)
+        {
+            case "R":
+                return GoalType.CollectRed;
+            
+            case "G":
+                return GoalType.CollectGreen;
+            
+            case "B":
+                return GoalType.CollectBlue;
+            
+            case "Y":
+                return GoalType.CollectYellow;
+            
+            case "A":
+                return GoalType.CollectAny;
+        }
+        
+        Debug.LogError($"Invalid goal string: {goalString}");
+        return GoalType.None;
+    }
 }
