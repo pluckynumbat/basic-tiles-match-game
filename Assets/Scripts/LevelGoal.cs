@@ -14,7 +14,7 @@ public class LevelGoal
         CollectGreen,
         CollectBlue,
         CollectYellow,
-        CollectAny,
+        CollectAny, // not tied to a particular color
     }
 
     public readonly GoalType Type; // type of the goal from the above enums
