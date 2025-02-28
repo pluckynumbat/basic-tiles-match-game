@@ -33,37 +33,12 @@ public class LevelGoalsManager : MonoBehaviour
         goalProgress = new Dictionary<LevelGoal.GoalType, LevelGoal>();
         foreach (LevelGoalData goalData in levelData.goals)
         {
-            LevelGoal.GoalType key = GetGoalTypeFromString(goalData.goalType);
+            LevelGoal.GoalType key = LevelGoal.GetGoalTypeFromString(goalData.goalType);
             goalProgress[key] = new LevelGoal(key, goalData.goalAmount);
         }
         
         // Debug Only TODO: remove this later?
         PrintGoalStatusToConsole();
-    }
-
-    //helper to get goal type from a string in the level data
-    private LevelGoal.GoalType GetGoalTypeFromString(string goalString)
-    {
-        switch (goalString)
-        {
-            case "R":
-                return LevelGoal.GoalType.CollectRed;
-            
-            case "G":
-                return LevelGoal.GoalType.CollectGreen;
-            
-            case "B":
-                return LevelGoal.GoalType.CollectBlue;
-            
-            case "Y":
-                return LevelGoal.GoalType.CollectYellow;
-            
-            case "A":
-                return LevelGoal.GoalType.CollectAny;
-        }
-        
-        Debug.LogError($"Invalid goal string: {goalString}");
-        return LevelGoal.GoalType.None;
     }
     
     // update the goals dictionary, see if any new goal was completed, see if all goals were completed

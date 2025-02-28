@@ -55,7 +55,7 @@ public class UIGoalsDisplay : MonoBehaviour
                 break;
             }
 
-            LevelGoal.GoalType goalType = GetGoalTypeFromString(goal.goalType);
+            LevelGoal.GoalType goalType = LevelGoal.GetGoalTypeFromString(goal.goalType);
             goalItems[counter].gameObject.SetActive(true);
             goalItems[counter].SetupGoalItem(goalType, GetSpriteBasedOnGoalType(goalType), goal.goalAmount);
             counter++;
@@ -111,29 +111,5 @@ public class UIGoalsDisplay : MonoBehaviour
         return null;
     }
     
-    //helper to get goal type from a string in the level data
-    //TODO: this is also present in the LevelGoalsManager, maybe move this to a new utility class (or LevelGoal itself)?
-    private LevelGoal.GoalType GetGoalTypeFromString(string goalString)
-    {
-        switch (goalString)
-        {
-            case "R":
-                return LevelGoal.GoalType.CollectRed;
-            
-            case "G":
-                return LevelGoal.GoalType.CollectGreen;
-            
-            case "B":
-                return LevelGoal.GoalType.CollectBlue;
-            
-            case "Y":
-                return LevelGoal.GoalType.CollectYellow;
-            
-            case "A":
-                return LevelGoal.GoalType.CollectAny;
-        }
-        
-        Debug.LogError($"Invalid goal string: {goalString}");
-        return LevelGoal.GoalType.None;
-    }
+    
 }
