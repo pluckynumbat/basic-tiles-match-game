@@ -42,6 +42,11 @@ public class LevelManager : MonoBehaviour
     //update move count and check if the level ends
     private void OnMoveCompleted()
     {
+        if (moveCount <= 0)
+        {
+            return;
+        }
+
         moveCount -= 1; // reduce remaining move count by 1
 #if LEVEL_MANAGER_LOGGING
         Debug.Log($"Move count: {moveCount}");
