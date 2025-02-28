@@ -121,5 +121,26 @@ public class LevelGoalsManager : MonoBehaviour
             GameEvents.RaiseGoalCompletedEvent(goalType);
         }
     }
-    
+
+    // helper to get goal type from a Grid cell color type
+    private LevelGoal.GoalType GetGoalTypeFromGridCellColor(GameGridCell.GridCellColor color)
+    {
+        switch (color)
+        {
+            case GameGridCell.GridCellColor.Red:
+                return LevelGoal.GoalType.CollectRed;
+            
+            case GameGridCell.GridCellColor.Green:
+                return LevelGoal.GoalType.CollectGreen;
+            
+            case GameGridCell.GridCellColor.Blue:
+                return LevelGoal.GoalType.CollectBlue;
+            
+            case GameGridCell.GridCellColor.Yellow:
+                return LevelGoal.GoalType.CollectYellow;
+        }
+        
+        Debug.LogError($"Goal type does not exist for goal color: {color}");
+        return LevelGoal.GoalType.None;
+    }
 }
