@@ -13,6 +13,8 @@ public class LevelManager : MonoBehaviour
     private const string DEFAULT_LEVEL_NAME = "testLevel7x7"; // default level that is used as fallback in case we do not find level to load
     
     public string levelToLoad; // name of the level that we want to load
+
+    private int moveCount; // number of moves left in the level
     private void Awake()
     {
         GameEvents.InputDetectedEvent -= OnInputDetected;
@@ -26,6 +28,9 @@ public class LevelManager : MonoBehaviour
         LevelData levelData = LevelJSONReader.ReadJSON(levelName, DEFAULT_LEVEL_NAME);
         
         //TODO: validate the level data if possible before broadcasting it
+
+        moveCount = levelData.startingMoveCount;
+        
         GameEvents.RaiseLevelDataReadyEvent(levelData);
     }
 
