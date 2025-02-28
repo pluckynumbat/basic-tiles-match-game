@@ -79,4 +79,12 @@ public static class GameEvents
     {
         MoveCompletedEvent?.Invoke();
     }
+    
+    // raised by the level manager when the level ends
+    public delegate void LevelEndedHandler(bool won);
+    public static event LevelEndedHandler LevelEndedEvent;
+    public static void RaiseLevelEndedEvent(bool won)
+    {
+        LevelEndedEvent?.Invoke(won);
+    }
 }
