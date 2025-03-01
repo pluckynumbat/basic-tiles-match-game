@@ -43,6 +43,24 @@ public class LevelManager : MonoBehaviour
         GameEvents.GoalCompletedEvent -= OnGoalCompleted;
         GameEvents.MoveCompletedEvent -= OnMoveCompleted;
     }
+    
+    //check incomplete goal count
+    private void OnGoalCompleted(LevelGoal.GoalType goalType)
+    {
+        incompleteGoalsLeft  -= 1; // reduce incomplete goals left by 1
+
+#if LEVEL_MANAGER_LOGGING
+        Debug.Log($"Incomplete goals count: {incompleteGoalsLeft}");
+#endif
+        if (incompleteGoalsLeft <= 0)
+        {
+#if LEVEL_MANAGER_LOGGING
+            Debug.Log("Level ended, You Won!");
+#endif
+            // let other systems know that the level ended, and that the player won
+            GameEvents.RaiseLevelEndedEvent(true);           
+        }
+    }
 
     //update move count and check if the level ends
     private void OnMoveCompleted()
