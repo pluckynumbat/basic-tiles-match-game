@@ -50,11 +50,11 @@ public class UIDialogSpawner : MonoBehaviour
         }
 
         UIDialogBase dialog = null;
-        Object obj = Instantiate(Resources.Load(UI_DIALOGS_DIRECTORY + dialogName, typeof(GameObject)), transform);
-        GameObject go = obj as GameObject;
-        if (go != null)
+        Object dialogObject = Instantiate(Resources.Load(UI_DIALOGS_DIRECTORY + dialogName, typeof(GameObject)), transform);
+        GameObject dialogGameObject = dialogObject as GameObject;
+        if (dialogGameObject != null)
         {
-            dialog = go.GetComponent<UIDialogBase>();
+            dialog = dialogGameObject.GetComponent<UIDialogBase>();
         }
         
         isDialogDisplayed = true;
