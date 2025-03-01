@@ -48,6 +48,11 @@ public class LevelManager : MonoBehaviour
     //check incomplete goal count
     private void OnGoalCompleted(LevelGoal.GoalType goalType)
     {
+        if (moveCount <= 0) // do not mark level goal completion once a level is already over
+        {
+            return;
+        }
+        
         incompleteGoalsLeft  -= 1; // reduce incomplete goals left by 1
 
 #if LEVEL_MANAGER_LOGGING
