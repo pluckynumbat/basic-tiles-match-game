@@ -9,7 +9,17 @@ public class UIDialogSpawner : MonoBehaviour
     private const string UI_DIALOGS_DIRECTORY = "UIDialogs/";
     
     private bool isDialogDisplayed = false;
-    
+
+    private void Awake()
+    {   
+        UIEvents.DialogDismissedEvent -= OnDialogDismissed;
+        UIEvents.DialogDismissedEvent += OnDialogDismissed;
+    }
+
+    private void OnDestroy()
+    {
+        UIEvents.DialogDismissedEvent -= OnDialogDismissed;
+    }
     // load the required prefab from resources
     // get the UIDialogBase component attached to it
     // return a reference to that component
