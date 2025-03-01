@@ -26,7 +26,9 @@ public class GameTilesManager : MonoBehaviour
     
     private int gridLength; // cache the grid length in this
     
-    private bool acceptingInput = false; // can the player interact with the tiles on the game board?
+    private bool acceptingInput = false; // do not accept input when level setup is not done / when a player move is in progress
+
+    private bool anyDialogsOnScreen = false; // are there any dialogs on the screen (in which case input will have to be blocked)
     
     private void Awake()
     {
@@ -47,6 +49,12 @@ public class GameTilesManager : MonoBehaviour
         
         GameEvents.RefillGridReadyEvent -= OnRefillGridReady;
         GameEvents.RefillGridReadyEvent += OnRefillGridReady;
+        
+        UIEvents.DialogDisplayedEvent -= OnDialogDisplayed;
+        UIEvents.DialogDisplayedEvent += OnDialogDisplayed;
+        
+        UIEvents.DialogDismissedEvent -= OnDialogDismissed;
+        UIEvents.DialogDismissedEvent += OnDialogDismissed;
     }
     private void OnDestroy()
     {
@@ -56,6 +64,8 @@ public class GameTilesManager : MonoBehaviour
         GameEvents.GridCellsRemovedEvent -= OnGridCellsRemoved;
         GameEvents.GridCellsFillHolesEvent -= OnGridCellsFillHoles;
         GameEvents.RefillGridReadyEvent -= OnRefillGridReady;
+        UIEvents.DialogDisplayedEvent -= OnDialogDisplayed;
+        UIEvents.DialogDismissedEvent -= OnDialogDismissed;
     }
 
     // main grid is ready at the beginning of a level, create tiles 
@@ -186,7 +196,14 @@ public class GameTilesManager : MonoBehaviour
     // check if the player attempted a move on the game board
     private void OnInputDetected(Vector3 inputWorldPosition)
     {
+        // level setup / player move is in progress
         if (!acceptingInput)
+        {
+            return;
+        }
+        
+        //also block input whenever there is a dialog on the screen
+        if (anyDialogsOnScreen)
         {
             return;
         }
@@ -218,7 +235,6 @@ public class GameTilesManager : MonoBehaviour
     // the player's attempted move was invalid
     private void OnInvalidMove(int gridY, int gridX)
     {
-        //TODO: check if it is safe to set this to true in all cases
         acceptingInput = true;
     }
     
@@ -394,5 +410,17 @@ public class GameTilesManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         acceptingInput = true;
         GameEvents.RaiseMoveCompletedEvent();
+    }
+    
+    // set the flag to block input when a dialog is on screen
+    private void OnDialogDisplayed(UIDialogBase dialog)
+    {
+        anyDialogsOnScreen = true;
+    }
+    
+    // reset the flag that blocks input when a dialog is on screen
+    private void OnDialogDismissed(UIDialogBase dialog)
+    {
+        anyDialogsOnScreen = false;
     }
 }
