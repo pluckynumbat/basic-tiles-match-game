@@ -15,8 +15,12 @@ public class LevelManager : MonoBehaviour
     public string levelToLoad; // name of the level that we want to load
 
     private int moveCount; // number of moves left in the level
+    private int incompleteGoalsLeft; // number of unfulfilled goals left in the level
     private void Awake()
     {
+        GameEvents.GoalCompletedEvent -= OnGoalCompleted;
+        GameEvents.GoalCompletedEvent += OnGoalCompleted;
+        
         GameEvents.MoveCompletedEvent -= OnMoveCompleted;
         GameEvents.MoveCompletedEvent += OnMoveCompleted;
     }
@@ -30,13 +34,33 @@ public class LevelManager : MonoBehaviour
         //TODO: validate the level data if possible before broadcasting it
 
         moveCount = levelData.startingMoveCount;
+        incompleteGoalsLeft = levelData.goals.Count;
         
         GameEvents.RaiseLevelDataReadyEvent(levelData);
     }
 
     private void OnDestroy()
     {
+        GameEvents.GoalCompletedEvent -= OnGoalCompleted;
         GameEvents.MoveCompletedEvent -= OnMoveCompleted;
+    }
+    
+    //check incomplete goal count
+    private void OnGoalCompleted(LevelGoal.GoalType goalType)
+    {
+        incompleteGoalsLeft  -= 1; // reduce incomplete goals left by 1
+
+#if LEVEL_MANAGER_LOGGING
+        Debug.Log($"Incomplete goals count: {incompleteGoalsLeft}");
+#endif
+        if (incompleteGoalsLeft <= 0)
+        {
+#if LEVEL_MANAGER_LOGGING
+            Debug.Log("Level ended, You Won!");
+#endif
+            // let other systems know that the level ended, and that the player won
+            GameEvents.RaiseLevelEndedEvent(true);           
+        }
     }
 
     //update move count and check if the level ends
@@ -52,7 +76,7 @@ public class LevelManager : MonoBehaviour
         Debug.Log($"Move count: {moveCount}");
 #endif
 
-        if (moveCount <= 0)
+        if (moveCount <= 0 && incompleteGoalsLeft > 0)
         {
 #if LEVEL_MANAGER_LOGGING
             Debug.Log("Level ended, you lost :( ");
