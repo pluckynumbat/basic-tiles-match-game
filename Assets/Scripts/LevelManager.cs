@@ -17,6 +17,9 @@ public class LevelManager : MonoBehaviour
     private int moveCount; // number of moves left in the level
     private void Awake()
     {
+        GameEvents.GoalCompletedEvent -= OnGoalCompleted;
+        GameEvents.GoalCompletedEvent += OnGoalCompleted;
+        
         GameEvents.MoveCompletedEvent -= OnMoveCompleted;
         GameEvents.MoveCompletedEvent += OnMoveCompleted;
     }
@@ -30,12 +33,14 @@ public class LevelManager : MonoBehaviour
         //TODO: validate the level data if possible before broadcasting it
 
         moveCount = levelData.startingMoveCount;
+        incompleteGoalsLeft = levelData.goals.Count;
         
         GameEvents.RaiseLevelDataReadyEvent(levelData);
     }
 
     private void OnDestroy()
     {
+        GameEvents.GoalCompletedEvent -= OnGoalCompleted;
         GameEvents.MoveCompletedEvent -= OnMoveCompleted;
     }
 
