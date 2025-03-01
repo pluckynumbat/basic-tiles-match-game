@@ -7,19 +7,37 @@ using UnityEngine;
 public class UIDialogSpawner : MonoBehaviour
 {
     private const string UI_DIALOGS_DIRECTORY = "UIDialogs/";
+    private const string LEVEL_END_DIALOG_NAME = "LevelEndDialog";
     
     private bool isDialogDisplayed = false;
 
     private void Awake()
     {   
+        GameEvents.LevelEndedEvent -= OnLevelEnded;
+        GameEvents.LevelEndedEvent += OnLevelEnded;
+        
         UIEvents.DialogDismissedEvent -= OnDialogDismissed;
         UIEvents.DialogDismissedEvent += OnDialogDismissed;
     }
 
     private void OnDestroy()
     {
+        GameEvents.LevelEndedEvent -= OnLevelEnded;
         UIEvents.DialogDismissedEvent -= OnDialogDismissed;
     }
+
+    // spawn the level end dialog
+    private void OnLevelEnded(bool won)
+    {
+        UIDialogBase levelEndDialog = SpawnDialog(LEVEL_END_DIALOG_NAME);
+        if (levelEndDialog == null)
+        {
+            Debug.LogError($"dialog could not be spawned: {LEVEL_END_DIALOG_NAME}");
+            return;
+        }
+        levelEndDialog.Setup(won);
+    }
+
     // load the required prefab from resources
     // get the UIDialogBase component attached to it
     // return a reference to that component
