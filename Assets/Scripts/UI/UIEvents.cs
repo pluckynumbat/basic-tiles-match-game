@@ -1,0 +1,24 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+/// Static class to hold all the different UI events that can be raised in a session
+/// </summary>
+public static class UIEvents
+{
+    // raised by the UI Dialog Spawner in the scene when a dialog is displayed
+    public delegate void DialogDisplayedHandler(UIDialogBase dialog);
+    public static event DialogDisplayedHandler DialogDisplayedEvent;
+    public static void RaiseDialogDisplayedEvent(UIDialogBase dialog)
+    {
+        DialogDisplayedEvent?.Invoke(dialog);
+    }
+    
+    // raised by an UI Dialog in the scene when it is dismissed
+    public delegate void DialogDismissedHandler(UIDialogBase dialog);
+    public static event DialogDismissedHandler DialogDismissedEvent;
+    public static void RaiseDialogDismissedEvent(UIDialogBase dialog)
+    {
+        DialogDismissedEvent?.Invoke(dialog);
+    }
+}
