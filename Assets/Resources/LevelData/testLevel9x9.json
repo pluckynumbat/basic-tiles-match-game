@@ -3,7 +3,7 @@
   
   "seed": 99,
   
-  "colorCount": 4,
+  "colorCount": 6,
   
   "gridLength": 9,
   
@@ -11,15 +11,15 @@
   
   "startingGrid": 
   [
-    "Y","Y","Y","Y","Y","Y","Y","Y","Y",
-    "Y","R","R","R","R","R","R","R","R",
-    "Y","G","G","G","G","G","G","G","G",
+    "V","V","V","V","V","V","V","V","V",
+    "V","V","V","V","V","V","V","V","V",
+    "V","V","V","V","V","V","V","V","V",
     "Y","B","B","B","B","B","B","B","B",
     "Y","Y","Y","Y","Y","Y","Y","Y","Y",
     "Y","R","R","R","R","R","R","R","R",
-    "Y","G","G","G","G","G","G","G","G",
-    "Y","B","B","B","B","B","B","B","B",
-    "Y","Y","Y","Y","Y","Y","Y","Y","Y"
+    "O","O","O","O","O","O","O","O","O",
+    "O","O","O","O","O","O","O","O","O",
+    "O","O","O","O","O","O","O","O","O"
   ],
   
   "goals": 
@@ -29,12 +29,12 @@
       "goalAmount": 30
     },
     {
-      "goalType": "G",
-      "goalAmount": 30
+      "goalType": "V",
+      "goalAmount": 50
     },
     {
-      "goalType": "B",
-      "goalAmount": 30
+      "goalType": "O",
+      "goalAmount": 50
     },
     {
       "goalType": "Y",
@@ -42,6 +42,6 @@
     }
   ],
   
-  "startingMoveCount": 30
+  "startingMoveCount": 50
   
 }
