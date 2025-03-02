@@ -95,4 +95,18 @@ public class GameTile : MonoBehaviour
         transform.position = newPosition;
         isTileMoving = false;
     }
+    
+    // lerp the z rotation value of the game tile transform over given time
+    private IEnumerator LerpZRotation(float initialValue, float finalValue, float totalTime)
+    {
+        float timeSinceStart = 0f;
+        while (timeSinceStart < totalTime)
+        {
+            float zValue = Mathf.Lerp(initialValue, finalValue, timeSinceStart / totalTime);
+            transform.localEulerAngles = new Vector3(transform.rotation.x, transform.rotation.y, zValue);
+            timeSinceStart += Time.deltaTime;
+            yield return null;
+        }
+        transform.localEulerAngles = new Vector3(transform.rotation.x, transform.rotation.y, finalValue);
+    }
 }
