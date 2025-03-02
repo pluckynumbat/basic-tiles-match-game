@@ -104,6 +104,12 @@ public class LevelGoalsManager : MonoBehaviour
             
             case GameGridCell.GridCellColor.Yellow:
                 return LevelGoal.GoalType.CollectYellow;
+            
+            case GameGridCell.GridCellColor.Orange:
+                return LevelGoal.GoalType.CollectOrange;
+            
+            case GameGridCell.GridCellColor.Violet:
+                return LevelGoal.GoalType.CollectViolet;
         }
         
         Debug.LogError($"Goal type does not exist for goal color: {color}");
