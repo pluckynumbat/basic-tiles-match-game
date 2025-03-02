@@ -9,6 +9,7 @@ using UnityEngine;
 public class GameTile : MonoBehaviour
 {
     private const float TILE_WIDTH = 1.0f;
+    private const float TILE_MAX_WOBBLE_DEGREES = 5.0f;
 
     public int GridY; // Y index of this tile in the grid
     public int GridX; // X index of this tile in the grid
@@ -96,6 +97,38 @@ public class GameTile : MonoBehaviour
         isTileMoving = false;
     }
     
+    // do a wobble on the tile to let the player know that a single tile cannot be popped
+    public IEnumerator WobbleTile(float totalTime)
+    { 
+        float phaseTime = totalTime / 4;
+        float halfPhaseTime = totalTime / 8;
+        
+        //half phase 1
+        float initialZRot = 0;
+        float finalZRot = -1 * TILE_MAX_WOBBLE_DEGREES;
+        yield return StartCoroutine(LerpZRotation(initialZRot, finalZRot, halfPhaseTime));
+        
+        //full phase 2
+        initialZRot = -1 * TILE_MAX_WOBBLE_DEGREES;
+        finalZRot = TILE_MAX_WOBBLE_DEGREES;
+        yield return StartCoroutine(LerpZRotation(initialZRot, finalZRot, phaseTime));
+        
+        //full phase 3
+        initialZRot = TILE_MAX_WOBBLE_DEGREES;
+        finalZRot = -1 * TILE_MAX_WOBBLE_DEGREES;
+        yield return StartCoroutine(LerpZRotation(initialZRot, finalZRot, phaseTime));
+        
+        //full phase 4
+        initialZRot = -1 * TILE_MAX_WOBBLE_DEGREES;
+        finalZRot = TILE_MAX_WOBBLE_DEGREES;
+        yield return StartCoroutine(LerpZRotation(initialZRot, finalZRot, phaseTime));
+        
+        //half phase 5
+        initialZRot = TILE_MAX_WOBBLE_DEGREES;
+        finalZRot = 0;
+        yield return StartCoroutine(LerpZRotation(initialZRot, finalZRot, halfPhaseTime));
+    }
+
     // lerp the z rotation value of the game tile transform over given time
     private IEnumerator LerpZRotation(float initialValue, float finalValue, float totalTime)
     {
