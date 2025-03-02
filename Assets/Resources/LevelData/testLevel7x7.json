@@ -1,11 +1,13 @@
 {
-  "name": "test_level_7x7",
+  "name": "7x7 Level",
+  
+  "seed": 77,
   
   "colorCount": 4,
   
   "gridLength": 7,
   
-  "isStartingGridRandom": false,
+  "isStartingGridFixed": true,
   
   "startingGrid": 
   [

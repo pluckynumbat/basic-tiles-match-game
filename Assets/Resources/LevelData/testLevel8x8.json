@@ -1,21 +1,23 @@
 {
-  "name": "test_level_8x8",
+  "name": "8x8 Level",
+  
+  "seed": 88,
   
   "colorCount": 4,
   
   "gridLength": 8,
   
-  "isStartingGridRandom": true,
+  "isStartingGridFixed": false,
   
   "goals": 
   [
     {
       "goalType": "B",
-      "goalAmount": 15
+      "goalAmount": 20
     },
     {
-      "goalType": "A",
-      "goalAmount": 60
+      "goalType": "G",
+      "goalAmount": 20
     }
   ],
   

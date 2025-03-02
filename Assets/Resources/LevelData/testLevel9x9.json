@@ -1,11 +1,13 @@
 {
-  "name": "test_level_9x9",
+  "name": "9x9 Level",
+  
+  "seed": 99,
   
   "colorCount": 4,
   
   "gridLength": 9,
   
-  "isStartingGridRandom": false,
+  "isStartingGridFixed": true,
   
   "startingGrid": 
   [
@@ -24,14 +26,22 @@
   [
     {
       "goalType": "R",
-      "goalAmount": 6
+      "goalAmount": 30
     },
     {
       "goalType": "G",
-      "goalAmount": 2
+      "goalAmount": 30
+    },
+    {
+      "goalType": "B",
+      "goalAmount": 30
+    },
+    {
+      "goalType": "Y",
+      "goalAmount": 30
     }
   ],
   
-  "startingMoveCount": 20
+  "startingMoveCount": 30
   
 }
