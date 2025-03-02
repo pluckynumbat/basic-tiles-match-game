@@ -34,10 +34,11 @@ public class LevelJSONReader : MonoBehaviour
 public class LevelData
 {
     public string name; // name of the level
+    public int seed; // optional ability to provide a fixed seed. If not provided, it defaults to 0, and the game will ignore it (level will not use fixed seed)
     public int colorCount; //number of different colors that the gird can be populated with
     public int gridLength; // length of 1 dimension of the square grid (e.g. length 6 means the grid is 6x6)
-    public bool isStartingGridRandom; // should the starting grid be random?
-    public List<string> startingGrid; // specification of the starting grid, if not random
+    public bool isStartingGridFixed; // is the starting grid fixed (if so, the following property should be specified in the level file)
+    public List<string> startingGrid; // specification of the starting grid, if fixed
     public List<LevelGoalData> goals; // list of goals for the level
     public int startingMoveCount; // moves the player has to finish the level
 }
