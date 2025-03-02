@@ -3,7 +3,7 @@
   
   "seed": 88,
   
-  "colorCount": 4,
+  "colorCount": 5,
   
   "gridLength": 8,
   
@@ -12,15 +12,15 @@
   "goals": 
   [
     {
-      "goalType": "B",
-      "goalAmount": 20
+      "goalType": "G",
+      "goalAmount": 30
     },
     {
-      "goalType": "G",
-      "goalAmount": 20
+      "goalType": "O",
+      "goalAmount": 30
     }
   ],
   
-  "startingMoveCount": 10
+  "startingMoveCount": 30
   
 }

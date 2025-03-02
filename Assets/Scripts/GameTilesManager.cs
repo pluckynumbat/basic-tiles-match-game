@@ -190,6 +190,12 @@ public class GameTilesManager : MonoBehaviour
             
             case GameGridCell.GridCellColor.Yellow:
                 return tileSpriteOptions[3];
+            
+            case GameGridCell.GridCellColor.Orange:
+                return tileSpriteOptions[4];
+            
+            case GameGridCell.GridCellColor.Violet:
+                return tileSpriteOptions[5];
         }
 
         return null;

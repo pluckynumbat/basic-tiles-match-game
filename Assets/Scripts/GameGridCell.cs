@@ -11,6 +11,8 @@ public class GameGridCell
         Green,
         Blue,
         Yellow,
+        Orange,
+        Violet,
     }
 
     public readonly int Y; // y index of this cell in the grid it is a part of

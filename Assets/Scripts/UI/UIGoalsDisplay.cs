@@ -110,8 +110,14 @@ public class UIGoalsDisplay : MonoBehaviour
             case LevelGoal.GoalType.CollectYellow:
                 return goalSpriteOptions[3];
             
-            case LevelGoal.GoalType.CollectAny:
+            case LevelGoal.GoalType.CollectOrange:
                 return goalSpriteOptions[4];
+            
+            case LevelGoal.GoalType.CollectViolet:
+                return goalSpriteOptions[5];
+            
+            case LevelGoal.GoalType.CollectAny:
+                return goalSpriteOptions[6];
         }
 
         return null;
