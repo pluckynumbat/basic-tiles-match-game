@@ -14,6 +14,8 @@ public class LevelGoal
         CollectGreen,
         CollectBlue,
         CollectYellow,
+        CollectOrange,
+        CollectViolet,
         CollectAny, // not tied to a particular color
     }
 
@@ -44,6 +46,12 @@ public class LevelGoal
             
             case "Y":
                 return GoalType.CollectYellow;
+            
+            case "O":
+                return GoalType.CollectOrange;
+            
+            case "V":
+                return GoalType.CollectViolet;
             
             case "A":
                 return GoalType.CollectAny;
