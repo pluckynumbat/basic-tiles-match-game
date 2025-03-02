@@ -21,4 +21,15 @@ public static class UIEvents
     {
         DialogDismissedEvent?.Invoke(dialog);
     }
+    
+    // raised by a UI Level Select Node when the player presses it 
+    public delegate void LevelSelectedHandler(string levelName);
+    public static event LevelSelectedHandler LevelSelectedEvent;
+    public static void RaiseLevelSelectedEvent(string levelName)
+    {
+        LevelSelectedEvent?.Invoke(levelName);
+    }
+    
+    
+    
 }
