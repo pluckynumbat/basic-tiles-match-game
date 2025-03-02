@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// The main manager gets loaded in the main scene and will persist throughout the session.
@@ -7,6 +8,9 @@ using UnityEngine;
 /// </summary>
 public class MainManager : MonoBehaviour
 {
+    private const int MAIN_SCENE_ID = 0;
+    private const int LEVEL_SCENE_ID = 1;
+    
     //Singleton
     private static MainManager instance;
     public static MainManager Instance
@@ -34,6 +38,12 @@ public class MainManager : MonoBehaviour
         
         UIEvents.LevelSelectedEvent -= OnLevelSelected;
         UIEvents.LevelSelectedEvent += OnLevelSelected;
+        
+        UIEvents.PlayLevelRequestEvent -= OnPlayLevelRequest;
+        UIEvents.PlayLevelRequestEvent += OnPlayLevelRequest;
+        
+        UIEvents.LeaveLevelRequestEvent -= OnLeaveLevelRequest;
+        UIEvents.LeaveLevelRequestEvent += OnLeaveLevelRequest;
     }
 
     private void OnDestroy()
@@ -56,5 +66,18 @@ public class MainManager : MonoBehaviour
         
         // let other systems in the main scene know that level data is loaded
         UIEvents.RaiseLevelDataLoadedEvent(levelToPlay);
+    }
+    
+    // the player pressed 'Play' on the level preview dialog, switch scenes to level scene for this level
+    // (level data is already in levelToPlay at this point)
+    private void OnPlayLevelRequest()
+    {
+        SceneManager.LoadScene(LEVEL_SCENE_ID);
+    }
+    
+    // player wants to leave the level scene
+    private void OnLeaveLevelRequest()
+    {
+        SceneManager.LoadScene(MAIN_SCENE_ID);
     }
 }

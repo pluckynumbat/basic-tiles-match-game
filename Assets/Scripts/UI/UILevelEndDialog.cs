@@ -1,5 +1,4 @@
 using TMPro;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Dialog shown when the level ends. using the action buttons on it, the player can leave the level or restart it 
@@ -19,15 +18,15 @@ public class UILevelEndDialog : UIDialogBase
         titleText.text = won ? WIN_TEXT : LOSS_TEXT;
     }
 
-    //reload the scene
+    //reload the level scene
     public void OnRestartButtonClicked()
     {
-        SceneManager.LoadScene(1); // TODO make this a constant
+        UIEvents.RaisePlayLevelRequestEvent();
     }
     
     //go to the main scene
     public void OnQuitButtonClicked()
     {
-        SceneManager.LoadScene(0);  // TODO make this a constant
+        UIEvents.RaiseLeaveLevelRequestEvent();
     }
 }

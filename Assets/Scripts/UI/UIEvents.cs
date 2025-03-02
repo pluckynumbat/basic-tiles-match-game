@@ -38,5 +38,19 @@ public static class UIEvents
         LevelDataLoadedEvent?.Invoke(levelData);
     }
     
+    // raised by UI elements to enter the level scene / reload it
+    public delegate void PlayLevelRequestHandler();
+    public static event PlayLevelRequestHandler PlayLevelRequestEvent;
+    public static void RaisePlayLevelRequestEvent()
+    {
+        PlayLevelRequestEvent?.Invoke();
+    }
     
+    // raised by UI elements to leave the level scene
+    public delegate void LeaveLevelRequestHandler();
+    public static event LeaveLevelRequestHandler LeaveLevelRequestEvent;
+    public static void RaiseLeaveLevelRequestEvent()
+    {
+        LeaveLevelRequestEvent?.Invoke();
+    }
 }
