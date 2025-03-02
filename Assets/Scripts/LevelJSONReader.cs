@@ -8,8 +8,9 @@ using UnityEngine;
 public class LevelJSONReader : MonoBehaviour
 {
     private const string LEVEL_DATA_DIRECTORY = "LevelData/";
+    private const string DEFAULT_LEVEL_NAME = "testLevel7x7"; // default level that is used as fallback in case we do not find level to load
     
-    public static LevelData ReadJSON(string fileName, string defaultFile)
+    public static LevelData ReadJSON(string fileName, string defaultFile = DEFAULT_LEVEL_NAME)
     {
         string path = LEVEL_DATA_DIRECTORY + fileName;
         string defaultPath = LEVEL_DATA_DIRECTORY + defaultFile;

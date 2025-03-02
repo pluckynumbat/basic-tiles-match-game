@@ -42,6 +42,9 @@ public class MainManager : MonoBehaviour
         UIEvents.PlayLevelRequestEvent -= OnPlayLevelRequest;
         UIEvents.PlayLevelRequestEvent += OnPlayLevelRequest;
         
+        GameEvents.LevelDataRequestEvent -= OnLevelDataRequest;
+        GameEvents.LevelDataRequestEvent += OnLevelDataRequest;
+        
         UIEvents.LeaveLevelRequestEvent -= OnLeaveLevelRequest;
         UIEvents.LeaveLevelRequestEvent += OnLeaveLevelRequest;
     }
@@ -49,6 +52,9 @@ public class MainManager : MonoBehaviour
     private void OnDestroy()
     {
         UIEvents.LevelSelectedEvent -= OnLevelSelected;
+        UIEvents.PlayLevelRequestEvent -= OnPlayLevelRequest;
+        GameEvents.LevelDataRequestEvent -= OnLevelDataRequest;
+        UIEvents.LeaveLevelRequestEvent -= OnLeaveLevelRequest;
     }
 
     // a level select node was pressed in the main scene
@@ -73,6 +79,13 @@ public class MainManager : MonoBehaviour
     private void OnPlayLevelRequest()
     {
         SceneManager.LoadScene(LEVEL_SCENE_ID);
+    }
+    
+    // level scene has been loaded and the managers in it need the level data
+    private void OnLevelDataRequest()
+    {
+        //TODO: validate the properties inside level data if possible before using them / broadcasting it
+        GameEvents.RaiseLevelDataReadyEvent(levelToPlay);
     }
     
     // player wants to leave the level scene
