@@ -8,6 +8,8 @@ using UnityEngine;
 /// </summary>
 public class GameTilesManager : MonoBehaviour
 {
+    private const float TILE_WOBBLE_TIME = 0.4f;
+    
     public GameObject tilePrefab; // prefab for the tiles
     public Vector2 tileContainerPosition; // where should the tile container be placed
     public float refillContainerOffset; // where should the refill container be placed w.r.t. the tile container
@@ -233,8 +235,32 @@ public class GameTilesManager : MonoBehaviour
     }
     
     // the player's attempted move was invalid
+    // if it was for error reasons, re-enable input
+    // if it was for single tile reason, let the player know via some feedback and then re-enable input
     private void OnInvalidMove(int gridY, int gridX)
     {
+        if (gridY < 0 || gridY >= gridLength || gridX < 0 || gridX >= gridLength) // out of bounds (error condition)
+        {
+            acceptingInput = true;
+            return;
+        }
+
+        GameTile tile = activeTilesDictionary[gridY * gridLength + gridX];
+        if (tile == null || !tile.IsTileActive) // empty tile (error condition)
+        {
+            acceptingInput = true;
+            return;
+        }
+        
+        // single tile cannot be popped, provide feedback and then re-enable input
+        StartCoroutine(tile.WobbleTile(TILE_WOBBLE_TIME));
+        StartCoroutine(ReEnableInputAfterInvalidMoveFeedback(TILE_WOBBLE_TIME));
+    }
+    
+    // wait for the tile to do a quick wobble, to let the player know the move is invalid, and then , re-enable input
+    public IEnumerator ReEnableInputAfterInvalidMoveFeedback(float feedbackTime)
+    {
+        yield return new WaitForSeconds(feedbackTime);
         acceptingInput = true;
     }
     
