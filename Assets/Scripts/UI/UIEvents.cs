@@ -14,7 +14,7 @@ public static class UIEvents
         DialogDisplayedEvent?.Invoke(dialog);
     }
     
-    // raised by an UI Dialog in the scene when it is dismissed
+    // raised by a UI Dialog in the scene when it is dismissed
     public delegate void DialogDismissedHandler(UIDialogBase dialog);
     public static event DialogDismissedHandler DialogDismissedEvent;
     public static void RaiseDialogDismissedEvent(UIDialogBase dialog)
@@ -30,6 +30,13 @@ public static class UIEvents
         LevelSelectedEvent?.Invoke(levelName);
     }
     
+    // raised by the Main Manager when it has processed level data from the level string
+    public delegate void LevelDataLoadedHandler(LevelData levelData);
+    public static event LevelDataLoadedHandler LevelDataLoadedEvent;
+    public static void RaiseLevelDataLoadedEvent(LevelData levelData)
+    {
+        LevelDataLoadedEvent?.Invoke(levelData);
+    }
     
     
 }

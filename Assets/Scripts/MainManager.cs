@@ -16,6 +16,9 @@ public class MainManager : MonoBehaviour
             return instance;
         }
     }
+    
+    // store the next level the player will play
+    public LevelData levelToPlay;
 
     private void Awake()
     {
@@ -28,5 +31,30 @@ public class MainManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
+        UIEvents.LevelSelectedEvent -= OnLevelSelected;
+        UIEvents.LevelSelectedEvent += OnLevelSelected;
+    }
+
+    private void OnDestroy()
+    {
+        UIEvents.LevelSelectedEvent -= OnLevelSelected;
+    }
+
+    // a level select node was pressed in the main scene
+    // load the level by level name and cache it as the probable level to play
+    private void OnLevelSelected(string levelName)
+    {
+        levelToPlay = LevelJSONReader.ReadJSON(levelName);
+        if (levelToPlay == null)
+        {
+            Debug.LogError($"Invalid level data for level name: {levelName}, abort");
+            return;
+        }
+        
+        //TODO: validate the properties inside level data if possible before using them / broadcasting it
+        
+        // let other systems in the main scene know that level data is loaded
+        UIEvents.RaiseLevelDataLoadedEvent(levelToPlay);
     }
 }
