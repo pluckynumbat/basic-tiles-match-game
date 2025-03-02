@@ -144,6 +144,12 @@ public class GameGridManager : MonoBehaviour
             
             case "Y":
                 return GameGridCell.GridCellColor.Yellow;
+            
+            case "O":
+                return GameGridCell.GridCellColor.Orange;
+            
+            case "V":
+                return GameGridCell.GridCellColor.Violet;
         }
         
         Debug.LogError($"Invalid color string: {colorString}");
@@ -497,6 +503,12 @@ public class GameGridManager : MonoBehaviour
 
             case GameGridCell.GridCellColor.Yellow:
                 return "Y";
+            
+            case GameGridCell.GridCellColor.Orange:
+                return "O";
+
+            case GameGridCell.GridCellColor.Violet:
+                return "V";
         }
         return "_";
     }
