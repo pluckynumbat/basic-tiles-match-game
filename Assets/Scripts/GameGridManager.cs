@@ -11,6 +11,8 @@ using UnityEngine;
 /// </summary>
 public class GameGridManager : MonoBehaviour
 {
+    private const int SEED_TO_IGNORE = 0; // this is the default value of the level data seed, and this value means that it will not be used
+    
     private GameGridCell[][] mainGrid; // the main / active grid in the level
 
     private GameGridCell[][] refillGrid; // a grid used to refill the main grid in the last part of the player's move
@@ -49,10 +51,15 @@ public class GameGridManager : MonoBehaviour
     // does the initial setup of the game grid when a new level begins
     private void SetupGameGrid(LevelData levelData)
     {
+        if (levelData.seed != SEED_TO_IGNORE)
+        {
+            Random.InitState(levelData.seed);
+        }
+
         validColorCount = levelData.colorCount;
         gridLength = levelData.gridLength;
 
-        bool isGridRandom = levelData.isStartingGridRandom;
+        bool isStartGridFixed = levelData.isStartingGridFixed;
         
         mainGrid = new GameGridCell[gridLength][];
         for (int y = 0; y < gridLength; y++)
@@ -61,15 +68,15 @@ public class GameGridManager : MonoBehaviour
             for (int x = 0; x < gridLength; x++)
             {
                 mainGrid[y][x] = new GameGridCell(y, x);
-                if (isGridRandom)
-                {
-                    mainGrid[y][x].Color = GetRandomGridCellColor(validColorCount);
-                }
-                else // get the grid specified in the level data
+                if (isStartGridFixed) // get the grid specified in the level data
                 {
                     //mapping from a top first list, to a bottom first 2D array
                     int mapping =  ((gridLength - 1 - y) * gridLength) + x;
                     mainGrid[y][x].Color = GetGridCellColorFromString(levelData.startingGrid[mapping]);
+                }
+                else // fill the starting grid randomly (controlled by the seed if specified)
+                {
+                    mainGrid[y][x].Color = GetRandomGridCellColor(validColorCount);
                 }
                 mainGrid[y][x].Occupied = true;
             }
