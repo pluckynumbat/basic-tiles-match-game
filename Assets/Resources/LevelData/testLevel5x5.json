@@ -1,11 +1,13 @@
 {
-  "name": "test_level_5x5",
+  "name": "5x5 Level",
+  
+  "seed": 55,
   
   "colorCount": 4,
   
   "gridLength": 5,
   
-  "isStartingGridRandom": true,
+  "isStartingGridFixed": false,
   
   "goals": 
   [

@@ -1,11 +1,13 @@
 {
-  "name": "test_level_6x6",
+  "name": "6x6 Level",
+  
+  "seed": 66,
   
   "colorCount": 4,
   
   "gridLength": 6,
   
-  "isStartingGridRandom": false,
+  "isStartingGridFixed": true,
   
   "startingGrid": 
   [
@@ -21,11 +23,11 @@
   [
     {
       "goalType": "R",
-      "goalAmount": 6
+      "goalAmount": 40
     },
     {
-      "goalType": "G",
-      "goalAmount": 2
+      "goalType": "A",
+      "goalAmount": 80
     }
   ],
   
