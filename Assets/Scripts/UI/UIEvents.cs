@@ -14,11 +14,43 @@ public static class UIEvents
         DialogDisplayedEvent?.Invoke(dialog);
     }
     
-    // raised by an UI Dialog in the scene when it is dismissed
+    // raised by a UI Dialog in the scene when it is dismissed
     public delegate void DialogDismissedHandler(UIDialogBase dialog);
     public static event DialogDismissedHandler DialogDismissedEvent;
     public static void RaiseDialogDismissedEvent(UIDialogBase dialog)
     {
         DialogDismissedEvent?.Invoke(dialog);
+    }
+    
+    // raised by a UI Level Select Node when the player presses it 
+    public delegate void LevelSelectedHandler(string levelName);
+    public static event LevelSelectedHandler LevelSelectedEvent;
+    public static void RaiseLevelSelectedEvent(string levelName)
+    {
+        LevelSelectedEvent?.Invoke(levelName);
+    }
+    
+    // raised by the Main Manager when it has processed level data from the level string
+    public delegate void LevelDataLoadedHandler(LevelData levelData);
+    public static event LevelDataLoadedHandler LevelDataLoadedEvent;
+    public static void RaiseLevelDataLoadedEvent(LevelData levelData)
+    {
+        LevelDataLoadedEvent?.Invoke(levelData);
+    }
+    
+    // raised by UI elements to enter the level scene / reload it
+    public delegate void PlayLevelRequestHandler();
+    public static event PlayLevelRequestHandler PlayLevelRequestEvent;
+    public static void RaisePlayLevelRequestEvent()
+    {
+        PlayLevelRequestEvent?.Invoke();
+    }
+    
+    // raised by UI elements to leave the level scene
+    public delegate void LeaveLevelRequestHandler();
+    public static event LeaveLevelRequestHandler LeaveLevelRequestEvent;
+    public static void RaiseLeaveLevelRequestEvent()
+    {
+        LeaveLevelRequestEvent?.Invoke();
     }
 }

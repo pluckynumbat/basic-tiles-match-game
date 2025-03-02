@@ -14,7 +14,15 @@ public static class GameEvents
         InputDetectedEvent?.Invoke(inputWorldPosition);
     }
     
-    // raised by the level manager when level data is loaded from a file and ready
+    // raised by the level manager when the level scene is loaded
+    public delegate void LevelDataRequestHandler();
+    public static event LevelDataRequestHandler LevelDataRequestEvent;
+    public static void RaiseLevelDataRequestEvent()
+    {
+        LevelDataRequestEvent?.Invoke();
+    }
+    
+    // raised by the main manager in response to a level data requested event
     public delegate void LevelDataReadyHandler(LevelData levelData);
     public static event LevelDataReadyHandler LevelDataReadyEvent;
     public static void RaiseLevelDataReadyEvent(LevelData levelData)

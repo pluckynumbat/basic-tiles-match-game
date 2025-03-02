@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// The main manager gets loaded in the main scene and will persist throughout the session.
@@ -7,6 +8,9 @@ using UnityEngine;
 /// </summary>
 public class MainManager : MonoBehaviour
 {
+    private const int MAIN_SCENE_ID = 0;
+    private const int LEVEL_SCENE_ID = 1;
+    
     //Singleton
     private static MainManager instance;
     public static MainManager Instance
@@ -16,6 +20,9 @@ public class MainManager : MonoBehaviour
             return instance;
         }
     }
+    
+    // store the next level the player will play
+    public LevelData levelToPlay;
 
     private void Awake()
     {
@@ -28,5 +35,62 @@ public class MainManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
+        UIEvents.LevelSelectedEvent -= OnLevelSelected;
+        UIEvents.LevelSelectedEvent += OnLevelSelected;
+        
+        UIEvents.PlayLevelRequestEvent -= OnPlayLevelRequest;
+        UIEvents.PlayLevelRequestEvent += OnPlayLevelRequest;
+        
+        GameEvents.LevelDataRequestEvent -= OnLevelDataRequest;
+        GameEvents.LevelDataRequestEvent += OnLevelDataRequest;
+        
+        UIEvents.LeaveLevelRequestEvent -= OnLeaveLevelRequest;
+        UIEvents.LeaveLevelRequestEvent += OnLeaveLevelRequest;
+    }
+
+    private void OnDestroy()
+    {
+        UIEvents.LevelSelectedEvent -= OnLevelSelected;
+        UIEvents.PlayLevelRequestEvent -= OnPlayLevelRequest;
+        GameEvents.LevelDataRequestEvent -= OnLevelDataRequest;
+        UIEvents.LeaveLevelRequestEvent -= OnLeaveLevelRequest;
+    }
+
+    // a level select node was pressed in the main scene
+    // load the level by level name and cache it as the probable level to play
+    private void OnLevelSelected(string levelName)
+    {
+        levelToPlay = LevelJSONReader.ReadJSON(levelName);
+        if (levelToPlay == null)
+        {
+            Debug.LogError($"Invalid level data for level name: {levelName}, abort");
+            return;
+        }
+        
+        //TODO: validate the properties inside level data if possible before using them / broadcasting it
+        
+        // let other systems in the main scene know that level data is loaded
+        UIEvents.RaiseLevelDataLoadedEvent(levelToPlay);
+    }
+    
+    // the player pressed 'Play' on the level preview dialog, switch scenes to level scene for this level
+    // (level data is already in levelToPlay at this point)
+    private void OnPlayLevelRequest()
+    {
+        SceneManager.LoadScene(LEVEL_SCENE_ID);
+    }
+    
+    // level scene has been loaded and the managers in it need the level data
+    private void OnLevelDataRequest()
+    {
+        //TODO: validate the properties inside level data if possible before using them / broadcasting it
+        GameEvents.RaiseLevelDataReadyEvent(levelToPlay);
+    }
+    
+    // player wants to leave the level scene
+    private void OnLeaveLevelRequest()
+    {
+        SceneManager.LoadScene(MAIN_SCENE_ID);
     }
 }

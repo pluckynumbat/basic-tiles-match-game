@@ -33,6 +33,12 @@ public class UIGoalsDisplay : MonoBehaviour
     // initialize goal items by providing them sprites and goal amounts 
     private void OnLevelDataReady(LevelData levelData)
     {
+        SetupGoalsDisplay(levelData);
+    }
+
+    // initialize goal items by providing them sprites and goal amounts 
+    public void SetupGoalsDisplay(LevelData levelData)
+    {
         //disable all goal items
         foreach (UIGoalItem goalItem in goalItems)
         {
@@ -63,7 +69,7 @@ public class UIGoalsDisplay : MonoBehaviour
 
         goalCount = Math.Min(goalCount, MAX_GOALS_DISPLAYED);
     }
-    
+
     private void OnGoalProgressUpdated(LevelGoal.GoalType goalType, int remaining)
     {
         CheckAndUpdateGoalItems(goalType, remaining);
