@@ -6,6 +6,14 @@ using UnityEngine;
 /// </summary>
 public static class UIEvents
 {
+    // raised by an element when they want to display a dialog on the screen
+    public delegate void DialogDisplayRequestHandler(string dialogName, object[] setupData);
+    public static event DialogDisplayRequestHandler DialogDisplayRequestEvent;
+    public static void RaiseDialogDisplayRequestEvent(string dialogName, object[] setupData)
+    {
+        DialogDisplayRequestEvent?.Invoke(dialogName, setupData);
+    }
+    
     // raised by the UI Dialog Spawner in the scene when a dialog is displayed
     public delegate void DialogDisplayedHandler(UIDialogBase dialog);
     public static event DialogDisplayedHandler DialogDisplayedEvent;
@@ -30,15 +38,7 @@ public static class UIEvents
         LevelSelectedEvent?.Invoke(levelName);
     }
     
-    // raised by the Main Manager when it has processed level data from the level string
-    public delegate void LevelDataLoadedHandler(LevelData levelData);
-    public static event LevelDataLoadedHandler LevelDataLoadedEvent;
-    public static void RaiseLevelDataLoadedEvent(LevelData levelData)
-    {
-        LevelDataLoadedEvent?.Invoke(levelData);
-    }
-    
-    // raised by UI elements to enter the level scene / reload it
+    // raised by UI elements to enter the level scene
     public delegate void PlayLevelRequestHandler();
     public static event PlayLevelRequestHandler PlayLevelRequestEvent;
     public static void RaisePlayLevelRequestEvent()
@@ -52,5 +52,13 @@ public static class UIEvents
     public static void RaiseLeaveLevelRequestEvent()
     {
         LeaveLevelRequestEvent?.Invoke();
+    }
+    
+    // raised by UI elements to reload the level scene
+    public delegate void RestartLevelRequestHandler();
+    public static event RestartLevelRequestHandler RestartLevelRequestEvent;
+    public static void RaiseRestartLevelRequestEvent()
+    {
+        RestartLevelRequestEvent?.Invoke();
     }
 }

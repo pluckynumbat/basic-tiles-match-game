@@ -16,9 +16,15 @@ public class UILevelPreviewDialog : UIDialogBase
     public UIGoalsDisplay goalsDisplay;
 
     // set title text and goals display based on supplied data
-    public override void Setup(object data)
+    public override void Setup(object[] data)
     {
-        LevelData levelData = data as LevelData;
+        if (data.Length == 0)
+        {
+            Debug.LogError("No data sent to setup the level preview dialog, abort");
+            return;
+        }
+
+        LevelData levelData = data[0] as LevelData;
         if (levelData == null)
         {
             Debug.LogError("Invalid level data in the level preview dialog, abort");

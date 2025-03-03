@@ -15,7 +15,7 @@ public class UIBottomPanel : MonoBehaviour
     //reload the level scene
     public void OnRestartButtonClicked()
     {
-        UIEvents.RaisePlayLevelRequestEvent();
+        UIEvents.RaiseRestartLevelRequestEvent();
     }
     
     //toggle audio mute

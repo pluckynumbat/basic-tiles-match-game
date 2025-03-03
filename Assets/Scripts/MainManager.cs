@@ -11,6 +11,9 @@ public class MainManager : MonoBehaviour
     private const int MAIN_SCENE_ID = 0;
     private const int LEVEL_SCENE_ID = 1;
     
+    private const string LEVEL_END_DIALOG_NAME = "LevelEndDialog";
+    private const string LEVEL_PREVIEW_DIALOG_NAME = "LevelPreviewDialog";
+    
     //Singleton
     private static MainManager instance;
     public static MainManager Instance
@@ -45,8 +48,14 @@ public class MainManager : MonoBehaviour
         GameEvents.LevelDataRequestEvent -= OnLevelDataRequest;
         GameEvents.LevelDataRequestEvent += OnLevelDataRequest;
         
+        GameEvents.LevelEndedEvent -= OnLevelEnded;
+        GameEvents.LevelEndedEvent += OnLevelEnded;
+        
         UIEvents.LeaveLevelRequestEvent -= OnLeaveLevelRequest;
         UIEvents.LeaveLevelRequestEvent += OnLeaveLevelRequest;
+        
+        UIEvents.RestartLevelRequestEvent -= OnRestartLevelRequest;
+        UIEvents.RestartLevelRequestEvent += OnRestartLevelRequest;
     }
 
     private void OnDestroy()
@@ -54,7 +63,9 @@ public class MainManager : MonoBehaviour
         UIEvents.LevelSelectedEvent -= OnLevelSelected;
         UIEvents.PlayLevelRequestEvent -= OnPlayLevelRequest;
         GameEvents.LevelDataRequestEvent -= OnLevelDataRequest;
+        GameEvents.LevelEndedEvent -= OnLevelEnded;
         UIEvents.LeaveLevelRequestEvent -= OnLeaveLevelRequest;
+        UIEvents.RestartLevelRequestEvent -= OnRestartLevelRequest;
     }
 
     // a level select node was pressed in the main scene
@@ -70,8 +81,8 @@ public class MainManager : MonoBehaviour
         
         //TODO: validate the properties inside level data if possible before using them / broadcasting it
         
-        // let other systems in the main scene know that level data is loaded
-        UIEvents.RaiseLevelDataLoadedEvent(levelToPlay);
+        //request display of the level preview dialog
+        UIEvents.RaiseDialogDisplayRequestEvent(LEVEL_PREVIEW_DIALOG_NAME, new object[] {levelToPlay});
     }
     
     // the player pressed 'Play' on the level preview dialog, switch scenes to level scene for this level
@@ -88,9 +99,21 @@ public class MainManager : MonoBehaviour
         GameEvents.RaiseLevelDataReadyEvent(levelToPlay);
     }
     
+    // request the UI dialog spawner to spawn the level end dialog, and supply it with required parameters
+    private void OnLevelEnded(bool won)
+    {
+        UIEvents.RaiseDialogDisplayRequestEvent(LEVEL_END_DIALOG_NAME, new object[] {won, isRandomModeEnabled});
+    }
+    
     // player wants to leave the level scene
     private void OnLeaveLevelRequest()
     {
         SceneManager.LoadScene(MAIN_SCENE_ID);
+    }
+    
+    // player wants to restart their level
+    private void OnRestartLevelRequest()
+    {
+        SceneManager.LoadScene(LEVEL_SCENE_ID);
     }
 }
