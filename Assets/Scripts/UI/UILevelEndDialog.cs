@@ -1,3 +1,4 @@
+using UnityEngine;
 using TMPro;
 
 /// <summary>
@@ -11,9 +12,15 @@ public class UILevelEndDialog : UIDialogBase
     public TextMeshProUGUI titleText; // this is set during run time
 
     // set title based on the data (player won or lost)
-    public override void Setup(object data)
+    public override void Setup(object[] data)
     {
-        bool won = (bool)data;
+        if (data.Length == 0)
+        {
+            Debug.LogError("No data sent to setup the level preview dialog, abort");
+            return;
+        }
+        
+        bool won = (bool)data[0];
 
         titleText.text = won ? WIN_TEXT : LOSS_TEXT;
     }
@@ -21,7 +28,7 @@ public class UILevelEndDialog : UIDialogBase
     //reload the level scene
     public void OnRestartButtonClicked()
     {
-        UIEvents.RaisePlayLevelRequestEvent();
+        UIEvents.RaiseRestartLevelRequestEvent();
     }
     
     //go to the main scene

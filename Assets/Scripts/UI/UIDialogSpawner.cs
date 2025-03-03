@@ -7,41 +7,34 @@ using UnityEngine;
 public class UIDialogSpawner : MonoBehaviour
 {
     private const string UI_DIALOGS_DIRECTORY = "UIDialogs/";
-    private const string LEVEL_PREVIEW_DIALOG_NAME = "LevelPreviewDialog";
-    private const string LEVEL_END_DIALOG_NAME = "LevelEndDialog";
     
     private bool isDialogDisplayed = false;
 
     private void Awake()
     {   
-        GameEvents.LevelEndedEvent -= OnLevelEnded;
-        GameEvents.LevelEndedEvent += OnLevelEnded;
+        UIEvents.DialogDisplayRequestEvent -= OnDialogDisplayRequest;
+        UIEvents.DialogDisplayRequestEvent += OnDialogDisplayRequest;
         
         UIEvents.DialogDismissedEvent -= OnDialogDismissed;
         UIEvents.DialogDismissedEvent += OnDialogDismissed;
-
-        UIEvents.LevelDataLoadedEvent -= OnLevelDataLoaded;
-        UIEvents.LevelDataLoadedEvent += OnLevelDataLoaded;
-        
     }
 
     private void OnDestroy()
     {
-        GameEvents.LevelEndedEvent -= OnLevelEnded;
+        UIEvents.DialogDisplayRequestEvent -= OnDialogDisplayRequest;
         UIEvents.DialogDismissedEvent -= OnDialogDismissed;
-        UIEvents.LevelDataLoadedEvent -= OnLevelDataLoaded;
     }
 
-    // spawn the level end dialog
-    private void OnLevelEnded(bool won)
+    // if possible, spawn the requested dialog, otherwise log an error
+    private void OnDialogDisplayRequest(string dialogName, object[] setupData)
     {
-        UIDialogBase levelEndDialog = SpawnDialog(LEVEL_END_DIALOG_NAME);
-        if (levelEndDialog == null)
+        UIDialogBase dialog = SpawnDialog(dialogName);
+        if (dialog == null)
         {
-            Debug.LogError($"dialog could not be spawned: {LEVEL_END_DIALOG_NAME}");
+            Debug.LogError($"dialog could not be spawned: {dialogName}");
             return;
         }
-        levelEndDialog.Setup(won);
+        dialog.Setup(setupData);
     }
 
     // load the required prefab from resources
@@ -75,17 +68,5 @@ public class UIDialogSpawner : MonoBehaviour
     private void OnDialogDismissed(UIDialogBase dialog)
     {
         isDialogDisplayed = false;
-    }
-
-    // spawn the level preview dialog and supply it with the loaded level data
-    private void OnLevelDataLoaded(LevelData levelData)
-    {
-        UIDialogBase levelPreviewDialog = SpawnDialog(LEVEL_PREVIEW_DIALOG_NAME);
-        if (levelPreviewDialog == null)
-        {
-            Debug.LogError($"dialog could not be spawned: {LEVEL_PREVIEW_DIALOG_NAME}");
-            return;
-        }
-        levelPreviewDialog.Setup(levelData);
     }
 }
