@@ -13,6 +13,8 @@ public class MainManager : MonoBehaviour
     
     private const string LEVEL_END_DIALOG_NAME = "LevelEndDialog";
     private const string LEVEL_PREVIEW_DIALOG_NAME = "LevelPreviewDialog";
+    private const string ENTER_RANDOM_MODE_DIALOG_NAME = "EnterRandomModeDialog";
+    
     
     //Singleton
     private static MainManager instance;
@@ -60,6 +62,12 @@ public class MainManager : MonoBehaviour
         
         UIEvents.RestartLevelRequestEvent -= OnRestartLevelRequest;
         UIEvents.RestartLevelRequestEvent += OnRestartLevelRequest;
+        
+        UIEvents.RandomModeSelectedEvent -= OnRandomModeSelected;
+        UIEvents.RandomModeSelectedEvent += OnRandomModeSelected;
+        
+        UIEvents.PlayRandomModeRequestEvent -= OnPlayRandomModeRequest;
+        UIEvents.PlayRandomModeRequestEvent += OnPlayRandomModeRequest;
     }
 
     private void OnDestroy()
@@ -70,6 +78,8 @@ public class MainManager : MonoBehaviour
         GameEvents.LevelEndedEvent -= OnLevelEnded;
         UIEvents.LeaveLevelRequestEvent -= OnLeaveLevelRequest;
         UIEvents.RestartLevelRequestEvent -= OnRestartLevelRequest;
+        UIEvents.RandomModeSelectedEvent -= OnRandomModeSelected;
+        UIEvents.PlayRandomModeRequestEvent -= OnPlayRandomModeRequest;
     }
 
     // a level select node was pressed in the main scene
@@ -119,5 +129,11 @@ public class MainManager : MonoBehaviour
     private void OnRestartLevelRequest()
     {
         SceneManager.LoadScene(LEVEL_SCENE_ID);
+    }
+    
+    // player presssed the random mode button, request the Enter Random Mode Dialog to be shown
+    private void OnRandomModeSelected()
+    {
+        UIEvents.RaiseDialogDisplayRequestEvent(ENTER_RANDOM_MODE_DIALOG_NAME, null);
     }
 }
