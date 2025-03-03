@@ -26,6 +26,10 @@ public class MainManager : MonoBehaviour
     
     // store the next level the player will play
     public LevelData levelToPlay;
+    
+    // check this when the player is in random mode
+    public bool isRandomModeEnabled = false;
+    public Random.State randomState; // needed in case player wants to restart a level in random mode
 
     private void Awake()
     {
