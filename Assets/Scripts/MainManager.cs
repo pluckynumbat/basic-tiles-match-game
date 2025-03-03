@@ -122,6 +122,10 @@ public class MainManager : MonoBehaviour
     // player wants to leave the level scene
     private void OnLeaveLevelRequest()
     {
+        if (isRandomModeEnabled)
+        {
+            isRandomModeEnabled = false;
+        }
         SceneManager.LoadScene(MAIN_SCENE_ID);
     }
     
