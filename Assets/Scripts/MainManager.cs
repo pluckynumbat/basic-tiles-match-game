@@ -13,6 +13,8 @@ public class MainManager : MonoBehaviour
     
     private const string LEVEL_END_DIALOG_NAME = "LevelEndDialog";
     private const string LEVEL_PREVIEW_DIALOG_NAME = "LevelPreviewDialog";
+    private const string ENTER_RANDOM_MODE_DIALOG_NAME = "EnterRandomModeDialog";
+    
     
     //Singleton
     private static MainManager instance;
@@ -26,6 +28,10 @@ public class MainManager : MonoBehaviour
     
     // store the next level the player will play
     public LevelData levelToPlay;
+    
+    // check this when the player is in random mode
+    public bool isRandomModeEnabled = false;
+    public Random.State randomState; // needed in case player wants to restart a level in random mode
 
     private void Awake()
     {
@@ -56,6 +62,12 @@ public class MainManager : MonoBehaviour
         
         UIEvents.RestartLevelRequestEvent -= OnRestartLevelRequest;
         UIEvents.RestartLevelRequestEvent += OnRestartLevelRequest;
+        
+        UIEvents.RandomModeSelectedEvent -= OnRandomModeSelected;
+        UIEvents.RandomModeSelectedEvent += OnRandomModeSelected;
+        
+        UIEvents.PlayRandomModeRequestEvent -= OnPlayRandomModeRequest;
+        UIEvents.PlayRandomModeRequestEvent += OnPlayRandomModeRequest;
     }
 
     private void OnDestroy()
@@ -66,6 +78,8 @@ public class MainManager : MonoBehaviour
         GameEvents.LevelEndedEvent -= OnLevelEnded;
         UIEvents.LeaveLevelRequestEvent -= OnLeaveLevelRequest;
         UIEvents.RestartLevelRequestEvent -= OnRestartLevelRequest;
+        UIEvents.RandomModeSelectedEvent -= OnRandomModeSelected;
+        UIEvents.PlayRandomModeRequestEvent -= OnPlayRandomModeRequest;
     }
 
     // a level select node was pressed in the main scene
@@ -108,12 +122,39 @@ public class MainManager : MonoBehaviour
     // player wants to leave the level scene
     private void OnLeaveLevelRequest()
     {
+        if (isRandomModeEnabled)
+        {
+            isRandomModeEnabled = false;
+        }
         SceneManager.LoadScene(MAIN_SCENE_ID);
     }
     
     // player wants to restart their level
+    // (if in random mode, load the saved random state, so that the level re-starts with the same random data)
     private void OnRestartLevelRequest()
     {
+        if (isRandomModeEnabled)
+        {
+            Random.state = randomState;
+        }
+        SceneManager.LoadScene(LEVEL_SCENE_ID);
+    }
+    
+    // player presssed the random mode button, request the Enter Random Mode Dialog to be shown
+    private void OnRandomModeSelected()
+    {
+        UIEvents.RaiseDialogDisplayRequestEvent(ENTER_RANDOM_MODE_DIALOG_NAME, null);
+    }
+    
+    
+    // player wants to enter a random mode level:
+    // generate a new level, set random mode flag, save random state, and load the level scene
+    private void OnPlayRandomModeRequest()
+    {
+        levelToPlay = RandomLevelGenerator.GenerateRandomLevel();
+        isRandomModeEnabled = true;
+        randomState = Random.state;
+        
         SceneManager.LoadScene(LEVEL_SCENE_ID);
     }
 }
