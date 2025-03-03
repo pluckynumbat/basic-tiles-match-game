@@ -14,15 +14,15 @@ public static class RandomLevelGenerator
     private const int MIN_GRID_LENGTH = 5;
     private const int MAX_GRID_LENGTH = 9;
     
-    //main and max starting move counts
+    //min and max starting move counts
     private const int MIN_MOVE_COUNT = 10;
     private const int MAX_MOVE_COUNT = 50;
     
-    //main and max goal counts
+    //min and max goal counts
     private const int MIN_GOAL_COUNT = 1;
     private const int MAX_GOAL_COUNT = 4;
     
-    //main and max goal amount ranges
+    //min and max goal amount ranges
     private const int MIN_GOAL_AMOUNT = 1;
     private const int MAX_GOAL_AMOUNT = 20;
     
