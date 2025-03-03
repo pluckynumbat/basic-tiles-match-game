@@ -10,19 +10,23 @@ public class UILevelEndDialog : UIDialogBase
     private const string LOSS_TEXT = "You Lost :(";
         
     public TextMeshProUGUI titleText; // this is set during run time
-
+    public GameObject nextLevelButton;
+    
     // set title based on the data (player won or lost)
+    // enable the 'next' button if the dialog is displayed in random mode
     public override void Setup(object[] data)
     {
-        if (data.Length == 0)
+        if (data.Length < 2)
         {
-            Debug.LogError("No data sent to setup the level preview dialog, abort");
+            Debug.LogError($"Setup of the level preview dialog expects 2 arguments, got {data.Length}, abort");
             return;
         }
         
         bool won = (bool)data[0];
-
         titleText.text = won ? WIN_TEXT : LOSS_TEXT;
+        
+        bool isRandomMode = (bool)data[1];
+        nextLevelButton.SetActive(isRandomMode);
     }
 
     //reload the level scene
@@ -35,5 +39,11 @@ public class UILevelEndDialog : UIDialogBase
     public void OnQuitButtonClicked()
     {
         UIEvents.RaiseLeaveLevelRequestEvent();
+    }
+    
+    //load the level scene with a new random level
+    public void OnNextButtonClicked()
+    {
+        UIEvents.RaisePlayRandomModeRequestEvent();
     }
 }
