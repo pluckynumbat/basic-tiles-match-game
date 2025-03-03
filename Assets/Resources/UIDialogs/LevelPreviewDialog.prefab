@@ -389,7 +389,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5280214441793993226}
   - component: {fileID: 2450160957026917028}
-  - component: {fileID: 3279130985408649957}
   - component: {fileID: 6678314049378514791}
   m_Layer: 5
   m_Name: LevelPreviewDialog
@@ -431,20 +430,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4539413671975601071}
   m_CullTransparentMesh: 1
---- !u!114 &3279130985408649957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4539413671975601071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30ab31950c9414b2aa7e2ff9c04eb254, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  goalItems: []
-  goalSpriteOptions: []
 --- !u!114 &6678314049378514791
 MonoBehaviour:
   m_ObjectHideFlags: 0
