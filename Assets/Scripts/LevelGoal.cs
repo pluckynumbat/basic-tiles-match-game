@@ -60,4 +60,34 @@ public class LevelGoal
         Debug.LogError($"Invalid goal string: {goalString}");
         return GoalType.None;
     }
+    
+        
+    //helper to get goal type string from goal type
+    public static string GetGoalTypeStringFromGoalType(GoalType goalType)
+    {
+        switch (goalType)
+        {
+            case GoalType.CollectRed:
+                return "R";
+            
+            case GoalType.CollectGreen:
+                return "G";
+            
+            case GoalType.CollectBlue:
+                return "B";
+            
+            case GoalType.CollectYellow:
+                return "Y";
+            
+            case GoalType.CollectOrange:
+                return "O";
+            
+            case GoalType.CollectViolet:
+                return "V";
+            
+            case GoalType.CollectAny:
+                return "A";
+        }
+        return "A";
+    }
 }
