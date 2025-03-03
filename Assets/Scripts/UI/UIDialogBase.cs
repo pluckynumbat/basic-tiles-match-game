@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 public abstract class UIDialogBase : MonoBehaviour
 {
-    public abstract void Setup(object data); // send data to the dialog via this method
+    public abstract void Setup(object[] data); // send data to the dialog via this method
 
     // let other systems know that the dialog was destroyed
     private void OnDestroy()
