@@ -136,4 +136,16 @@ public class MainManager : MonoBehaviour
     {
         UIEvents.RaiseDialogDisplayRequestEvent(ENTER_RANDOM_MODE_DIALOG_NAME, null);
     }
+    
+    
+    // player wants to enter a random mode level:
+    // generate a new level, set random mode flag, save random state, and load the level scene
+    private void OnPlayRandomModeRequest()
+    {
+        levelToPlay = RandomLevelGenerator.GenerateRandomLevel();
+        isRandomModeEnabled = true;
+        randomState = Random.state;
+        
+        SceneManager.LoadScene(LEVEL_SCENE_ID);
+    }
 }
