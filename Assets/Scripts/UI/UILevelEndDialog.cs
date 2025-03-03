@@ -1,3 +1,4 @@
+using UnityEngine;
 using TMPro;
 
 /// <summary>
@@ -27,7 +28,7 @@ public class UILevelEndDialog : UIDialogBase
     //reload the level scene
     public void OnRestartButtonClicked()
     {
-        UIEvents.RaisePlayLevelRequestEvent();
+        UIEvents.RaiseRestartLevelRequestEvent();
     }
     
     //go to the main scene
