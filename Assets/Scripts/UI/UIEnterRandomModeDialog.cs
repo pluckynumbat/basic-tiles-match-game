@@ -8,7 +8,7 @@ public class UIEnterRandomModeDialog : UIDialogBase
 {
     private const string TITLE_TEXT = "Enter Random Mode!";
     
-    private const string DESCRIPTION_TEXT = "Start an endless journey of random levels!";
+    private const string DESCRIPTION_TEXT = "Go on an \n endless journey \n of randomly \n generated levels!";
     
     public TextMeshProUGUI titleTextBox;
     public TextMeshProUGUI descriptionTextBox;
