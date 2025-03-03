@@ -1,0 +1,150 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+/// New editor tool to perform basic validation on a given level data object
+/// </summary>
+public static class LevelDataValidator
+{
+    private const string LEVEL_DATA_DIRECTORY = "LevelData/";
+    
+    // min and max values for the different colors in a level
+    private const int MIN_COLOR_COUNT = 4;
+    private const int MAX_COLOR_COUNT = 6;
+    
+    // min and max grid lengths (5x5 gird to 9x9 grid)
+    private const int MIN_GRID_LENGTH = 5;
+    private const int MAX_GRID_LENGTH = 9;
+    
+    //min and max goal counts
+    private const int MIN_GOAL_COUNT = 1;
+    private const int MAX_GOAL_COUNT = 4;
+
+    private static HashSet<string> allowedGridEntries =  new HashSet<string>() { "R", "G", "B", "Y", "O", "V"};
+    private static List<string> goalTypeEntries =  new List<string>() { "R", "G", "B", "Y", "O", "V", "A"};
+
+    public static void ValidateAllLevelFiles()
+    {
+#if UNITY_EDITOR
+        bool noIssues = true;
+        var jsonLevelFiles = Resources.LoadAll<TextAsset>(LEVEL_DATA_DIRECTORY);
+        foreach (TextAsset jsonLevelFile in jsonLevelFiles)
+        {
+            LevelData levelData = JsonUtility.FromJson<LevelData>(jsonLevelFile.ToString());
+            noIssues &= IsLevelDataValid(levelData);
+        }
+
+        if (noIssues)
+        {
+            Debug.Log($"All level files are valid!");
+        }
+#endif
+    }
+
+    public static bool IsLevelDataValid(LevelData levelData)
+    {
+        if (levelData == null) // basic failure
+        {
+            Debug.LogError($"LevelData object created from the level was null");
+            return false;
+        }
+        
+        Debug.Log($"Checking the level data with name: {levelData.name}");
+
+        // allowed color count is (4-6)
+        if (levelData.colorCount < MIN_COLOR_COUNT || levelData.colorCount > MAX_COLOR_COUNT)
+        {
+            Debug.LogError($"Invalid color count for the level. Min. value is {MIN_COLOR_COUNT}, Max. value is {MAX_COLOR_COUNT}, current value is: {levelData.colorCount}");
+            return false;
+        }
+        
+        // allowed grid length is (5-9)
+        if (levelData.gridLength < MIN_GRID_LENGTH || levelData.gridLength > MAX_GRID_LENGTH)
+        {
+            Debug.LogError($"Invalid grid length for the level. Min. value is {MIN_GRID_LENGTH}, Max. value is {MAX_GRID_LENGTH}, current value is: {levelData.gridLength}");
+            return false;
+        }
+        
+        // if the starting grid is fixed, it should be specified and have valid entries
+        if (levelData.isStartingGridFixed)
+        {
+            if (levelData.startingGrid == null || levelData.startingGrid.Count == 0)
+            {
+                Debug.LogError($"Level is marked as having a fixed starting gird, but the starting grid has not been specified, or is empty");
+                return false;
+            }
+            
+            // the starting grid list should have a length of (grid length^2)
+            if (levelData.startingGrid.Count != levelData.gridLength * levelData.gridLength)
+            {
+                Debug.LogError($"Starting grid should have exactly {levelData.gridLength * levelData.gridLength} entries for the given grid length of {levelData.gridLength}, current number of entries is : {levelData.startingGrid.Count}");
+                return false;
+            }
+
+            // check each entry in the list
+            for (int index = 0; index < levelData.startingGrid.Count; index++)
+            {
+                if (!allowedGridEntries.Contains(levelData.startingGrid[index]))
+                {
+                    Debug.LogError($"Starting grid has an invalid entry: {levelData.startingGrid[index]} at index {index} ");
+                    return false;
+                }
+            }
+        }
+        
+        // goal count
+        if (levelData.goals == null || levelData.goals.Count < MIN_GOAL_COUNT || levelData.goals.Count > MAX_GOAL_COUNT)
+        {
+            Debug.LogError($"List of goals is either null or has invalid Count: {levelData.goals?.Count}");
+            return false;
+        }
+        
+        // check if each goal is allowed based on color count, is not repeated, and has a valid goal amount ( greater than 0)
+        HashSet<string> allowedGoalTypeEntries = new HashSet<string>();
+        for (int index = 0; index < levelData.colorCount; index++)
+        {
+            // add allowed goal types based on color count of the level
+            allowedGoalTypeEntries.Add(goalTypeEntries[index]);
+        }
+        
+        //collect any is always allowed
+        allowedGoalTypeEntries.Add(LevelGoal.GetGoalTypeStringFromGoalType(LevelGoal.GoalType.CollectAny));
+        
+
+        foreach (LevelGoalData goalData in levelData.goals)
+        {
+            if (goalData == null)
+            {
+                Debug.LogError("Null entry found in list of goals");
+                return false;
+            }
+
+            if (!allowedGoalTypeEntries.Contains(goalData.goalType))
+            {
+                Debug.LogError($"Goals list contains an invalid entry: {goalData.goalType}, it might not be allowed because of color count, or might have been used as a goal already. please check the level file");
+                return false;
+            }
+            else
+            {
+                allowedGoalTypeEntries.Remove(goalData.goalType); // goal types cannot be repeated
+            }
+
+            if (goalData.goalAmount < 0)
+            {
+                Debug.LogError($"Goal amount for any goal cannot be zero, current value (for goal of type {goalData.goalType}) is: {goalData.goalAmount}");
+                return false;
+            }
+        }
+        
+        // starting move count should be more than 0
+        if (levelData.startingMoveCount < 0)
+        {
+            Debug.LogError($"Starting move count of a level cannot be less than zero, current value is: {levelData.startingMoveCount}");
+            return false;
+        }
+        
+        Debug.Log($"Level data for level with name {levelData.name} is valid!");
+        return true;
+    }
+}
