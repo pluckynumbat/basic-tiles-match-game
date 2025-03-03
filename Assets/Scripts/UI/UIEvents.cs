@@ -54,6 +54,22 @@ public static class UIEvents
         LeaveLevelRequestEvent?.Invoke();
     }
     
+    // raise by a UI Random Mode Button when the player presses it 
+    public delegate void RandomModeSelectedHandler();
+    public static event RandomModeSelectedHandler RandomModeSelectedEvent;
+    public static void RaiseRandomModeSelectedEvent()
+    {
+        RandomModeSelectedEvent?.Invoke();
+    }
+    
+    // raised UI elements to start a new random level
+    public delegate void PlayRandomModeRequestHandler();
+    public static event PlayRandomModeRequestHandler PlayRandomModeRequestEvent;
+    public static void RaisePlayRandomModeRequestEvent()
+    {
+        PlayRandomModeRequestEvent?.Invoke();
+    }
+    
     // raised by UI elements to reload the level scene
     public delegate void RestartLevelRequestHandler();
     public static event RestartLevelRequestHandler RestartLevelRequestEvent;
