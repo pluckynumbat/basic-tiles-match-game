@@ -126,8 +126,13 @@ public class MainManager : MonoBehaviour
     }
     
     // player wants to restart their level
+    // (if in random mode, load the saved random state, so that the level re-starts with the same random data)
     private void OnRestartLevelRequest()
     {
+        if (isRandomModeEnabled)
+        {
+            Random.state = randomState;
+        }
         SceneManager.LoadScene(LEVEL_SCENE_ID);
     }
     
