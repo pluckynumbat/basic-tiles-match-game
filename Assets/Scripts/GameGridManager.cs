@@ -12,6 +12,8 @@ using UnityEngine;
 public class GameGridManager : MonoBehaviour
 {
     private const int SEED_TO_IGNORE = 0; // this is the default value of the level data seed, and this value means that it will not be used
+
+    private const int SHUFFLE_LIMIT = 10; // the maximum amount of times a grid is shuffled to resolve a 'no moves possible' scenario, before logging an error
     
     private GameGridCell[][] mainGrid; // the main / active grid in the level
 
@@ -471,6 +473,65 @@ public class GameGridManager : MonoBehaviour
         }
     }
     
+    // check if even a single move is possible, and if not shuffle the whole grid
+    private void CheckGridAndShuffleIfRequired(GameGridCell[][] grid)
+    {
+        // no need to do anything if even a single move is possible
+        if (IsAnyMovePossible(grid))
+        {
+            return;
+        }
+
+#if GAME_GRID_LOGGING
+        PrintGridToConsole(mainGrid); // print original state of the grid
+#endif
+
+        // shuffle the given grid up to 'SHUFFLE_LIMIT' times to resolve 'no moves possible' scenario.
+        // if after trying for 'SHUFFLE_LIMIT' times, the grid still does not have a possible move, log an error
+        bool moveNowPossible = false;
+        for (int attempt = 0; attempt < SHUFFLE_LIMIT; attempt++)
+        {
+            ShuffleGameGrid(grid);
+            moveNowPossible = IsAnyMovePossible(grid);
+            if (moveNowPossible)
+            {
+#if GAME_GRID_LOGGING
+                Debug.Log(
+                    $"The grid was shuffled {attempt + 1} amount of times"); // log how many attempts it took to resolve the 'no moves possible' scenario
+#endif
+                break;
+            }
+        }
+
+        // still not possible,  log an error, and print the grid to the console
+        if (!moveNowPossible)
+        {
+            Debug.LogError(
+                $"Grid is locked (not a single move is possible) after {SHUFFLE_LIMIT} shuffle attempts, please check setup");
+
+#if GAME_GRID_LOGGING
+            PrintGridToConsole(mainGrid); // print final state of the grid
+#endif
+        }
+    }
+
+    // check if there is any move possible on the given game grid
+    private bool IsAnyMovePossible(GameGridCell[][] grid)
+    {
+        for (int y = 0; y < gridLength; y++)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                if (AnyNeighborWithSameColor(y, x, grid[y][x].Color, grid))
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+
     // shuffle the entire grid
     private void ShuffleGameGrid(GameGridCell[][] grid)
     {
