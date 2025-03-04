@@ -41,4 +41,13 @@ public class UIGoalItem : MonoBehaviour
             isCompleted = true;
         }
     }
+
+    // used to set up the goals display as part of the level end dialog
+    public void SetupPreCompletedGoalItem(LevelGoal.GoalType goalType, Sprite sprite)
+    {
+        MyGoalType = goalType;
+        goalImage.sprite = sprite;
+        textBox.enabled = false;
+        completedImage.enabled = true;
+    }
 }
