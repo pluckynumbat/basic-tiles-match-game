@@ -52,6 +52,9 @@ public class GameTilesManager : MonoBehaviour
         GameEvents.RefillGridReadyEvent -= OnRefillGridReady;
         GameEvents.RefillGridReadyEvent += OnRefillGridReady;
         
+        GameEvents.GridShuffledEvent -= OnGridShuffled;
+        GameEvents.GridShuffledEvent += OnGridShuffled;
+        
         UIEvents.DialogDisplayedEvent -= OnDialogDisplayed;
         UIEvents.DialogDisplayedEvent += OnDialogDisplayed;
         
@@ -66,6 +69,7 @@ public class GameTilesManager : MonoBehaviour
         GameEvents.GridCellsRemovedEvent -= OnGridCellsRemoved;
         GameEvents.GridCellsFillHolesEvent -= OnGridCellsFillHoles;
         GameEvents.RefillGridReadyEvent -= OnRefillGridReady;
+        GameEvents.GridShuffledEvent -= OnGridShuffled;
         UIEvents.DialogDisplayedEvent -= OnDialogDisplayed;
         UIEvents.DialogDismissedEvent -= OnDialogDismissed;
     }
@@ -454,5 +458,18 @@ public class GameTilesManager : MonoBehaviour
     private void OnDialogDismissed(UIDialogBase dialog)
     {
         anyDialogsOnScreen = false;
+    }
+    
+     
+    // grid has been shuffled, update visuals of the game tiles to reflect new colors
+    private void OnGridShuffled(GameGridCell[][] newGrid)
+    {
+        for (int y = 0; y < gridLength; y++)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                activeTilesDictionary[(y * gridLength) + x].SetSprite(GetSpriteBasedOnColor(newGrid[y][x].Color));
+            }
+        }
     }
 }
