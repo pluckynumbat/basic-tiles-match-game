@@ -1,8 +1,9 @@
 using UnityEngine;
 
 /// <summary>
-/// A UI Panel that shows at the bottom of a level, providing
-/// a quick way to Quit the level / Restart the level / Toggle Audio mute
+/// A UI Panel that shows at the bottom of a level main scene, providing
+/// a quick way to Quit a level / Restart a level / Toggle Audio mute
+/// in the main scene, this panel only has the mute button
 /// </summary>
 public class UIBottomPanel : MonoBehaviour
 {
