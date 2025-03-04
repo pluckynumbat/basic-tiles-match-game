@@ -34,12 +34,16 @@ public class GameGridManager : MonoBehaviour
         
         GameEvents.ActiveTileTappedEvent -= OnActiveTileTapped;
         GameEvents.ActiveTileTappedEvent += OnActiveTileTapped;
+        
+        GameEvents.MoveCompletedEvent -= OnMoveCompleted;
+        GameEvents.MoveCompletedEvent += OnMoveCompleted;
     }
 
     private void OnDestroy()
     {
         GameEvents.LevelDataReadyEvent -= OnLevelDataReady;
         GameEvents.ActiveTileTappedEvent -= OnActiveTileTapped;
+        GameEvents.MoveCompletedEvent -= OnMoveCompleted;
     }
 
     private void OnLevelDataReady(LevelData data)
@@ -63,6 +67,7 @@ public class GameGridManager : MonoBehaviour
 
         bool isStartGridFixed = levelData.isStartingGridFixed;
         
+        //setting up the main grid
         mainGrid = new GameGridCell[gridLength][];
         for (int y = 0; y < gridLength; y++)
         {
@@ -83,6 +88,12 @@ public class GameGridManager : MonoBehaviour
                 mainGrid[y][x].Occupied = true;
             }
         }
+        
+        // grid has been set up.
+        // before continuing, check if even a single move is possible.
+        // if not, we will shuffle the grid 
+        CheckGridAndShuffleIfRequired(mainGrid);
+        
 #if GAME_GRID_LOGGING
         PrintGridToConsole(mainGrid);
 #endif
@@ -473,6 +484,12 @@ public class GameGridManager : MonoBehaviour
         }
     }
     
+    //new move is completed, check to make sure the current grid has even one possible move, and if not shuffle it
+    private void OnMoveCompleted()
+    {
+        CheckGridAndShuffleIfRequired(mainGrid);
+    }
+
     // check if even a single move is possible, and if not shuffle the whole grid
     private void CheckGridAndShuffleIfRequired(GameGridCell[][] grid)
     {
