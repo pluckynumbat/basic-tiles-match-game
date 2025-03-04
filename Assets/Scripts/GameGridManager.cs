@@ -92,7 +92,7 @@ public class GameGridManager : MonoBehaviour
         // grid has been set up.
         // before continuing, check if even a single move is possible.
         // if not, we will shuffle the grid 
-        CheckGridAndShuffleIfRequired(mainGrid);
+        CheckGridAndShuffleIfRequired(mainGrid, SHUFFLE_LIMIT);
         
 #if GAME_GRID_LOGGING
         PrintGridToConsole(mainGrid);
@@ -487,11 +487,11 @@ public class GameGridManager : MonoBehaviour
     //new move is completed, check to make sure the current grid has even one possible move, and if not shuffle it
     private void OnMoveCompleted()
     {
-        CheckGridAndShuffleIfRequired(mainGrid);
+        CheckGridAndShuffleIfRequired(mainGrid, SHUFFLE_LIMIT);
     }
 
     // check if even a single move is possible, and if not shuffle the whole grid
-    private void CheckGridAndShuffleIfRequired(GameGridCell[][] grid)
+    private void CheckGridAndShuffleIfRequired(GameGridCell[][] grid, int maxShuffleAttempts)
     {
         // no need to do anything if even a single move is possible
         if (IsAnyMovePossible(grid))
@@ -503,18 +503,17 @@ public class GameGridManager : MonoBehaviour
         PrintGridToConsole(mainGrid); // print original state of the grid
 #endif
 
-        // shuffle the given grid up to 'SHUFFLE_LIMIT' times to resolve 'no moves possible' scenario.
-        // if after trying for 'SHUFFLE_LIMIT' times, the grid still does not have a possible move, log an error
+        // shuffle the given grid up to 'maxShuffleAttempts' times to resolve 'no moves possible' scenario.
+        // if after trying for 'maxShuffleAttempts' times, the grid still does not have a possible move, log an error
         bool moveNowPossible = false;
-        for (int attempt = 0; attempt < SHUFFLE_LIMIT; attempt++)
+        for (int attempt = 0; attempt < maxShuffleAttempts; attempt++)
         {
             ShuffleGameGrid(grid);
             moveNowPossible = IsAnyMovePossible(grid);
             if (moveNowPossible)
             {
 #if GAME_GRID_LOGGING
-                Debug.Log(
-                    $"The grid was shuffled {attempt + 1} amount of times"); // log how many attempts it took to resolve the 'no moves possible' scenario
+                Debug.Log($"The grid was shuffled {attempt + 1} amount of times"); // log how many attempts it took to resolve the 'no moves possible' scenario
 #endif
                 break;
             }
@@ -524,7 +523,7 @@ public class GameGridManager : MonoBehaviour
         if (!moveNowPossible)
         {
             Debug.LogError(
-                $"Grid is locked (not a single move is possible) after {SHUFFLE_LIMIT} shuffle attempts, please check setup");
+                $"Grid is locked (not a single move is possible) after {maxShuffleAttempts} shuffle attempts, please check setup");
 
 #if GAME_GRID_LOGGING
             PrintGridToConsole(mainGrid); // print final state of the grid
