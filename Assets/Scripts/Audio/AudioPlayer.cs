@@ -8,14 +8,14 @@ using UnityEngine;
 public class AudioPlayer : MonoBehaviour
 {
     // constants storing names of the sounds that will be used as keys to play stored sounds
-    private const string TILE_TAPPED_SFX = "tileTapped";
-    private const string INVALID_MOVE_SFX = "invalidMove";
+    private const string TILE_TAPPED_SOUND = "tileTapped";
+    private const string INVALID_MOVE_SOUND = "invalidMove";
     
-    private const string LEVEL_WON_SFX = "levelWon";
-    private const string LEVEL_LOST_SFX = "levelLost";
+    private const string LEVEL_WON_SOUND = "levelWon";
+    private const string LEVEL_LOST_SOUND = "levelLost";
     
-    private const string LEVEL_SELECTED_SFX = "levelSelected";
-    private const string RANDOM_MODE_SELECTED_SFX = "randomModeSelected";
+    private const string LEVEL_SELECTED_SOUND = "levelSelected";
+    private const string RANDOM_MODE_SELECTED_SOUND = "randomModeSelected";
 
     // all the sounds in the current scene will be stored here and played as needed
     private Dictionary<string, SoundSource> soundLibrary;
@@ -87,27 +87,27 @@ public class AudioPlayer : MonoBehaviour
     
     private void OnActiveTileTapped(int gridY, int gridX)
     {
-        PlaySoundFromName(TILE_TAPPED_SFX);
+        PlaySoundFromName(TILE_TAPPED_SOUND);
     }
     
     private void OnInvalidMove(int gridY, int gridX)
     {
-        StopSoundFromName(TILE_TAPPED_SFX);
-        PlaySoundFromName(INVALID_MOVE_SFX);
+        StopSoundFromName(TILE_TAPPED_SOUND);
+        PlaySoundFromName(INVALID_MOVE_SOUND);
     }
     
     private void OnLevelEnded(bool won)
     {
-        PlaySoundFromName(won ? LEVEL_WON_SFX : LEVEL_LOST_SFX);
+        PlaySoundFromName(won ? LEVEL_WON_SOUND : LEVEL_LOST_SOUND);
     }
     
     private void OnLevelSelected(string levelName)
     {
-        PlaySoundFromName(LEVEL_SELECTED_SFX);
+        PlaySoundFromName(LEVEL_SELECTED_SOUND);
     }
     
     private void OnRandomModeSelected()
     {
-        PlaySoundFromName(RANDOM_MODE_SELECTED_SFX);
+        PlaySoundFromName(RANDOM_MODE_SELECTED_SOUND);
     }
 }
