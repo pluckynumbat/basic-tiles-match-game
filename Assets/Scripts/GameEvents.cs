@@ -119,4 +119,12 @@ public static class GameEvents
     {
         LevelEndedEvent?.Invoke(won);
     }
+     
+    // raised by the game grid manager when the main grid is shuffled
+    public delegate void GridShuffledHandler(GameGridCell[][] shuffledGrid);
+    public static event GridShuffledHandler GridShuffledEvent;
+    public static void RaiseGridShuffledEvent(GameGridCell[][] shuffledGrid)
+    {
+        GridShuffledEvent?.Invoke(shuffledGrid);
+    }
 }

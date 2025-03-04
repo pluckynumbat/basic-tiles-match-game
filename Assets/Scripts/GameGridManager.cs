@@ -471,6 +471,34 @@ public class GameGridManager : MonoBehaviour
         }
     }
     
+    // shuffle the entire grid
+    private void ShuffleGameGrid(GameGridCell[][] grid)
+    {
+        //1. collect the colors of all the cells in the given grid
+        List<GameGridCell.GridCellColor> cellColorList = new List<GameGridCell.GridCellColor>();
+        for (int y = 0; y < gridLength; y++)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                cellColorList.Add(grid[y][x].Color);
+            }
+        }
+        
+        //2. re-assign them randomly
+        for (int y = 0; y < gridLength; y++)
+        {
+            for (int x = 0; x < gridLength; x++)
+            {
+                int randomRoll = Random.Range(0, cellColorList.Count);
+                grid[y][x].Color = cellColorList[randomRoll];
+                cellColorList.RemoveAt(randomRoll);
+            }
+        }
+        
+        //3. Let other systems know that the grid was shuffled
+        GameEvents.RaiseGridShuffledEvent(mainGrid);
+    }
+    
     // helper function to print a given grid to the console
     private void PrintGridToConsole(GameGridCell[][] grid)
     {
