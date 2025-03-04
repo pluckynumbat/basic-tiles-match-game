@@ -32,6 +32,9 @@ public class MainManager : MonoBehaviour
     // check this when the player is in random mode
     public bool isRandomModeEnabled = false;
     public Random.State randomState; // needed in case player wants to restart a level in random mode
+    
+    //global volume setting
+    public float lastGlobalVolume;
 
     private void Awake()
     {
@@ -68,6 +71,9 @@ public class MainManager : MonoBehaviour
         
         UIEvents.PlayRandomModeRequestEvent -= OnPlayRandomModeRequest;
         UIEvents.PlayRandomModeRequestEvent += OnPlayRandomModeRequest;
+        
+        UIEvents.ToggleMuteRequestEvent -= OnToggleMuteRequested;
+        UIEvents.ToggleMuteRequestEvent += OnToggleMuteRequested;
     }
 
     private void OnDestroy()
@@ -80,6 +86,7 @@ public class MainManager : MonoBehaviour
         UIEvents.RestartLevelRequestEvent -= OnRestartLevelRequest;
         UIEvents.RandomModeSelectedEvent -= OnRandomModeSelected;
         UIEvents.PlayRandomModeRequestEvent -= OnPlayRandomModeRequest;
+        UIEvents.ToggleMuteRequestEvent -= OnToggleMuteRequested;
     }
 
     // a level select node was pressed in the main scene
@@ -156,5 +163,20 @@ public class MainManager : MonoBehaviour
         randomState = Random.state;
         
         SceneManager.LoadScene(LEVEL_SCENE_ID);
+    }
+
+    // if muting, store volume, then mute
+    // else, reset volume to what it was before muting
+    private void OnToggleMuteRequested()
+    {
+        if (AudioListener.volume > 0)
+        {
+            lastGlobalVolume = AudioListener.volume;
+            AudioListener.volume = 0;
+        }
+        else
+        {
+            AudioListener.volume = lastGlobalVolume;
+        }
     }
 }
