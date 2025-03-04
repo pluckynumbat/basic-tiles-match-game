@@ -77,4 +77,12 @@ public static class UIEvents
     {
         RestartLevelRequestEvent?.Invoke();
     }
+    
+    // raised by UI elements to toggle volume on/off (mute button)
+    public delegate void ToggleMuteRequestHandler();
+    public static event ToggleMuteRequestHandler ToggleMuteRequestEvent;
+    public static void RaiseToggleMuteRequestEvent()
+    {
+        ToggleMuteRequestEvent?.Invoke();
+    }
 }
