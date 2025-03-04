@@ -10,8 +10,6 @@ using TMPro;
 /// </summary>
 public class UILevelPreviewDialog : UIDialogBase
 {
-    private const string PLAY_TEXT_PREFIX = "Play Level: ";
-        
     public TextMeshProUGUI titleText; // this is set during run time
     public UIGoalsDisplay goalsDisplay;
 
@@ -37,7 +35,7 @@ public class UILevelPreviewDialog : UIDialogBase
             return;
         }
 
-        titleText.text = PLAY_TEXT_PREFIX + levelData.name;
+        titleText.text = levelData.name;
         goalsDisplay.SetupGoalsDisplay(levelData);
     }
 

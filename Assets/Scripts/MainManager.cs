@@ -123,7 +123,7 @@ public class MainManager : MonoBehaviour
     // request the UI dialog spawner to spawn the level end dialog, and supply it with required parameters
     private void OnLevelEnded(bool won)
     {
-        UIEvents.RaiseDialogDisplayRequestEvent(LEVEL_END_DIALOG_NAME, new object[] {won, isRandomModeEnabled});
+        UIEvents.RaiseDialogDisplayRequestEvent(LEVEL_END_DIALOG_NAME, new object[] {won, levelToPlay, isRandomModeEnabled });
     }
     
     // player wants to leave the level scene

@@ -36,8 +36,9 @@ public class UIGoalsDisplay : MonoBehaviour
         SetupGoalsDisplay(levelData);
     }
 
-    // initialize goal items by providing them sprites and goal amounts 
-    public void SetupGoalsDisplay(LevelData levelData)
+    // initialize goal items by providing them sprites and goal amounts
+    // if allCompleted is true, mark all goals as completed
+    public void SetupGoalsDisplay(LevelData levelData, bool allCompleted = false)
     {
         //disable all goal items
         foreach (UIGoalItem goalItem in goalItems)
@@ -63,7 +64,14 @@ public class UIGoalsDisplay : MonoBehaviour
 
             LevelGoal.GoalType goalType = LevelGoal.GetGoalTypeFromString(goal.goalType);
             goalItems[counter].gameObject.SetActive(true);
-            goalItems[counter].SetupGoalItem(goalType, GetSpriteBasedOnGoalType(goalType), goal.goalAmount);
+            if (allCompleted)
+            {
+                goalItems[counter].SetupPreCompletedGoalItem(goalType, GetSpriteBasedOnGoalType(goalType));
+            }
+            else
+            {
+                goalItems[counter].SetupGoalItem(goalType, GetSpriteBasedOnGoalType(goalType), goal.goalAmount);
+            }
             counter++;
         }
 
