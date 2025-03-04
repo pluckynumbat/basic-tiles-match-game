@@ -7,8 +7,8 @@ using TMPro;
 /// </summary>
 public class UILevelEndDialog : UIDialogBase
 {
-    private const string WIN_TEXT = "You Won!";
-    private const string LOSS_TEXT = "You Lost :(";
+    private const string WIN_TEXT = "Victory!";
+    private const string LOSS_TEXT = "Level Failed";
         
     public TextMeshProUGUI titleText; // this is set during run time
     public UIGoalsDisplay goalsDisplay; // shown if the player won the level
