@@ -5,7 +5,7 @@
   
   "colorCount": 4,
   
-  "colorList": ["R","Y","O","V"],
+  "colorPalette": ["R","G","B","V"],
   
   "gridLength": 5,
   
@@ -14,11 +14,11 @@
   "goals": 
   [
     {
-      "goalType": "Y",
+      "goalType": "R",
       "goalAmount": 5
     },
     {
-      "goalType": "B",
+      "goalType": "V",
       "goalAmount": 5
     }
   ],

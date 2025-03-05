@@ -4,6 +4,8 @@
   "seed": 77,
   
   "colorCount": 4,
+
+  "colorPalette": ["Y","O","V","R"],
   
   "gridLength": 7,
   
@@ -11,31 +13,31 @@
   
   "startingGrid": 
   [
-    "R","R","R","R","R","R","R",
-    "G","G","G","G","G","G","G",
-    "B","B","B","B","B","B","B",
     "Y","Y","Y","Y","Y","Y","Y",
-    "R","G","B","Y","R","G","B",
-    "R","R","R","G","G","G","G",
-    "G","G","G","B","B","B","B"
+    "O","O","O","O","O","O","O",
+    "R","R","R","R","R","R","R",
+    "V","V","V","V","V","V","V",
+    "R","R","R","R","R","R","R",
+    "O","O","O","O","O","O","O",
+    "Y","Y","Y","Y","Y","Y","Y"
   ],
   
   "goals": 
   [
     {
+      "goalType": "Y",
+      "goalAmount": 10
+    },
+    {
+      "goalType": "O",
+      "goalAmount": 10
+    },
+    {
       "goalType": "R",
       "goalAmount": 10
     },
     {
-      "goalType": "G",
-      "goalAmount": 10
-    },
-    {
-      "goalType": "B",
-      "goalAmount": 10
-    },
-    {
-      "goalType": "A",
+      "goalType": "V",
       "goalAmount": 20
     }
   ],
