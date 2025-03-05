@@ -53,9 +53,10 @@ public static class RandomLevelGenerator
         }
         
         // select (1-4) goals randomly and generate new levelGoatData objects from them 
+        // goals should come from the color palette (except for the collect any goal)
         int goalCount = Random.Range(MIN_GOAL_COUNT, MAX_GOAL_COUNT + 1);
         randomLevel.goals = new List<LevelGoalData>();
-        List<string> possibleGoalTypes = GetPossibleGoalTypes(randomLevel.colorCount);
+        List<string> possibleGoalTypes = GetPossibleGoalTypes(randomLevel.colorPalette);
         for (int goalIndex = 0; goalIndex < goalCount; goalIndex++)
         {
             LevelGoalData levelGoalData = new LevelGoalData();
@@ -88,19 +89,20 @@ public static class RandomLevelGenerator
         return possibleCellColors;
     }
 
-    // goal types depend on allowed color count, create a list of possible candidates
-    private static List<string> GetPossibleGoalTypes(int colorCount)
+    // goal types depend on the color palette, create a list of possible candidates
+    private static List<string> GetPossibleGoalTypes(List<string> colorPalette)
     {
         List<string> possibleGoalTypes = new List<string>();
-        
-        // add collect goals for all possible colors
-        for (int index = 0; index < colorCount; index++)
+
+        //first add goal type strings for all possible colors
+        foreach (string cellColorString in colorPalette)
         {
-            string goalTypeString = LevelGoal.GetGoalTypeStringFromGoalType((LevelGoal.GoalType)index);
-            possibleGoalTypes.Add(goalTypeString);
+            GameGridCell.GridCellColor cellColor = GameGridCell.GetGridCellColorFromString(cellColorString);
+            LevelGoal.GoalType goalType = LevelGoal.GetGoalTypeFromGridCellColor(cellColor);
+            possibleGoalTypes.Add(LevelGoal.GetGoalTypeStringFromGoalType(goalType));
         }
         
-        // add the collect any goal
+        // then add the collect any goal
         possibleGoalTypes.Add(LevelGoal.GetGoalTypeStringFromGoalType(LevelGoal.GoalType.CollectAny));
         return possibleGoalTypes;
     }
