@@ -7,8 +7,9 @@ using UnityEngine.UI;
 /// </summary>
 public class UIGoalItem : MonoBehaviour
 {
-    public Image goalImage; // this will contain the sprite
+    public Image goalImage; // this will contain the goal sprite
     public TextMeshProUGUI textBox; // this will contain remaining goal count
+    public Image goalCountBackground; //the background image of the goal count
     public Image completedImage; // this will be an indicator for when the goal is completed
     
     public LevelGoal.GoalType MyGoalType; // the goal type that this item represents
@@ -37,6 +38,7 @@ public class UIGoalItem : MonoBehaviour
         if (newCount <= 0) // this item was newly completed, enable the completed indicator, and mark as complete
         {
             textBox.enabled = false;
+            goalCountBackground.enabled = false;
             completedImage.enabled = true;
             isCompleted = true;
         }
@@ -48,6 +50,7 @@ public class UIGoalItem : MonoBehaviour
         MyGoalType = goalType;
         goalImage.sprite = sprite;
         textBox.enabled = false;
+        goalCountBackground.enabled = false;
         completedImage.enabled = true;
     }
 }
