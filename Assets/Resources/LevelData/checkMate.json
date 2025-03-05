@@ -1,0 +1,40 @@
+{
+  "name": "Checkmate",
+  
+  "seed": 80,
+  
+  "colorCount": 5,
+
+  "colorPalette": ["V","Y","R","G","B"],
+  
+  "gridLength": 8,
+  
+  "isStartingGridFixed": true,
+
+  "startingGrid":
+  [
+    "V","V","Y","V","Y","V","Y","Y",
+    "V","Y","V","Y","V","Y","V","Y",
+    "Y","V","Y","V","Y","V","Y","V",
+    "V","Y","V","Y","V","Y","V","Y",
+    "Y","V","Y","V","Y","V","Y","V",
+    "V","Y","V","Y","V","Y","V","Y",
+    "Y","V","Y","V","Y","V","Y","V",
+    "Y","Y","V","Y","V","Y","V","V"
+  ],
+  
+  "goals": 
+  [
+    {
+      "goalType": "Y",
+      "goalAmount": 30
+    },
+    {
+      "goalType": "V",
+      "goalAmount": 30
+    }
+  ],
+  
+  "startingMoveCount": 10
+  
+}

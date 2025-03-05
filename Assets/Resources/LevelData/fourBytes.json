@@ -1,0 +1,36 @@
+{
+  "name": "Four Bytes",
+  
+  "seed": 40,
+  
+  "colorCount": 5,
+
+  "colorPalette": ["O","G","R","B","V"],
+  
+  "gridLength": 8,
+  
+  "isStartingGridFixed": false,
+  
+  "goals": 
+  [
+    {
+      "goalType": "R",
+      "goalAmount": 20
+    },
+    {
+      "goalType": "G",
+      "goalAmount": 20
+    },
+    {
+      "goalType": "B",
+      "goalAmount": 20
+    },
+    {
+      "goalType": "A",
+      "goalAmount": 80
+    }
+  ],
+  
+  "startingMoveCount": 40
+  
+}

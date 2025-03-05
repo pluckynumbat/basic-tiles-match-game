@@ -1,0 +1,45 @@
+{
+  "name": "Fast Five",
+  
+  "seed": 50,
+  
+  "colorCount": 5,
+  
+  "colorPalette": ["R","G","B","V","Y"],
+
+  "startingGrid":
+  [
+    "V","Y","B","R","R",
+    "V","V","B","B","R",
+    "G","G","G","G","G",
+    "V","V","B","Y","R",
+    "V","B","B","R","R"
+  ],
+  
+  "gridLength": 5,
+  
+  "isStartingGridFixed": true,
+  
+  "goals": 
+  [
+    {
+      "goalType": "G",
+      "goalAmount": 5
+    },
+    {
+      "goalType": "B",
+      "goalAmount": 5
+    },
+    {
+      "goalType": "R",
+      "goalAmount": 5
+    },
+    {
+      "goalType": "V",
+      "goalAmount": 5
+    }
+  ],
+  
+  "startingMoveCount": 5
+  
+}
