@@ -140,34 +140,6 @@ public class GameGridManager : MonoBehaviour
         int randomRoll = Random.Range(0, validColorCount);
         return (GameGridCell.GridCellColor)randomRoll;
     }
-
-    //helper to select color based on string input
-    private GameGridCell.GridCellColor GetGridCellColorFromString(string colorString)
-    {
-        switch (colorString)
-        {
-            case "R":
-                return GameGridCell.GridCellColor.Red;
-            
-            case "G":
-                return GameGridCell.GridCellColor.Green;
-            
-            case "B":
-                return GameGridCell.GridCellColor.Blue;
-            
-            case "Y":
-                return GameGridCell.GridCellColor.Yellow;
-            
-            case "O":
-                return GameGridCell.GridCellColor.Orange;
-            
-            case "V":
-                return GameGridCell.GridCellColor.Violet;
-        }
-        
-        Debug.LogError($"Invalid color string: {colorString}");
-        return GameGridCell.GridCellColor.None;
-    }
     
     // player attempted a move on the game board, process the move
     private void OnActiveTileTapped(int gridY, int gridX)
@@ -590,31 +562,5 @@ public class GameGridManager : MonoBehaviour
             }
         }
         Debug.Log(gridString);
-    }
-    
-    //helper to select color based on string input
-    private string GetGridCellStringFromColor(GameGridCell.GridCellColor color)
-    {
-        switch (color)
-        {
-            case GameGridCell.GridCellColor.Red:
-                return "R";
-
-            case GameGridCell.GridCellColor.Green:
-                return "G";
-
-            case GameGridCell.GridCellColor.Blue:
-                return "B";
-
-            case GameGridCell.GridCellColor.Yellow:
-                return "Y";
-            
-            case GameGridCell.GridCellColor.Orange:
-                return "O";
-
-            case GameGridCell.GridCellColor.Violet:
-                return "V";
-        }
-        return "_";
     }
 }
