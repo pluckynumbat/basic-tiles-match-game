@@ -27,6 +27,8 @@ public class GameGridManager : MonoBehaviour
 
     private int validColorCount; // stores the amount of different colors available for the cells in a given level
 
+    private GameGridCell.GridCellColor[] colorPalette; // the list of colors to construct the grid from
+
     private void Awake()
     {
         GameEvents.LevelDataReadyEvent -= OnLevelDataReady;
@@ -63,8 +65,16 @@ public class GameGridManager : MonoBehaviour
         }
 
         validColorCount = levelData.colorCount;
+        
+        // construct the color palette
+        colorPalette = new GameGridCell.GridCellColor[validColorCount];
+        for (int index = 0; index < validColorCount; index++)
+        {
+            colorPalette[index] = GameGridCell.GetGridCellColorFromString(levelData.colorPalette[index]);
+        }
+        
         gridLength = levelData.gridLength;
-
+        
         bool isStartGridFixed = levelData.isStartingGridFixed;
         
         //setting up the main grid
@@ -79,7 +89,7 @@ public class GameGridManager : MonoBehaviour
                 {
                     //mapping from a top first list, to a bottom first 2D array
                     int mapping =  ((gridLength - 1 - y) * gridLength) + x;
-                    mainGrid[y][x].Color = GetGridCellColorFromString(levelData.startingGrid[mapping]);
+                    mainGrid[y][x].Color = GameGridCell.GetGridCellColorFromString(levelData.startingGrid[mapping]);
                 }
                 else // fill the starting grid randomly (controlled by the seed if specified)
                 {
@@ -134,11 +144,10 @@ public class GameGridManager : MonoBehaviour
     }
     
     // randomly generate a new grid cell color
-    private GameGridCell.GridCellColor GetRandomGridCellColor(int validColorCount)
+    private GameGridCell.GridCellColor GetRandomGridCellColor(int colorCount)
     {
-        //TODO init seed?
-        int randomRoll = Random.Range(0, validColorCount);
-        return (GameGridCell.GridCellColor)randomRoll;
+        int randomRoll = Random.Range(0, colorCount);
+        return colorPalette[randomRoll];
     }
     
     // player attempted a move on the game board, process the move
@@ -558,7 +567,7 @@ public class GameGridManager : MonoBehaviour
             gridString += $"\n";
             for (int x = 0; x < gridLength; x++)
             {
-                gridString += $" {GetGridCellStringFromColor(grid[y][x].Color)}";
+                gridString += $" {GameGridCell.GetGridCellStringFromColor(grid[y][x].Color)}";
             }
         }
         Debug.Log(gridString);
