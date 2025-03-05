@@ -21,8 +21,7 @@ public static class LevelDataValidator
     private const int MIN_GOAL_COUNT = 1;
     private const int MAX_GOAL_COUNT = 4;
 
-    private static HashSet<string> allowedGridEntries =  new HashSet<string>() { "R", "G", "B", "Y", "O", "V"};
-    private static List<string> goalTypeEntries =  new List<string>() { "R", "G", "B", "Y", "O", "V", "A"};
+    private static HashSet<string> gridEntriesUniversalSet =  new HashSet<string>() { "R", "G", "B", "Y", "O", "V"};
 
     public static void ValidateAllLevelFiles()
     {
@@ -57,6 +56,29 @@ public static class LevelDataValidator
         {
             Debug.LogError($"Invalid color count for the level. Min. value is {MIN_COLOR_COUNT}, Max. value is {MAX_COLOR_COUNT}, current value is: {levelData.colorCount}");
             return false;
+        }
+        
+        // color palette must be specified, and its length should be as long as the color count
+        if (levelData.colorPalette.Count != levelData.colorCount)
+        {
+            Debug.LogError($"Invalid color palette count for the level: {levelData.colorPalette.Count}, it must match the level's color count: {levelData.colorCount}");
+            return false;
+        }
+        
+        //each entry in the color palette must be a valid grid entry, and no entries can be repeated
+        HashSet<string> allowedColorPaletteEntries = new HashSet<string>(gridEntriesUniversalSet);
+        foreach (string entry in levelData.colorPalette)
+        {
+            
+            if (!allowedColorPaletteEntries.Contains(entry))
+            {
+                Debug.LogError($"Color Palette contains an invalid entry: {entry}, it might be an invalid string, or it might be used already. please check the level file");
+                return false;
+            }
+            else
+            {
+                allowedColorPaletteEntries.Remove(entry); // color palette entries cannot be repeated
+            }
         }
         
         // allowed grid length is (5-9)
