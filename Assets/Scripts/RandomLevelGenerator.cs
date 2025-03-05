@@ -37,7 +37,20 @@ public static class RandomLevelGenerator
         randomLevel.gridLength = Random.Range(MIN_GRID_LENGTH, MAX_GRID_LENGTH + 1);
         randomLevel.startingMoveCount = Random.Range(MIN_MOVE_COUNT, MAX_MOVE_COUNT + 1);
 
-       
+        // select 'colorCount' number of colors randomly to form the color list for the level
+        randomLevel.colorPalette = new List<string>();
+        List<string> possibleCellColors = GetPossibleCellColors();
+        for (int index = 0; index < randomLevel.colorCount; index++)
+        {
+            // pick a cell color from the possible candidates for the level
+            int cellColorRoll = Random.Range(0, possibleCellColors.Count);
+            
+            //add it to the color palette
+            randomLevel.colorPalette.Add(possibleCellColors[cellColorRoll]);
+            
+            //remove the cell color from further consideration
+            possibleCellColors.RemoveAt(cellColorRoll);
+        }
         
         // select (1-4) goals randomly and generate new levelGoatData objects from them 
         int goalCount = Random.Range(MIN_GOAL_COUNT, MAX_GOAL_COUNT + 1);
@@ -59,6 +72,20 @@ public static class RandomLevelGenerator
         }
 
         return randomLevel;
+    }
+    
+    // create a list of possible candidates for the color palette to choose from
+    private static List<string> GetPossibleCellColors()
+    {
+        List<string> possibleCellColors = new List<string>();
+        
+        // add cell colors to the palette for all colors
+        for (int index = 0; index < MAX_COLOR_COUNT; index++)
+        {
+            string cellColorString = GameGridCell.GetGridCellStringFromColor((GameGridCell.GridCellColor)index);
+            possibleCellColors.Add(cellColorString);
+        }
+        return possibleCellColors;
     }
 
     // goal types depend on allowed color count, create a list of possible candidates
