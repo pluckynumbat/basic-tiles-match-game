@@ -37,12 +37,26 @@ public static class RandomLevelGenerator
         randomLevel.gridLength = Random.Range(MIN_GRID_LENGTH, MAX_GRID_LENGTH + 1);
         randomLevel.startingMoveCount = Random.Range(MIN_MOVE_COUNT, MAX_MOVE_COUNT + 1);
 
-       
+        // select 'colorCount' number of colors randomly to form the color list for the level
+        randomLevel.colorPalette = new List<string>();
+        List<string> possibleCellColors = GetPossibleCellColors();
+        for (int index = 0; index < randomLevel.colorCount; index++)
+        {
+            // pick a cell color from the possible candidates for the level
+            int cellColorRoll = Random.Range(0, possibleCellColors.Count);
+            
+            //add it to the color palette
+            randomLevel.colorPalette.Add(possibleCellColors[cellColorRoll]);
+            
+            //remove the cell color from further consideration
+            possibleCellColors.RemoveAt(cellColorRoll);
+        }
         
         // select (1-4) goals randomly and generate new levelGoatData objects from them 
+        // goals should come from the color palette (except for the collect any goal)
         int goalCount = Random.Range(MIN_GOAL_COUNT, MAX_GOAL_COUNT + 1);
         randomLevel.goals = new List<LevelGoalData>();
-        List<string> possibleGoalTypes = GetPossibleGoalTypes(randomLevel.colorCount);
+        List<string> possibleGoalTypes = GetPossibleGoalTypes(randomLevel.colorPalette);
         for (int goalIndex = 0; goalIndex < goalCount; goalIndex++)
         {
             LevelGoalData levelGoalData = new LevelGoalData();
@@ -60,20 +74,35 @@ public static class RandomLevelGenerator
 
         return randomLevel;
     }
+    
+    // create a list of possible candidates for the color palette to choose from
+    private static List<string> GetPossibleCellColors()
+    {
+        List<string> possibleCellColors = new List<string>();
+        
+        // add cell colors to the palette for all colors
+        for (int index = 0; index < MAX_COLOR_COUNT; index++)
+        {
+            string cellColorString = GameGridCell.GetGridCellStringFromColor((GameGridCell.GridCellColor)index);
+            possibleCellColors.Add(cellColorString);
+        }
+        return possibleCellColors;
+    }
 
-    // goal types depend on allowed color count, create a list of possible candidates
-    private static List<string> GetPossibleGoalTypes(int colorCount)
+    // goal types depend on the color palette, create a list of possible candidates
+    private static List<string> GetPossibleGoalTypes(List<string> colorPalette)
     {
         List<string> possibleGoalTypes = new List<string>();
-        
-        // add collect goals for all possible colors
-        for (int index = 0; index < colorCount; index++)
+
+        //first add goal type strings for all possible colors
+        foreach (string cellColorString in colorPalette)
         {
-            string goalTypeString = LevelGoal.GetGoalTypeStringFromGoalType((LevelGoal.GoalType)index);
-            possibleGoalTypes.Add(goalTypeString);
+            GameGridCell.GridCellColor cellColor = GameGridCell.GetGridCellColorFromString(cellColorString);
+            LevelGoal.GoalType goalType = LevelGoal.GetGoalTypeFromGridCellColor(cellColor);
+            possibleGoalTypes.Add(LevelGoal.GetGoalTypeStringFromGoalType(goalType));
         }
         
-        // add the collect any goal
+        // then add the collect any goal
         possibleGoalTypes.Add(LevelGoal.GetGoalTypeStringFromGoalType(LevelGoal.GoalType.CollectAny));
         return possibleGoalTypes;
     }

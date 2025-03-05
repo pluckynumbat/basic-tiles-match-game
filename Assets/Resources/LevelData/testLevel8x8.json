@@ -4,6 +4,8 @@
   "seed": 88,
   
   "colorCount": 5,
+
+  "colorPalette": ["V","Y","G","B","O"],
   
   "gridLength": 8,
   
