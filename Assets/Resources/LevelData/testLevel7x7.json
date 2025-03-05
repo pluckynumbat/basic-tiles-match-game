@@ -31,6 +31,10 @@
       "goalAmount": 10
     },
     {
+      "goalType": "B",
+      "goalAmount": 10
+    },
+    {
       "goalType": "A",
       "goalAmount": 20
     }

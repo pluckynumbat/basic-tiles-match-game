@@ -323,12 +323,12 @@ MonoBehaviour:
   - {fileID: 4146102939026251541}
   - {fileID: 4268359917701831898}
   goalSpriteOptions:
-  - {fileID: 21300000, guid: 906bdef3ac6614feba0f1f9d014ba4a5, type: 3}
-  - {fileID: 21300000, guid: bcc554e8116a944c58920484d4e1ceb6, type: 3}
-  - {fileID: 21300000, guid: 798fae629aebc4b1b8750394aac70076, type: 3}
-  - {fileID: 21300000, guid: 898101787589a4c5984e94a05279f7b6, type: 3}
-  - {fileID: 21300000, guid: c85481342cf7a4ebcb5b7f282cba072c, type: 3}
-  - {fileID: 21300000, guid: d07974a56f13e43388d1914d124b74dc, type: 3}
+  - {fileID: 21300000, guid: 0754afae0770947d98127877b68b8102, type: 3}
+  - {fileID: 21300000, guid: a5fa1c9052da54e15b216928d3d2be2d, type: 3}
+  - {fileID: 21300000, guid: 981d7a368491f4c55891122e7d4bbc85, type: 3}
+  - {fileID: 21300000, guid: ea142d01d5e7f43e3a034e58ddb4dfdc, type: 3}
+  - {fileID: 21300000, guid: 02c260d8b54a644a38774efb2566052b, type: 3}
+  - {fileID: 21300000, guid: 5f501f022b7f14863b646572add7af63, type: 3}
   - {fileID: 21300000, guid: 78b2680ce362848b0b3c456ebeb42370, type: 3}
 --- !u!1 &5332147200320991285
 GameObject:

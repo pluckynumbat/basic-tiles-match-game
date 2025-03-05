@@ -5,6 +5,8 @@
   
   "colorCount": 4,
   
+  "colorList": ["R","Y","O","V"],
+  
   "gridLength": 5,
   
   "isStartingGridFixed": false,
