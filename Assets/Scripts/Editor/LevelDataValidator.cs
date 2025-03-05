@@ -104,7 +104,8 @@ public static class LevelDataValidator
                 return false;
             }
 
-            // check each entry in the list
+            // check each entry in the list, it should be part of the color palette
+            HashSet<string> allowedGridEntries = new HashSet<string>(levelData.colorPalette);
             for (int index = 0; index < levelData.startingGrid.Count; index++)
             {
                 if (!allowedGridEntries.Contains(levelData.startingGrid[index]))
@@ -122,18 +123,20 @@ public static class LevelDataValidator
             return false;
         }
         
-        // check if each goal is allowed based on color count, is not repeated, and has a valid goal amount ( greater than 0)
+        // check if each goal is allowed based on color palette, is not repeated, and has a valid goal amount (greater than 0)
         HashSet<string> allowedGoalTypeEntries = new HashSet<string>();
-        for (int index = 0; index < levelData.colorCount; index++)
-        {
-            // add allowed goal types based on color count of the level
-            allowedGoalTypeEntries.Add(goalTypeEntries[index]);
-        }
         
+        // collect all goal types based on colors in the color palette
+        foreach (string cellColorString in levelData.colorPalette)
+        {
+            GameGridCell.GridCellColor cellColor = GameGridCell.GetGridCellColorFromString(cellColorString);
+            LevelGoal.GoalType goalType = LevelGoal.GetGoalTypeFromGridCellColor(cellColor);
+            allowedGoalTypeEntries.Add(LevelGoal.GetGoalTypeStringFromGoalType(goalType));
+        }
+
         //collect any is always allowed
         allowedGoalTypeEntries.Add(LevelGoal.GetGoalTypeStringFromGoalType(LevelGoal.GoalType.CollectAny));
         
-
         foreach (LevelGoalData goalData in levelData.goals)
         {
             if (goalData == null)
