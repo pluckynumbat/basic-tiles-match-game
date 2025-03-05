@@ -61,6 +61,10 @@ PrefabInstance:
       value: LevelSelectedSound
       objectReference: {fileID: 0}
     - target: {fileID: 1035227096782908105, guid: 3e5bae99aa96e4aa6a075ef08ff6b33c, type: 3}
+      propertyPath: m_Volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035227096782908105, guid: 3e5bae99aa96e4aa6a075ef08ff6b33c, type: 3}
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: 2e6c707e0e5a745aa8f0ed605f97ed52, type: 3}
