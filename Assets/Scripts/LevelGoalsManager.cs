@@ -48,7 +48,7 @@ public class LevelGoalsManager : MonoBehaviour
         GameGridCell.GridCellColor color = gridCellsCollected[0].Color;
         
         //get goal type from the color
-        LevelGoal.GoalType goalType = GetGoalTypeFromGridCellColor(color);
+        LevelGoal.GoalType goalType = LevelGoal.GetGoalTypeFromGridCellColor(color);
         
         // check if this color has a valid goal type, that it is a goal for this level, and that goal has not been completed yet
         if (goalType != LevelGoal.GoalType.None && goalProgress.ContainsKey(goalType) && goalProgress[goalType].Remaining > 0)
@@ -85,35 +85,6 @@ public class LevelGoalsManager : MonoBehaviour
         {
             GameEvents.RaiseGoalProgressUpdatedEvent(goalType, goalProgress[goalType].Remaining);
         }
-    }
-
-
-    // helper to get goal type from a Grid cell color type
-    private LevelGoal.GoalType GetGoalTypeFromGridCellColor(GameGridCell.GridCellColor color)
-    {
-        switch (color)
-        {
-            case GameGridCell.GridCellColor.Red:
-                return LevelGoal.GoalType.CollectRed;
-            
-            case GameGridCell.GridCellColor.Green:
-                return LevelGoal.GoalType.CollectGreen;
-            
-            case GameGridCell.GridCellColor.Blue:
-                return LevelGoal.GoalType.CollectBlue;
-            
-            case GameGridCell.GridCellColor.Yellow:
-                return LevelGoal.GoalType.CollectYellow;
-            
-            case GameGridCell.GridCellColor.Orange:
-                return LevelGoal.GoalType.CollectOrange;
-            
-            case GameGridCell.GridCellColor.Violet:
-                return LevelGoal.GoalType.CollectViolet;
-        }
-        
-        Debug.LogError($"Goal type does not exist for goal color: {color}");
-        return LevelGoal.GoalType.None;
     }
 
     //debug only helper to print goal status for the level

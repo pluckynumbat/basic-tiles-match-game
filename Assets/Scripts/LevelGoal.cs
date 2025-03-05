@@ -90,4 +90,32 @@ public class LevelGoal
         }
         return "A";
     }
+    
+    // helper to get goal type from a Grid cell color type
+    public static GoalType GetGoalTypeFromGridCellColor(GameGridCell.GridCellColor color)
+    {
+        switch (color)
+        {
+            case GameGridCell.GridCellColor.Red:
+                return GoalType.CollectRed;
+            
+            case GameGridCell.GridCellColor.Green:
+                return GoalType.CollectGreen;
+            
+            case GameGridCell.GridCellColor.Blue:
+                return GoalType.CollectBlue;
+            
+            case GameGridCell.GridCellColor.Yellow:
+                return GoalType.CollectYellow;
+            
+            case GameGridCell.GridCellColor.Orange:
+                return GoalType.CollectOrange;
+            
+            case GameGridCell.GridCellColor.Violet:
+                return GoalType.CollectViolet;
+        }
+        
+        Debug.LogError($"Goal type does not exist for goal color: {color}");
+        return GoalType.None;
+    }
 }
