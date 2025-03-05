@@ -1,0 +1,38 @@
+{
+  "name": "Pixel Onion",
+  
+  "seed": 60,
+  
+  "colorCount": 4,
+
+  "colorPalette": ["Y","G","B","V"],
+  
+  "gridLength": 6,
+  
+  "isStartingGridFixed": true,
+  
+  "startingGrid": 
+  [
+    "Y","Y","Y","Y","Y","Y",
+    "Y","G","G","G","G","Y",
+    "Y","G","V","B","G","Y",
+    "Y","G","B","V","G","Y",
+    "Y","G","G","G","G","Y",
+    "Y","Y","Y","Y","Y","Y"
+  ],
+  
+  "goals": 
+  [
+    {
+      "goalType": "B",
+      "goalAmount": 10
+    },
+    {
+      "goalType": "V",
+      "goalAmount": 10
+    }
+  ],
+  
+  "startingMoveCount": 20
+  
+}

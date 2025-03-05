@@ -1,0 +1,47 @@
+{
+  "name": "Sunrise Sunset",
+  
+  "seed": 70,
+  
+  "colorCount": 4,
+
+  "colorPalette": ["Y","O","V","R"],
+  
+  "gridLength": 7,
+  
+  "isStartingGridFixed": true,
+  
+  "startingGrid": 
+  [
+    "Y","Y","Y","Y","Y","Y","Y",
+    "O","O","O","O","O","O","O",
+    "R","R","R","R","R","R","R",
+    "V","V","V","V","V","V","V",
+    "R","R","R","R","R","R","R",
+    "O","O","O","O","O","O","O",
+    "Y","Y","Y","Y","Y","Y","Y"
+  ],
+  
+  "goals": 
+  [
+    {
+      "goalType": "Y",
+      "goalAmount": 10
+    },
+    {
+      "goalType": "O",
+      "goalAmount": 10
+    },
+    {
+      "goalType": "R",
+      "goalAmount": 10
+    },
+    {
+      "goalType": "V",
+      "goalAmount": 15
+    }
+  ],
+  
+  "startingMoveCount": 15
+  
+}

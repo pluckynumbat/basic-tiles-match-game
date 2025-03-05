@@ -1,0 +1,43 @@
+{
+  "name": "Red V Blue",
+  
+  "seed": 20,
+  
+  "colorCount": 4,
+
+  "colorPalette": ["R","G","B","V"],
+  
+  "gridLength": 7,
+  
+  "isStartingGridFixed": true,
+  
+  "startingGrid": 
+  [
+    "R","R","R","V","B","B","B",
+    "R","R","R","V","B","B","B",
+    "R","R","R","V","B","B","B",
+    "R","R","R","V","B","B","B",
+    "R","R","R","V","B","B","B",
+    "R","R","R","V","B","B","B",
+    "R","R","R","V","B","B","B"
+  ],
+  
+  "goals": 
+  [
+    {
+      "goalType": "R",
+      "goalAmount": 30
+    },
+    {
+      "goalType": "V",
+      "goalAmount": 20
+    },
+    {
+      "goalType": "B",
+      "goalAmount": 30
+    }
+  ],
+  
+  "startingMoveCount": 20
+  
+}

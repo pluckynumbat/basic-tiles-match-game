@@ -1,0 +1,41 @@
+{
+  "name": "Oranges and Lemons",
+  
+  "seed": 30,
+  
+  "colorCount": 6,
+
+  "colorPalette": ["R","G","B","Y","O","V"],
+  
+  "gridLength": 9,
+  
+  "isStartingGridFixed": true,
+  
+  "startingGrid": 
+  [
+    "O","O","O","Y","Y","Y","O","O","O",
+    "O","O","O","Y","Y","Y","O","O","O",
+    "O","O","O","Y","Y","Y","O","O","O",
+    "Y","Y","Y","O","O","O","Y","Y","Y",
+    "Y","Y","Y","O","O","O","Y","Y","Y",
+    "Y","Y","Y","O","O","O","Y","Y","Y",
+    "O","O","O","Y","Y","Y","O","O","O",
+    "O","O","O","Y","Y","Y","O","O","O",
+    "O","O","O","Y","Y","Y","O","O","O"
+  ],
+  
+  "goals": 
+  [
+    {
+      "goalType": "O",
+      "goalAmount": 50
+    },
+    {
+      "goalType": "Y",
+      "goalAmount": 40
+    }
+  ],
+  
+  "startingMoveCount": 30
+  
+}

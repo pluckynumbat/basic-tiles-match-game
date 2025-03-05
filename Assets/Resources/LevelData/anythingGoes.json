@@ -1,0 +1,24 @@
+{
+  "name": "Anything Goes",
+  
+  "seed": 90,
+  
+  "colorCount": 6,
+
+  "colorPalette": ["R","G","B","Y","O","V"],
+  
+  "gridLength": 9,
+  
+  "isStartingGridFixed": false,
+  
+  "goals": 
+  [
+    {
+      "goalType": "A",
+      "goalAmount": 90
+    }
+  ],
+  
+  "startingMoveCount": 30
+  
+}

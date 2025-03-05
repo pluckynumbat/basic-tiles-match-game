@@ -1,0 +1,45 @@
+{
+  "name": "First Steps",
+  
+  "seed": 10,
+  
+  "colorCount": 4,
+
+  "colorPalette": ["R","G","B","Y"],
+  
+  "gridLength": 5,
+  
+  "isStartingGridFixed": true,
+  
+  "startingGrid": 
+  [
+    "G","B","Y","G","R",
+    "B","Y","G","R","R",
+    "Y","B","R","R","R",
+    "G","R","R","R","R",
+    "R","R","R","R","R"
+  ],
+  
+  "goals": 
+  [
+    {
+      "goalType": "G",
+      "goalAmount": 10
+    },
+    {
+      "goalType": "B",
+      "goalAmount": 10
+    },
+    {
+      "goalType": "Y",
+      "goalAmount": 10
+    },
+    {
+      "goalType": "R",
+      "goalAmount": 25
+    }
+  ],
+  
+  "startingMoveCount": 20
+  
+}
