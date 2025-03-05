@@ -1,8 +1,6 @@
-// TODO: remove this later if not required
 // Uncomment the following line to enable level manager logs
-#define LEVEL_MANAGER_LOGGING
+//#define LEVEL_MANAGER_LOGGING
 
-using System;
 using UnityEngine;
 
 /// <summary>

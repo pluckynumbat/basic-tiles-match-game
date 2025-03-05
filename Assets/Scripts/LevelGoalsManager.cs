@@ -1,6 +1,5 @@
-// TODO: remove this later if not required
 // Uncomment the following line to enable level goals logs
-#define LEVEL_GOALS_LOGGING
+//#define LEVEL_GOALS_LOGGING
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,8 +36,9 @@ public class LevelGoalsManager : MonoBehaviour
             goalProgress[key] = new LevelGoal(key, goalData.goalAmount);
         }
         
-        // Debug Only TODO: remove this later?
+#if LEVEL_GOALS_LOGGING
         PrintGoalStatusToConsole();
+#endif
     }
     
     // update the goals dictionary, see if any new goal was completed, see if all goals were completed
@@ -62,8 +62,9 @@ public class LevelGoalsManager : MonoBehaviour
             UpdateGoalProgress(LevelGoal.GoalType.CollectAny, gridCellsCollected.Count);
         }
         
-        // Debug Only TODO: remove this later?
+#if LEVEL_GOALS_LOGGING
         PrintGoalStatusToConsole();
+#endif        
     }
     
     // function to update goal progress for a given goal, and raise the goal completed event if applicable

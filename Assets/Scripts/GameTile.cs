@@ -44,7 +44,6 @@ public class GameTile : MonoBehaviour
         spriteRenderer.enabled = visible;
     }
 
-    // TODO: these will overlap at borders, fix that
     // these are the positions the tile cares about when detecting input
     public void SetLimits(Vector2 position)
     {

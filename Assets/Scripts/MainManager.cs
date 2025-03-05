@@ -100,8 +100,6 @@ public class MainManager : MonoBehaviour
             return;
         }
         
-        //TODO: validate the properties inside level data if possible before using them / broadcasting it
-        
         //request display of the level preview dialog
         UIEvents.RaiseDialogDisplayRequestEvent(LEVEL_PREVIEW_DIALOG_NAME, new object[] {levelToPlay});
     }
@@ -116,7 +114,6 @@ public class MainManager : MonoBehaviour
     // level scene has been loaded and the managers in it need the level data
     private void OnLevelDataRequest()
     {
-        //TODO: validate the properties inside level data if possible before using them / broadcasting it
         GameEvents.RaiseLevelDataReadyEvent(levelToPlay);
     }
     

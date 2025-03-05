@@ -1,6 +1,5 @@
-// TODO: remove this later if not required
 // Uncomment the following line to enable grid related logs
-#define GAME_GRID_LOGGING
+//#define GAME_GRID_LOGGING
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -171,7 +170,6 @@ public class GameGridManager : MonoBehaviour
         }
         
 #if GAME_GRID_LOGGING
-        //TODO: remove this log later? 
         Debug.Log($"Active tile tapped: X: {gridX}, Y: {gridY}");
 #endif
         
@@ -182,8 +180,6 @@ public class GameGridManager : MonoBehaviour
         {
             // if not, raise invalid move event, and return
             GameEvents.RaiseInvalidMoveEvent(gridY, gridX);
-            //TODO: some feedback here or in the tiles manager to let the player know that a single tile cannot be removed?
-            Debug.Log($"(single cell cannot be removed), x: {gridX}, y: {gridY}");
             return;
         }
         
