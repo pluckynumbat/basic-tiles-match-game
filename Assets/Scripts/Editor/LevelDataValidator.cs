@@ -4,6 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// New editor tool to perform basic validation on a given level data object
+/// NOTE: this tool can be run in the editor by clicking 'Assets->Validate All Level Files'
 /// </summary>
 public static class LevelDataValidator
 {
