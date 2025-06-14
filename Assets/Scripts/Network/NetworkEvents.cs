@@ -9,4 +9,11 @@ public static class NetworkEvents
     {
         LevelRequestedFromServerEvent?.Invoke();
     }
+    
+    public delegate void LevelReceivedFromServerHandler(string levelJSONString);
+    public static event LevelReceivedFromServerHandler LevelReceivedFromServerEvent;
+    public static void RaiseLevelReceivedFromServerEvent(string levelJSONString)
+    {
+        LevelReceivedFromServerEvent?.Invoke(levelJSONString);
+    }
 }
