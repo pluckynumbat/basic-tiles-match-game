@@ -10,4 +10,8 @@ public class HTTPGetRequester : MonoBehaviour
     {
         NetworkEvents.LevelRequestedFromServerEvent -= OnLevelRequestedFromServer;
     }
+
+    private void OnLevelRequestedFromServer()
+    {
+    }
 }
