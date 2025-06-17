@@ -1,3 +1,7 @@
+using UnityEngine;
+using UnityEngine.Networking;
+using System.Collections;
+
 public class HTTPGetRequester : MonoBehaviour
 {
     private const string DefaultServerURI = "http://localhost:8090/level";
