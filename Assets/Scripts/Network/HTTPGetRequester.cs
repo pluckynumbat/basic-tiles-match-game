@@ -15,8 +15,9 @@ public class HTTPGetRequester : MonoBehaviour
     {
     }
 
-    private IEnumerator GetRequest(string uri)
-    {
-        
-    }
+   private IEnumerator GetRequest(string uri)
+   {
+       UnityWebRequest webRequest = UnityWebRequest.Get(uri);
+       yield return webRequest.SendWebRequest();
+   }
 }
