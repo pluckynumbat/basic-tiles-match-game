@@ -14,4 +14,9 @@ public class HTTPGetRequester : MonoBehaviour
     private void OnLevelRequestedFromServer()
     {
     }
+
+    private IEnumerator GetRequest(string uri)
+    {
+        
+    }
 }
