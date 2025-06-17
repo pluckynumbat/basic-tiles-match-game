@@ -19,5 +19,16 @@ public class HTTPGetRequester : MonoBehaviour
    {
        UnityWebRequest webRequest = UnityWebRequest.Get(uri);
        yield return webRequest.SendWebRequest();
+       
+       switch (webRequest.result)
+       {
+           case UnityWebRequest.Result.Success:
+               Debug.Log("Level Received: " + webRequest.downloadHandler.text);
+               break;
+           
+           default:
+               Debug.LogError("Get Request Error: " + webRequest.error);
+               break;
+       }
    }
 }
