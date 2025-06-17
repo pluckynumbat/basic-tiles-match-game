@@ -14,6 +14,7 @@ public class HTTPGetRequester : MonoBehaviour
 
     private void OnLevelRequestedFromServer()
     {
+        StartCoroutine(GetRequest(DefaultServerURI));
     }
 
    private IEnumerator GetRequest(string uri)
