@@ -182,4 +182,9 @@ public class MainManager : MonoBehaviour
             AudioListener.volume = lastGlobalVolume;
         }
     }
+
+    private void OnLevelReceivedFromServer(string levelJSONString)
+    {
+    }
+    
 }
