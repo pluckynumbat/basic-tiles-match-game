@@ -29,7 +29,6 @@ public class MainManager : MonoBehaviour
     // store the next level the player will play
     public LevelData levelToPlay;
     
-    // store the last level that the game received from the server
     public LevelData levelFromServer;
     
     // check this when the player is in random mode
@@ -93,6 +92,7 @@ public class MainManager : MonoBehaviour
         UIEvents.RandomModeSelectedEvent -= OnRandomModeSelected;
         UIEvents.PlayRandomModeRequestEvent -= OnPlayRandomModeRequest;
         UIEvents.ToggleMuteRequestEvent -= OnToggleMuteRequested;
+        NetworkEvents.LevelReceivedFromServerEvent -= OnLevelReceivedFromServer;
     }
 
     // a level select node was pressed in the main scene
