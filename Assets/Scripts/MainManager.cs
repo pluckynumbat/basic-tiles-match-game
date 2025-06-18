@@ -74,6 +74,9 @@ public class MainManager : MonoBehaviour
         
         UIEvents.ToggleMuteRequestEvent -= OnToggleMuteRequested;
         UIEvents.ToggleMuteRequestEvent += OnToggleMuteRequested;
+ 
+        NetworkEvents.LevelReceivedFromServerEvent -= OnLevelReceivedFromServer;
+        NetworkEvents.LevelReceivedFromServerEvent += OnLevelReceivedFromServer;
     }
 
     private void OnDestroy()
