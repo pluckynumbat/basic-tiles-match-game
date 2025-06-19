@@ -27,6 +27,12 @@ public class LevelJSONReader : MonoBehaviour
 
         return levelData;
     }
+    
+    public static LevelData CreateLevelDataFromJSONString(string jsonString)
+    {
+        LevelData levelData = JsonUtility.FromJson<LevelData>(jsonString);
+        return levelData;
+    }
 }
 
 // Data structure to represent level data from a level file
