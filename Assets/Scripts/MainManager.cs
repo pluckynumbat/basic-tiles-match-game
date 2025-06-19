@@ -185,6 +185,12 @@ public class MainManager : MonoBehaviour
 
     private void OnLevelReceivedFromServer(string levelJSONString)
     {
+        levelFromServer = LevelJSONReader.CreateLevelDataFromJSONString(levelJSONString);
+        if (levelFromServer == null)
+        {
+            Debug.LogError($"Invalid level data for level received from server, abort");
+            return;
+        }
     }
     
 }
