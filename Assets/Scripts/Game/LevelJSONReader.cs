@@ -23,7 +23,7 @@ public class LevelJSONReader : MonoBehaviour
             jsonLevelFile = Resources.Load<TextAsset>(defaultPath);
         }
 
-        LevelData levelData = JsonUtility.FromJson<LevelData>(jsonLevelFile.ToString());
+        LevelData levelData = CreateLevelDataFromJSONString(jsonLevelFile.ToString());
 
         return levelData;
     }
