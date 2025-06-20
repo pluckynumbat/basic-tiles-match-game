@@ -85,4 +85,13 @@ public static class UIEvents
     {
         ToggleMuteRequestEvent?.Invoke();
     }
+    
+    // raised by the player level from server button when pressed
+    public delegate void ServerLevelSelectedHandler();
+    public static event ServerLevelSelectedHandler ServerLevelSelectedEvent;
+    public static void RaiseServerLevelSelectedEvent()
+    {
+        ServerLevelSelectedEvent?.Invoke();
+    }
+
 }
