@@ -93,5 +93,12 @@ public static class UIEvents
     {
         ServerLevelSelectedEvent?.Invoke();
     }
-
+    
+    // raised by the level preview dialog when player presses play for a remote level
+    public delegate void PlayServerLevelRequestHandler();
+    public static event PlayServerLevelRequestHandler PlayServerLevelRequestEvent;
+    public static void RaisePlayServerLevelRequestEvent()
+    {
+        PlayServerLevelRequestEvent?.Invoke();
+    }
 }
