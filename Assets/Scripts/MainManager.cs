@@ -39,6 +39,9 @@ public class MainManager : MonoBehaviour
     //global volume setting
     public float lastGlobalVolume;
 
+    // setting to enable / disable remote levels
+    public bool enableRemoteLevels = false;
+    
     private void Awake()
     {
         if (instance == null)
