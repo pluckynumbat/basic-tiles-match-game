@@ -122,8 +122,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6797387756823025467}
-        m_TargetAssemblyTypeName: UIPlayLevelFromServerButton, Assembly-CSharp
-        m_MethodName: OnPlayLevelFromServerButtonClicked
+        m_TargetAssemblyTypeName: UIRemoteLevelButton, Assembly-CSharp
+        m_MethodName: OnRemoteLevelButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
