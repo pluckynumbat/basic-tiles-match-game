@@ -13,6 +13,8 @@ public class UILevelPreviewDialog : UIDialogBase
     public TextMeshProUGUI titleText; // this is set during run time
     public UIGoalsDisplay goalsDisplay;
 
+    private bool isRemoteLevel;
+
     // set title text and goals display based on supplied data
     public override void Setup(object[] data)
     {
