@@ -36,6 +36,8 @@ public class UILevelPreviewDialog : UIDialogBase
             Debug.LogError("Goals display is null, please check the prefab, abort");
             return;
         }
+        
+        isRemoteLevel = (bool)data[1];
 
         titleText.text = levelData.name;
         goalsDisplay.SetupGoalsDisplay(levelData);
