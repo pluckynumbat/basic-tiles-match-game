@@ -46,7 +46,14 @@ public class UILevelPreviewDialog : UIDialogBase
     //request to enter the level scene to play this level
     public void OnPlayButtonClicked()
     {
-        UIEvents.RaisePlayLevelRequestEvent();
+        if (isRemoteLevel)
+        {
+            UIEvents.RaisePlayRemoteLevelRequestEvent();
+        }
+        else
+        {
+            UIEvents.RaisePlayLevelRequestEvent();
+        }
     }
     
     // only dismiss this dialog
