@@ -100,6 +100,7 @@ public class MainManager : MonoBehaviour
         UIEvents.PlayRandomModeRequestEvent -= OnPlayRandomModeRequest;
         UIEvents.ToggleMuteRequestEvent -= OnToggleMuteRequested;
         NetworkEvents.LevelReceivedFromServerEvent -= OnLevelReceivedFromServer;
+        UIEvents.RemoteLevelSelectedEvent -= OnRemoteLevelSelected;
     }
 
     // a level select node was pressed in the main scene
