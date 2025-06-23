@@ -83,6 +83,9 @@ public class MainManager : MonoBehaviour
  
         NetworkEvents.LevelReceivedFromServerEvent -= OnLevelReceivedFromServer;
         NetworkEvents.LevelReceivedFromServerEvent += OnLevelReceivedFromServer;
+        
+        UIEvents.RemoteLevelSelectedEvent -= OnRemoteLevelSelected;
+        UIEvents.RemoteLevelSelectedEvent += OnRemoteLevelSelected;
     }
 
     private void OnDestroy()
