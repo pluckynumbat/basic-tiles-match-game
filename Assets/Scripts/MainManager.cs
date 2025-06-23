@@ -201,4 +201,9 @@ public class MainManager : MonoBehaviour
         }
     }
     
+    private void OnRemoteLevelSelected()
+    {
+        
+    }
+    
 }
