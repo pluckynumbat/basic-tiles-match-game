@@ -203,7 +203,10 @@ public class MainManager : MonoBehaviour
     
     private void OnRemoteLevelSelected()
     {
-        
+        if (enableRemoteLevels)
+        {
+            NetworkEvents.RaiseLevelRequestedFromServerEvent();
+        }
     }
     
 }
