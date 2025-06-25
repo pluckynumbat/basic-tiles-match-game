@@ -213,4 +213,9 @@ public class MainManager : MonoBehaviour
         }
     }
     
+    private void OnPlayRemoteLevelRequest()
+    {
+        
+    }
+    
 }
