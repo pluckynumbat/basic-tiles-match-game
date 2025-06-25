@@ -86,6 +86,9 @@ public class MainManager : MonoBehaviour
         
         UIEvents.RemoteLevelSelectedEvent -= OnRemoteLevelSelected;
         UIEvents.RemoteLevelSelectedEvent += OnRemoteLevelSelected;
+        
+        UIEvents.PlayRemoteLevelRequestEvent -= OnPlayRemoteLevelRequest;
+        UIEvents.PlayRemoteLevelRequestEvent += OnPlayRemoteLevelRequest;
     }
 
     private void OnDestroy()
