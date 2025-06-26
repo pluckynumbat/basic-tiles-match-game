@@ -29,8 +29,8 @@ public class MainManager : MonoBehaviour
     // store the next level the player will play
     public LevelData levelToPlay;
     
-    // store the last level that the game received from the server
-    public LevelData levelFromServer;
+    // store the last level that the game received from a remote source
+    public LevelData remoteLevel;
     
     // check this when the player is in random mode
     public bool isRandomModeEnabled = false;
