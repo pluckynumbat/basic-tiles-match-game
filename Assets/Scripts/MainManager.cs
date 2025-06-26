@@ -119,7 +119,7 @@ public class MainManager : MonoBehaviour
         }
         
         //request display of the level preview dialog
-        UIEvents.RaiseDialogDisplayRequestEvent(LEVEL_PREVIEW_DIALOG_NAME, new object[] {levelToPlay});
+        UIEvents.RaiseDialogDisplayRequestEvent(LEVEL_PREVIEW_DIALOG_NAME, new object[] {levelToPlay, false});
     }
     
     // the player pressed 'Play' on the level preview dialog, switch scenes to level scene for this level
