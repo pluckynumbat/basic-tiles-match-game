@@ -205,7 +205,7 @@ public class MainManager : MonoBehaviour
         }
         
         //request display of the level preview dialog
-        UIEvents.RaiseDialogDisplayRequestEvent(LEVEL_PREVIEW_DIALOG_NAME, new object[] {levelFromServer, true});
+        UIEvents.RaiseDialogDisplayRequestEvent(LEVEL_PREVIEW_DIALOG_NAME, new object[] {remoteLevel, true});
     }
     
     private void OnRemoteLevelSelected()
@@ -218,7 +218,7 @@ public class MainManager : MonoBehaviour
     
     private void OnPlayRemoteLevelRequest()
     {
-        levelToPlay = levelFromServer;
+        levelToPlay = remoteLevel;
         SceneManager.LoadScene(LEVEL_SCENE_ID);
     }
     
