@@ -216,6 +216,7 @@ public class MainManager : MonoBehaviour
     private void OnPlayRemoteLevelRequest()
     {
         levelToPlay = levelFromServer;
+        SceneManager.LoadScene(LEVEL_SCENE_ID);
     }
     
 }
