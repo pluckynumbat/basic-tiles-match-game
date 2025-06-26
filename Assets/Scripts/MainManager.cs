@@ -203,6 +203,9 @@ public class MainManager : MonoBehaviour
             Debug.LogError($"Invalid level data for level received from server, abort");
             return;
         }
+        
+        //request display of the level preview dialog
+        UIEvents.RaiseDialogDisplayRequestEvent(LEVEL_PREVIEW_DIALOG_NAME, new object[] {levelFromServer, true});
     }
     
     private void OnRemoteLevelSelected()
