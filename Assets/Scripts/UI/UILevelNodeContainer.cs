@@ -5,6 +5,7 @@ using UnityEngine;
 /// </summary>
 public class UILevelNodeContainer : MonoBehaviour
 {
+    public GameObject[] RemoteLevelGameObjects;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
