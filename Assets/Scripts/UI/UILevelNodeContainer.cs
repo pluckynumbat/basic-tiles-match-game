@@ -1,15 +1,12 @@
 using UnityEngine;
 
+/// <summary>
+/// this script is to control the dynamic elements of the level node container like feature specific elements
+/// </summary>
 public class UILevelNodeContainer : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
     {
         
     }
