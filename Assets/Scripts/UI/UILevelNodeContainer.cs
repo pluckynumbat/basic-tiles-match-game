@@ -13,5 +13,7 @@ public class UILevelNodeContainer : MonoBehaviour
         {
             return;
         }
+
+        bool enabled = MainManager.Instance.enableRemoteLevels;
     }
 }
