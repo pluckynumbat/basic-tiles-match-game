@@ -18,6 +18,11 @@ public class UILevelNodeContainer : MonoBehaviour
 
         foreach (GameObject go in RemoteLevelGameObjects)
         {
+            if (go == null)
+            {
+                continue;
+            }
+            
             go.SetActive(enabled);
         }
     }
