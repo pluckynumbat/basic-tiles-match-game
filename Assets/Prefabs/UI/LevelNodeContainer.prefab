@@ -567,6 +567,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 270b29e785c944273bb57002994ed069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RemoteLevelGameObjects:
+  - {fileID: 1717167678260531255}
+  - {fileID: 715645118139514684}
 --- !u!1001 &556287932442547623
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1092,6 +1095,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec2a1a3c49e53463dbbc6817fca8bfb2, type: 3}
+--- !u!1 &715645118139514684 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2579657634330813787, guid: ec2a1a3c49e53463dbbc6817fca8bfb2, type: 3}
+  m_PrefabInstance: {fileID: 3036186470057187943}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8643922610596693361 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6762104619663253270, guid: ec2a1a3c49e53463dbbc6817fca8bfb2, type: 3}
