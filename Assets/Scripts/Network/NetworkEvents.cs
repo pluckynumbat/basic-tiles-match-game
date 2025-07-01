@@ -10,10 +10,10 @@ public static class NetworkEvents
         RemoteLevelRequestedEvent?.Invoke();
     }
     
-    public delegate void LevelReceivedFromServerHandler(string levelJSONString);
-    public static event LevelReceivedFromServerHandler LevelReceivedFromServerEvent;
-    public static void RaiseLevelReceivedFromServerEvent(string levelJSONString)
+    public delegate void RemoteLevelReceivedHandler(string levelJSONString);
+    public static event RemoteLevelReceivedHandler RemoteLevelReceivedEvent;
+    public static void RaiseRemoteLevelReceivedEvent(string levelJSONString)
     {
-        LevelReceivedFromServerEvent?.Invoke(levelJSONString);
+        RemoteLevelReceivedEvent?.Invoke(levelJSONString);
     }
 }
