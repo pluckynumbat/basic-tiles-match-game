@@ -81,8 +81,8 @@ public class MainManager : MonoBehaviour
         UIEvents.ToggleMuteRequestEvent -= OnToggleMuteRequested;
         UIEvents.ToggleMuteRequestEvent += OnToggleMuteRequested;
  
-        NetworkEvents.RemoteLevelReceivedEvent -= OnLevelReceivedFromServer;
-        NetworkEvents.RemoteLevelReceivedEvent += OnLevelReceivedFromServer;
+        NetworkEvents.RemoteLevelReceivedEvent -= OnRemoteLevelReceived;
+        NetworkEvents.RemoteLevelReceivedEvent += OnRemoteLevelReceived;
         
         UIEvents.RemoteLevelSelectedEvent -= OnRemoteLevelSelected;
         UIEvents.RemoteLevelSelectedEvent += OnRemoteLevelSelected;
@@ -102,7 +102,7 @@ public class MainManager : MonoBehaviour
         UIEvents.RandomModeSelectedEvent -= OnRandomModeSelected;
         UIEvents.PlayRandomModeRequestEvent -= OnPlayRandomModeRequest;
         UIEvents.ToggleMuteRequestEvent -= OnToggleMuteRequested;
-        NetworkEvents.RemoteLevelReceivedEvent -= OnLevelReceivedFromServer;
+        NetworkEvents.RemoteLevelReceivedEvent -= OnRemoteLevelReceived;
         UIEvents.RemoteLevelSelectedEvent -= OnRemoteLevelSelected;
         UIEvents.PlayRemoteLevelRequestEvent -= OnPlayRemoteLevelRequest;
     }
@@ -195,7 +195,7 @@ public class MainManager : MonoBehaviour
         }
     }
 
-    private void OnLevelReceivedFromServer(string levelJSONString)
+    private void OnRemoteLevelReceived(string levelJSONString)
     {
         remoteLevel = LevelJSONReader.CreateLevelDataFromJSONString(levelJSONString);
         if (remoteLevel == null)
