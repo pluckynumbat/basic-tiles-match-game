@@ -3,11 +3,11 @@
 /// </summary>
 public static class NetworkEvents
 {
-    public delegate void LevelRequestedFromServerHandler();
-    public static event LevelRequestedFromServerHandler LevelRequestedFromServerEvent;
-    public static void RaiseLevelRequestedFromServerEvent()
+    public delegate void RemoteLevelRequestedHandler();
+    public static event RemoteLevelRequestedHandler RemoteLevelRequestedEvent;
+    public static void RaiseRemoteLevelRequestedEvent()
     {
-        LevelRequestedFromServerEvent?.Invoke();
+        RemoteLevelRequestedEvent?.Invoke();
     }
     
     public delegate void LevelReceivedFromServerHandler(string levelJSONString);
