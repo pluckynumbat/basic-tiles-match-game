@@ -81,8 +81,8 @@ public class MainManager : MonoBehaviour
         UIEvents.ToggleMuteRequestEvent -= OnToggleMuteRequested;
         UIEvents.ToggleMuteRequestEvent += OnToggleMuteRequested;
  
-        NetworkEvents.LevelReceivedFromServerEvent -= OnLevelReceivedFromServer;
-        NetworkEvents.LevelReceivedFromServerEvent += OnLevelReceivedFromServer;
+        NetworkEvents.RemoteLevelReceivedEvent -= OnLevelReceivedFromServer;
+        NetworkEvents.RemoteLevelReceivedEvent += OnLevelReceivedFromServer;
         
         UIEvents.RemoteLevelSelectedEvent -= OnRemoteLevelSelected;
         UIEvents.RemoteLevelSelectedEvent += OnRemoteLevelSelected;
@@ -102,7 +102,7 @@ public class MainManager : MonoBehaviour
         UIEvents.RandomModeSelectedEvent -= OnRandomModeSelected;
         UIEvents.PlayRandomModeRequestEvent -= OnPlayRandomModeRequest;
         UIEvents.ToggleMuteRequestEvent -= OnToggleMuteRequested;
-        NetworkEvents.LevelReceivedFromServerEvent -= OnLevelReceivedFromServer;
+        NetworkEvents.RemoteLevelReceivedEvent -= OnLevelReceivedFromServer;
         UIEvents.RemoteLevelSelectedEvent -= OnRemoteLevelSelected;
         UIEvents.PlayRemoteLevelRequestEvent -= OnPlayRemoteLevelRequest;
     }
