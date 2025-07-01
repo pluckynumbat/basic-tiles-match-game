@@ -7,13 +7,13 @@ public class HTTPGetRequester : MonoBehaviour
     private const string DefaultServerURI = "http://localhost:8090/level";
     private void Awake()
     {
-        NetworkEvents.LevelRequestedFromServerEvent -= OnLevelRequestedFromServer;
-        NetworkEvents.LevelRequestedFromServerEvent += OnLevelRequestedFromServer;
+        NetworkEvents.RemoteLevelRequestedEvent -= OnLevelRequestedFromServer;
+        NetworkEvents.RemoteLevelRequestedEvent += OnLevelRequestedFromServer;
     }
     
     private void OnDestroy()
     {
-        NetworkEvents.LevelRequestedFromServerEvent -= OnLevelRequestedFromServer;
+        NetworkEvents.RemoteLevelRequestedEvent -= OnLevelRequestedFromServer;
     }
 
     private void OnLevelRequestedFromServer()
