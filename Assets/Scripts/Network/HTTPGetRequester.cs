@@ -30,7 +30,7 @@ public class HTTPGetRequester : MonoBehaviour
        {
            case UnityWebRequest.Result.Success:
                Debug.Log("Level Received: " + webRequest.downloadHandler.text);
-               NetworkEvents.RaiseLevelReceivedFromServerEvent(webRequest.downloadHandler.text);
+               NetworkEvents.RaiseRemoteLevelReceivedEvent(webRequest.downloadHandler.text);
                break;
            
            default:
