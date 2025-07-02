@@ -4,7 +4,7 @@ using System.Collections;
 
 public class HTTPGetRequester : MonoBehaviour
 {
-    private const string DefaultServerURI = "http://localhost:8090/level";
+    private const string RemoteLevelURI = "http://localhost:8090/level";
     private void Awake()
     {
         NetworkEvents.RemoteLevelRequestedEvent -= OnRemoteLevelRequested;
