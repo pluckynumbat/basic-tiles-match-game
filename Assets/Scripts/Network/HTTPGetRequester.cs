@@ -14,7 +14,7 @@ public class HTTPGetRequester : MonoBehaviour
     
     private void Start()
     {
-        StartCoroutine(GetLevelRequest(TestPingURI));
+        StartCoroutine(PerformTestPing(TestPingURI));
     }
     
     private void OnDestroy()
