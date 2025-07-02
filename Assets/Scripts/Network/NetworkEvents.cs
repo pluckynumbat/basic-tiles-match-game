@@ -16,4 +16,12 @@ public static class NetworkEvents
     {
         RemoteLevelReceivedEvent?.Invoke(levelJSONString);
     }
+    
+    public delegate void RemoteTestCompletedHandler(bool success);
+    public static event RemoteTestCompletedHandler RemoteTestCompletedEvent;
+    public static void RaiseRemoteTestCompletedEvent(bool success)
+    {
+        RemoteTestCompletedEvent?.Invoke(success);
+    }
+
 }
