@@ -4,6 +4,7 @@ using System.Collections;
 
 public class HTTPGetRequester : MonoBehaviour
 {
+    private const string TestPingURI = "http://localhost:8090/ping";
     private const string RemoteLevelURI = "http://localhost:8090/level";
     private void Awake()
     {
