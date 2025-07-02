@@ -18,10 +18,10 @@ public class HTTPGetRequester : MonoBehaviour
 
     private void OnRemoteLevelRequested()
     {
-        StartCoroutine(GetRequest(DefaultServerURI));
+        StartCoroutine(GetLevelRequest(RemoteLevelURI));
     }
 
-   private IEnumerator GetRequest(string uri)
+   private IEnumerator GetLevelRequest(string uri)
    {
        UnityWebRequest webRequest = UnityWebRequest.Get(uri);
        yield return webRequest.SendWebRequest();
