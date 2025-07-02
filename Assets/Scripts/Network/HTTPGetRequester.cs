@@ -12,6 +12,11 @@ public class HTTPGetRequester : MonoBehaviour
         NetworkEvents.RemoteLevelRequestedEvent += OnRemoteLevelRequested;
     }
     
+    private void Start()
+    {
+        StartCoroutine(GetLevelRequest(TestPingURI));
+    }
+    
     private void OnDestroy()
     {
         NetworkEvents.RemoteLevelRequestedEvent -= OnRemoteLevelRequested;
