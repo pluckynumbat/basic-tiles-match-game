@@ -80,6 +80,9 @@ public class MainManager : MonoBehaviour
         
         UIEvents.ToggleMuteRequestEvent -= OnToggleMuteRequested;
         UIEvents.ToggleMuteRequestEvent += OnToggleMuteRequested;
+        
+        NetworkEvents.RemoteTestCompletedEvent -= OnRemoteTestCompleted;
+        NetworkEvents.RemoteTestCompletedEvent += OnRemoteTestCompleted;
  
         NetworkEvents.RemoteLevelReceivedEvent -= OnRemoteLevelReceived;
         NetworkEvents.RemoteLevelReceivedEvent += OnRemoteLevelReceived;
