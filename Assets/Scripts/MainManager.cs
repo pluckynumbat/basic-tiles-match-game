@@ -199,6 +199,11 @@ public class MainManager : MonoBehaviour
         }
     }
 
+    private void OnRemoteTestCompleted(bool success)
+    {
+        
+    }
+
     private void OnRemoteLevelReceived(string levelJSONString)
     {
         remoteLevel = LevelJSONReader.CreateLevelDataFromJSONString(levelJSONString);
