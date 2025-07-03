@@ -105,6 +105,7 @@ public class MainManager : MonoBehaviour
         UIEvents.RandomModeSelectedEvent -= OnRandomModeSelected;
         UIEvents.PlayRandomModeRequestEvent -= OnPlayRandomModeRequest;
         UIEvents.ToggleMuteRequestEvent -= OnToggleMuteRequested;
+        NetworkEvents.RemoteTestCompletedEvent -= OnRemoteTestCompleted;
         NetworkEvents.RemoteLevelReceivedEvent -= OnRemoteLevelReceived;
         UIEvents.RemoteLevelSelectedEvent -= OnRemoteLevelSelected;
         UIEvents.PlayRemoteLevelRequestEvent -= OnPlayRemoteLevelRequest;
