@@ -23,5 +23,12 @@ public static class NetworkEvents
     {
         RemoteTestCompletedEvent?.Invoke(success);
     }
+    
+    public delegate void RemoteLevelsStatusUpdateHandler(bool enabled);
+    public static event RemoteLevelsStatusUpdateHandler RemoteLevelsStatusUpdateEvent;
+    public static void RaiseRemoteLevelsStatusUpdateEvent(bool enabled)
+    {
+        RemoteLevelsStatusUpdateEvent?.Invoke(enabled);
+    }
 
 }
