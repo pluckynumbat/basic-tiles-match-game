@@ -201,8 +201,7 @@ public class MainManager : MonoBehaviour
 
     private void OnRemoteTestCompleted(bool success)
     {
-        enableRemoteLevels = success;
-        NetworkEvents.RaiseRemoteLevelsStatusUpdateEvent(enableRemoteLevels);
+        NetworkEvents.RaiseRemoteLevelsStatusUpdateEvent(success);
     }
 
     private void OnRemoteLevelReceived(string levelJSONString)
