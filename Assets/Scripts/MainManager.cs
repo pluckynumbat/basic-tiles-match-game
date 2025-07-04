@@ -216,10 +216,7 @@ public class MainManager : MonoBehaviour
     
     private void OnRemoteLevelSelected()
     {
-        if (enableRemoteLevels)
-        {
-            NetworkEvents.RaiseRemoteLevelRequestedEvent();
-        }
+        NetworkEvents.RaiseRemoteLevelRequestedEvent();
     }
     
     private void OnPlayRemoteLevelRequest()
