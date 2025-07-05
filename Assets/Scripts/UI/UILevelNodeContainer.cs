@@ -31,4 +31,9 @@ public class UILevelNodeContainer : MonoBehaviour
             go.SetActive(enabled);
         }
     }
+    
+    private void OnDestroy()
+    {
+        NetworkEvents.RemoteLevelsStatusUpdateEvent -= OnRemoteLevelsStatusUpdate;
+    }
 }
