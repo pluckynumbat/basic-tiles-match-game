@@ -18,9 +18,7 @@ public class UILevelNodeContainer : MonoBehaviour
         {
             return;
         }
-
-        bool enabled = MainManager.Instance.enableRemoteLevels;
-
+        
         foreach (GameObject go in RemoteLevelGameObjects)
         {
             if (go == null)
@@ -28,7 +26,7 @@ public class UILevelNodeContainer : MonoBehaviour
                 continue;
             }
             
-            go.SetActive(enabled);
+            go.SetActive(false);
         }
     }
     
