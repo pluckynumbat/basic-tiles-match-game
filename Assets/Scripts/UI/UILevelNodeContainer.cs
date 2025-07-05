@@ -34,4 +34,22 @@ public class UILevelNodeContainer : MonoBehaviour
     {
         NetworkEvents.RemoteLevelsStatusUpdateEvent -= OnRemoteLevelsStatusUpdate;
     }
+
+    private void OnRemoteLevelsStatusUpdate(bool enable)
+    {
+        if (RemoteLevelGameObjects == null)
+        {
+            return;
+        }
+
+        foreach (GameObject go in RemoteLevelGameObjects)
+        {
+            if (go == null)
+            {
+                continue;
+            }
+            
+            go.SetActive(enable);
+        }
+    }
 }
