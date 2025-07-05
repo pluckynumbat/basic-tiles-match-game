@@ -6,7 +6,12 @@ using UnityEngine;
 public class UILevelNodeContainer : MonoBehaviour
 {
     public GameObject[] RemoteLevelGameObjects;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+   
+    private void Awake()
+    {   
+        NetworkEvents.RemoteLevelsStatusUpdateEvent -= OnRemoteLevelsStatusUpdate;
+        NetworkEvents.RemoteLevelsStatusUpdateEvent += OnRemoteLevelsStatusUpdate;
+    }
     void Start()
     {
         if (RemoteLevelGameObjects == null)
