@@ -13,6 +13,8 @@ public class UILevelPreviewDialog : UIDialogBase
     public TextMeshProUGUI titleText; // this is set during run time
     public UIGoalsDisplay goalsDisplay;
 
+    private bool isRemoteLevel;
+
     // set title text and goals display based on supplied data
     public override void Setup(object[] data)
     {
@@ -34,6 +36,8 @@ public class UILevelPreviewDialog : UIDialogBase
             Debug.LogError("Goals display is null, please check the prefab, abort");
             return;
         }
+        
+        isRemoteLevel = (bool)data[1];
 
         titleText.text = levelData.name;
         goalsDisplay.SetupGoalsDisplay(levelData);
@@ -42,7 +46,14 @@ public class UILevelPreviewDialog : UIDialogBase
     //request to enter the level scene to play this level
     public void OnPlayButtonClicked()
     {
-        UIEvents.RaisePlayLevelRequestEvent();
+        if (isRemoteLevel)
+        {
+            UIEvents.RaisePlayRemoteLevelRequestEvent();
+        }
+        else
+        {
+            UIEvents.RaisePlayLevelRequestEvent();
+        }
     }
     
     // only dismiss this dialog

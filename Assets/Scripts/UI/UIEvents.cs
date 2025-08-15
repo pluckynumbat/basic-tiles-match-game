@@ -85,4 +85,20 @@ public static class UIEvents
     {
         ToggleMuteRequestEvent?.Invoke();
     }
+    
+    // raised by a UI remote level button when pressed
+    public delegate void RemoteLevelSelectedHandler();
+    public static event RemoteLevelSelectedHandler RemoteLevelSelectedEvent;
+    public static void RaiseRemoteLevelSelectedEvent()
+    {
+        RemoteLevelSelectedEvent?.Invoke();
+    }
+    
+    // raised by the level preview dialog when player presses play for a remote level
+    public delegate void PlayRemoteLevelRequestHandler();
+    public static event PlayRemoteLevelRequestHandler PlayRemoteLevelRequestEvent;
+    public static void RaisePlayRemoteLevelRequestEvent()
+    {
+        PlayRemoteLevelRequestEvent?.Invoke();
+    }
 }

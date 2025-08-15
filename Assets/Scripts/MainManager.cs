@@ -29,13 +29,16 @@ public class MainManager : MonoBehaviour
     // store the next level the player will play
     public LevelData levelToPlay;
     
+    // store the last level that the game received from a remote source
+    public LevelData remoteLevel;
+    
     // check this when the player is in random mode
     public bool isRandomModeEnabled = false;
     public Random.State randomState; // needed in case player wants to restart a level in random mode
     
     //global volume setting
     public float lastGlobalVolume;
-
+    
     private void Awake()
     {
         if (instance == null)
@@ -74,6 +77,18 @@ public class MainManager : MonoBehaviour
         
         UIEvents.ToggleMuteRequestEvent -= OnToggleMuteRequested;
         UIEvents.ToggleMuteRequestEvent += OnToggleMuteRequested;
+        
+        NetworkEvents.RemoteTestCompletedEvent -= OnRemoteTestCompleted;
+        NetworkEvents.RemoteTestCompletedEvent += OnRemoteTestCompleted;
+ 
+        NetworkEvents.RemoteLevelReceivedEvent -= OnRemoteLevelReceived;
+        NetworkEvents.RemoteLevelReceivedEvent += OnRemoteLevelReceived;
+        
+        UIEvents.RemoteLevelSelectedEvent -= OnRemoteLevelSelected;
+        UIEvents.RemoteLevelSelectedEvent += OnRemoteLevelSelected;
+        
+        UIEvents.PlayRemoteLevelRequestEvent -= OnPlayRemoteLevelRequest;
+        UIEvents.PlayRemoteLevelRequestEvent += OnPlayRemoteLevelRequest;
     }
 
     private void OnDestroy()
@@ -87,6 +102,10 @@ public class MainManager : MonoBehaviour
         UIEvents.RandomModeSelectedEvent -= OnRandomModeSelected;
         UIEvents.PlayRandomModeRequestEvent -= OnPlayRandomModeRequest;
         UIEvents.ToggleMuteRequestEvent -= OnToggleMuteRequested;
+        NetworkEvents.RemoteTestCompletedEvent -= OnRemoteTestCompleted;
+        NetworkEvents.RemoteLevelReceivedEvent -= OnRemoteLevelReceived;
+        UIEvents.RemoteLevelSelectedEvent -= OnRemoteLevelSelected;
+        UIEvents.PlayRemoteLevelRequestEvent -= OnPlayRemoteLevelRequest;
     }
 
     // a level select node was pressed in the main scene
@@ -101,7 +120,7 @@ public class MainManager : MonoBehaviour
         }
         
         //request display of the level preview dialog
-        UIEvents.RaiseDialogDisplayRequestEvent(LEVEL_PREVIEW_DIALOG_NAME, new object[] {levelToPlay});
+        UIEvents.RaiseDialogDisplayRequestEvent(LEVEL_PREVIEW_DIALOG_NAME, new object[] {levelToPlay, false});
     }
     
     // the player pressed 'Play' on the level preview dialog, switch scenes to level scene for this level
@@ -176,4 +195,34 @@ public class MainManager : MonoBehaviour
             AudioListener.volume = lastGlobalVolume;
         }
     }
+
+    private void OnRemoteTestCompleted(bool success)
+    {
+        NetworkEvents.RaiseRemoteLevelsStatusUpdateEvent(success);
+    }
+
+    private void OnRemoteLevelReceived(string levelJSONString)
+    {
+        remoteLevel = LevelJSONReader.CreateLevelDataFromJSONString(levelJSONString);
+        if (remoteLevel == null)
+        {
+            Debug.LogError($"Invalid level data for level received from remote source, abort");
+            return;
+        }
+        
+        //request display of the level preview dialog
+        UIEvents.RaiseDialogDisplayRequestEvent(LEVEL_PREVIEW_DIALOG_NAME, new object[] {remoteLevel, true});
+    }
+    
+    private void OnRemoteLevelSelected()
+    {
+        NetworkEvents.RaiseRemoteLevelRequestedEvent();
+    }
+    
+    private void OnPlayRemoteLevelRequest()
+    {
+        levelToPlay = remoteLevel;
+        SceneManager.LoadScene(LEVEL_SCENE_ID);
+    }
+    
 }
